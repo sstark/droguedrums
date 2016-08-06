@@ -1,0 +1,67 @@
+# drougedrums
+#
+# to play this:
+#
+# drougedrums drums.yml seqfull
+#
+# the file can be changed while it is being played.
+#
+
+# define a drum set:
+sets:
+    - name: basicset
+      # lane midichannel notenumber
+      kit:
+          - key: bd  # bass drum
+            channel: 5
+            note: 1
+          - key: hc  # hi hat closed
+            channel: 5
+            note: 5
+          - key: ho  # hi hat opened
+            channel: 5
+            note: 6
+          - key: sd  # snare drum
+            channel: 5
+            note: 6
+
+parts:
+    - name: beat44
+      set: basicset
+      step: 4
+      bpm: 100
+      lanes:
+          - hc ho hc hc hc ho hc hc
+          - bd -- -- -- bd -- -- --
+          - -- -- sd -- -- -- sd --
+
+    - name: beat68
+      set: basicset
+      step: 8
+      bpm: 160
+      lanes: 
+          - >
+            hc hc hc
+            hc hc hc
+            hc hc hc
+            hc hc hc
+
+
+seqs:
+    - name: straightseq
+      parts:
+          - 4 x beat44
+    - name: breakseq
+      parts:
+          - 1 x break
+    - name: oddseq
+      parts:
+          - 1 x odd
+    - name: full
+      parts:
+          - 2 x straightseq
+          - 1 x breakseq
+          - 2 x oddseq
+          - 1 x breakseq
+          - repeat
+
