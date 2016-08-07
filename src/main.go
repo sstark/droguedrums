@@ -14,11 +14,13 @@ type Kit []struct {
     Note int
 }
 
-type Player struct {
+type Part struct {
+    Name string
+    Set string
+    Step int
     Bpm int
-    Lane []string
-    Kit Kit
-}
+    Lanes matrix
+ }
 
 func playChord(s *portmidi.Stream, c row) {
     fmt.Println(c)
@@ -30,7 +32,7 @@ func playChord(s *portmidi.Stream, c row) {
     }
 }
 
-func player(s *portmidi.Stream, ticker *time.Ticker, q chan matrix) {
+func player(s *portmidi.Stream, ticker *time.Ticker, q chan Part) {
     eventQueue := make(chan row)
     dacapo := make(chan bool)
     fmt.Println("starting player loop")
@@ -40,10 +42,10 @@ func player(s *portmidi.Stream, ticker *time.Ticker, q chan matrix) {
         case <-ticker.C:
             go playChord(s, <-eventQueue)
         case <-dacapo:
-            currentTrack := <-q
-            fmt.Println("received new track")
+            currentPart := <-q
+            fmt.Println("received new Part")
             go func() {
-                for _, c := range currentTrack.transpose() {
+                for _, c := range currentPart.Lanes.transpose() {
                     eventQueue <- c
                 }
                 dacapo <- true
@@ -60,7 +62,7 @@ func main() {
     defer out.Close()
 
     ticker := time.NewTicker(160 * time.Millisecond)
-    trackQueue := make(chan matrix)
+    trackQueue := make(chan Part)
 
     go player(out, ticker, trackQueue)
 
