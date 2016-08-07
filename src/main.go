@@ -21,7 +21,7 @@ func playChord(s *portmidi.Stream, c row) {
 func makeTicker(bpm int, step int) *time.Ticker {
     step = step/4
     timing := (time.Minute / time.Duration(bpm)) / time.Duration(step)
-    fmt.Println("New timing:", timing)
+    fmt.Println("timing:", timing)
     return time.NewTicker(timing)
 }
 
@@ -40,7 +40,7 @@ func player(s *portmidi.Stream, q chan Part) {
             currentPart := <-q
             ticker.Stop()
             ticker = makeTicker(currentPart.Bpm, currentPart.Step)
-            fmt.Println("received new part", currentPart.Name)
+            fmt.Println("part:", currentPart.Name)
             go func() {
                 for _, c := range currentPart.Lanes.transpose() {
                     eventQueue <- c
