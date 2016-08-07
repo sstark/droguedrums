@@ -16,6 +16,13 @@ type Part struct {
     Lanes matrix
 }
 
+type MidiNote struct {
+    Channel int
+    Note int
+}
+
+type NoteMap map[string]MidiNote
+
 type Drums struct {
     Sets []struct {
         Name string
@@ -42,13 +49,14 @@ func (d *Drums) Dump() {
     fmt.Println(*d)
 }
 
-func str2note(s string) int {
+func translateKit(s string) int {
     switch s {
     case "--": return 0
     case "bd": return 1
     case "sd": return 5
     case "hc": return 6
     case "ho": return 8
+    case "cl": return 12
     }
     return 0
 }
@@ -59,7 +67,7 @@ func text2matrix(txt []string) matrix {
         var r []int
         lane := strings.Split(line, " ")
         for _, elem := range lane {
-            r = append(r, str2note(elem))
+            r = append(r, translateKit(elem))
         }
         m = append(m, row(r))
     }
@@ -78,6 +86,23 @@ func (d *Drums) GetParts() []Part {
         })
     }
     return parts
+}
+
+func (d *Drums) GetSets() map[string]NoteMap {
+    sets := make(map[string]NoteMap)
+    for _, set := range d.Sets {
+        fmt.Println(set)
+        notes := make(NoteMap)
+        for _, note := range set.Kit {
+            notes[note.Key] = MidiNote{
+                Channel: note.Channel,
+                Note: note.Note,
+            }
+            fmt.Println(note)
+        }
+        sets[set.Name] = notes
+    }
+    return sets
 }
 
 func (d *Drums) LoadFromFile() {

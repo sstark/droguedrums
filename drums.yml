@@ -34,6 +34,7 @@ parts:
           - hc -- ho -- hc -- hc --
           - bd -- -- -- -- -- -- bd
           - -- -- -- -- sd -- -- --
+          - -- -- -- -- cl -- -- --
 
     - name: beat44-2
       set: basicset
@@ -43,6 +44,7 @@ parts:
           - hc -- ho -- hc -- hc --
           - bd -- bd -- -- bd -- --
           - -- -- -- -- sd -- -- --
+          - -- -- -- -- cl -- -- --
 
     - name: beat68
       set: basicset
