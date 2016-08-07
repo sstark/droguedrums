@@ -28,23 +28,29 @@ sets:
 parts:
     - name: beat44
       set: basicset
-      step: 4
-      bpm: 100
+      step: 8
+      bpm: 160
       lanes:
-          - hc ho hc hc hc ho hc hc
-          - bd -- -- -- bd -- -- --
-          - -- -- sd -- -- -- sd --
+          - hc -- ho -- hc -- hc --
+          - bd -- -- -- -- -- -- bd
+          - -- -- -- -- sd -- -- --
+
+    - name: beat44-2
+      set: basicset
+      step: 8
+      bpm: 160
+      lanes:
+          - hc -- ho -- hc -- hc --
+          - bd -- bd -- -- bd -- --
+          - -- -- -- -- sd -- -- --
 
     - name: beat68
       set: basicset
       step: 8
       bpm: 160
       lanes: 
-          - >
-            hc hc hc
-            hc hc hc
-            hc hc hc
-            hc hc hc
+          - hc hc hc hc hc hc hc hc hc hc hc hc
+          - sd sd sd sd sd sd sd sd sd sd sd sd
 
 
 seqs:

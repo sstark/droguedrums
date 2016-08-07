@@ -58,13 +58,16 @@ func main() {
     out, _ := portmidi.NewOutputStream(defaultOut, 1024, 0)
     defer out.Close()
 
+    drums := new(Drums)
+    drums.LoadFromFile()
+    parts := drums.GetParts()
+
     trackQueue := make(chan Part)
 
     go player(out, trackQueue)
 
     for {
-        trackQueue <- demo1()
-        trackQueue <- demo2()
-        trackQueue <- demo3()
+        trackQueue <- parts[0]
+        trackQueue <- parts[1]
     }
 }
