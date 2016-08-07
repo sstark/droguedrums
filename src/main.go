@@ -79,5 +79,6 @@ func main() {
     for {
         trackQueue <- demo1()
         trackQueue <- demo2()
+        trackQueue <- demo3()
     }
 }
