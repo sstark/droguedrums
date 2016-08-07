@@ -47,8 +47,9 @@ func player(s *portmidi.Stream, q chan Part) {
     go func() { dacapo <- true }()
     for {
         select {
-        case <-ticker.C:
-            go playChord(s, <-eventQueue)
+        case e := <-eventQueue:
+            go playChord(s, e)
+            <-ticker.C
         case <-dacapo:
             currentPart := <-q
             ticker.Stop()
