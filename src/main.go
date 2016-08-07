@@ -8,20 +8,6 @@ import (
     "math/rand"
 )
 
-type Kit []struct {
-    Key string
-    Channel int
-    Note int
-}
-
-type Part struct {
-    Name string
-    Set string
-    Step int
-    Bpm int
-    Lanes matrix
- }
-
 func playChord(s *portmidi.Stream, c row) {
     fmt.Println(c)
     dev := 32
