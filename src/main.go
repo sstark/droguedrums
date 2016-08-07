@@ -32,9 +32,17 @@ func playChord(s *portmidi.Stream, c row) {
     }
 }
 
-func player(s *portmidi.Stream, ticker *time.Ticker, q chan Part) {
+func makeTicker(bpm int, step int) *time.Ticker {
+    step = step/4
+    timing := (time.Minute / time.Duration(bpm)) / time.Duration(step)
+    fmt.Println("New timing:", timing)
+    return time.NewTicker(timing)
+}
+
+func player(s *portmidi.Stream, q chan Part) {
     eventQueue := make(chan row)
     dacapo := make(chan bool)
+    ticker := time.NewTicker(time.Millisecond)
     fmt.Println("starting player loop")
     go func() { dacapo <- true }()
     for {
@@ -43,7 +51,9 @@ func player(s *portmidi.Stream, ticker *time.Ticker, q chan Part) {
             go playChord(s, <-eventQueue)
         case <-dacapo:
             currentPart := <-q
-            fmt.Println("received new Part")
+            ticker.Stop()
+            ticker = makeTicker(currentPart.Bpm, currentPart.Step)
+            fmt.Println("received new part", currentPart.Name)
             go func() {
                 for _, c := range currentPart.Lanes.transpose() {
                     eventQueue <- c
@@ -61,10 +71,9 @@ func main() {
     out, _ := portmidi.NewOutputStream(defaultOut, 1024, 0)
     defer out.Close()
 
-    ticker := time.NewTicker(160 * time.Millisecond)
     trackQueue := make(chan Part)
 
-    go player(out, ticker, trackQueue)
+    go player(out, trackQueue)
 
     for {
         trackQueue <- demo1()
