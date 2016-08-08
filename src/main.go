@@ -60,8 +60,8 @@ func main() {
 
     drums := new(Drums)
     drums.LoadFromFile()
-    parts := drums.GetParts()
     sets := drums.GetSets()
+    parts := drums.GetParts(sets)
     fmt.Println(sets)
 
     trackQueue := make(chan Part)

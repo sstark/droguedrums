@@ -49,32 +49,24 @@ func (d *Drums) Dump() {
     fmt.Println(*d)
 }
 
-func translateKit(s string) int {
-    switch s {
-    case "--": return 0
-    case "bd": return 1
-    case "sd": return 5
-    case "hc": return 6
-    case "ho": return 8
-    case "cl": return 12
-    }
-    return 0
+func translateKit(set NoteMap, s string) int {
+    return set[s].Note
 }
 
-func text2matrix(txt []string) matrix {
+func text2matrix(set NoteMap, txt []string) matrix {
     var m []row
     for _, line := range txt {
         var r []int
         lane := strings.Split(line, " ")
         for _, elem := range lane {
-            r = append(r, translateKit(elem))
+            r = append(r, translateKit(set, elem))
         }
         m = append(m, row(r))
     }
     return m
 }
 
-func (d *Drums) GetParts() []Part {
+func (d *Drums) GetParts(sets map[string]NoteMap) []Part {
     var parts []Part
     for _, inp := range d.Parts {
         parts = append(parts, Part{
@@ -82,7 +74,7 @@ func (d *Drums) GetParts() []Part {
             Set: inp.Set,
             Step: inp.Step,
             Bpm: inp.Bpm,
-            Lanes: text2matrix(inp.Lanes),
+            Lanes: text2matrix(sets[inp.Set], inp.Lanes),
         })
     }
     return parts

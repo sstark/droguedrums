@@ -12,18 +12,36 @@ sets:
     - name: basicset
       # lane midichannel notenumber
       kit:
+          - key: --
+            channel: 5
+            note: 0
           - key: bd  # bass drum
             channel: 5
             note: 1
-          - key: hc  # hi hat closed
+          - key: lt  # low tom
             channel: 5
-            note: 5
-          - key: ho  # hi hat opened
+            note: 2
+          - key: ht  # high tom
             channel: 5
-            note: 6
+            note: 3
           - key: sd  # snare drum
             channel: 5
+            note: 5
+          - key: hc  # hi hat closed
+            channel: 5
             note: 6
+          - key: ho  # hi hat opened
+            channel: 5
+            note: 8
+          - key: cl  # cymbal long
+            channel: 5
+            note: 9
+          - key: cs  # cymbal short
+            channel: 5
+            note: 11 
+          - key: cl  # clap
+            channel: 5
+            note: 12
 
 parts:
     - name: beat44
