@@ -71,5 +71,6 @@ func main() {
     for {
         trackQueue <- parts[0]
         trackQueue <- parts[1]
+        trackQueue <- parts[2]
     }
 }

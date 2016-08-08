@@ -33,10 +33,10 @@ sets:
           - key: ho  # hi hat opened
             channel: 5
             note: 8
-          - key: cl  # cymbal long
+          - key: cs  # cymbal short
             channel: 5
             note: 9
-          - key: cs  # cymbal short
+          - key: cf  # cymbal full
             channel: 5
             note: 11 
           - key: cl  # clap
@@ -64,13 +64,13 @@ parts:
           - -- -- -- -- sd -- -- --
           - -- -- -- -- cl -- -- --
 
-    - name: beat68
+    - name: break1
       set: basicset
-      step: 8
+      step: 12
       bpm: 160
       lanes: 
-          - hc hc hc hc hc hc hc hc hc hc hc hc
-          - sd sd sd sd sd sd sd sd sd sd sd sd
+          - hc -- hc -- hc -- hc -- lt cf -- --
+          - sd -- sd -- -- ht sd -- bd -- sd --
 
 
 seqs:
