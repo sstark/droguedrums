@@ -48,3 +48,4 @@ Build from source:
 
   - libportmidi bindings for go: (https://github.com/rakyll/portmidi)
     - `go get github.com/rakyll/portmidi`
+    - run the supplied `build.sh` script
