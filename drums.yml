@@ -58,11 +58,11 @@ parts:
           - -- -- -- -- cl -- -- --
 
     - name: break1
-      step: 12
-      bpm: 160
+      step: 12 # equivalent to step=16
+      bpm: 160 # and bpm=120
       lanes:
-          - hc -- hc -- hc -- hc -- lt cf
-          - sd -- sd -- -- ht sd -- bd --
+          - hc -- hc -- hc -- hc -- lt cf -- sd -- -- sd --
+          - sd -- sd -- -- ht sd -- bd -- bd -- -- bd -- --
 
 seqs:
     - name: start
