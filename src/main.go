@@ -73,7 +73,7 @@ func main() {
 
     for {
         for _, part := range seqs["start"] {
-            fmt.Println("next in seq:", part)
+            fmt.Println("next:", part)
             trackQueue <- parts[part]
         }
     }

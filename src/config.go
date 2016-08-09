@@ -81,12 +81,18 @@ func (d *Drums) GetSeqs() map[string][]string {
 func (d *Drums) GetParts(sets map[string]NoteMap) map[string]Part {
     parts := make(map[string]Part)
     for _, inp := range d.Parts {
+        var partset string
+        if inp.Set == "" {
+            partset = "default"
+        } else {
+            partset = inp.Set
+        }
         parts[inp.Name] = Part{
             Name: inp.Name,
             Set: inp.Set,
             Step: inp.Step,
             Bpm: inp.Bpm,
-            Lanes: text2matrix(sets[inp.Set], inp.Lanes),
+            Lanes: text2matrix(sets[partset], inp.Lanes),
         }
     }
     return parts

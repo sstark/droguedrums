@@ -1,7 +1,7 @@
 # drougedrums file
 
 sets:
-    - name: basicset
+    - name: default
       kit:
           - {key: --, channel:  5, note:  0} # pause
           - {key: bd, channel:  5, note:  1} # bass drum
@@ -15,13 +15,33 @@ sets:
           - {key: cl, channel:  5, note: 12} # clap
 
 parts:
+    - name: demo1
+      bpm: 160
+      step: 8
+      lanes:
+          - bd -- -- -- -- -- -- bd -- -- -- --
+          - hc -- hc hc ho -- hc -- hc hc hc --
+          - -- -- cl -- -- lt sd -- ht -- -- lt
+
+    - name: demo2
+      bpm: 160
+      step: 8
+      lanes:
+          - bd -- -- -- -- -- -- -- -- -- -- --
+          - hc -- hc hc ho -- hc -- hc hc hc --
+          - -- cl -- cs cl lt sd cl ht cs cl lt
+
+    - name: demobreak
+      bpm: 160
+      step: 16
+      lanes:
+          - hc -- -- cs hc -- ho -- cs -- hc -- hc -- hc --
+          - lt -- -- sd -- -- sd -- -- -- -- -- -- -- -- --
+          - -- -- -- lt cl -- ht -- -- -- cl -- ht -- ht --
+
     - name: beat44
-      set: basicset
       step: 8
       bpm: 160
-      fx:
-          - type: randomvelocity
-            randomness: 60
       lanes:
           - hc -- ho -- hc -- hc --
           - bd -- -- -- -- -- -- bd
@@ -29,7 +49,6 @@ parts:
           - -- -- -- -- cl -- -- --
 
     - name: beat44-2
-      set: basicset
       step: 8
       bpm: 160
       lanes:
@@ -39,29 +58,21 @@ parts:
           - -- -- -- -- cl -- -- --
 
     - name: break1
-      set: basicset
       step: 12
       bpm: 160
       lanes:
           - hc -- hc -- hc -- hc -- lt cf -- --
           - sd -- sd -- -- ht sd -- bd -- sd --
 
-
 seqs:
-    - name: straightseq
-      parts:
-          - beat44
-          - beat44
-          - beat44
-          - beat44
-    - name: breakseq
-      parts:
-          - break
-    - name: oddseq
-      parts:
-          - odd
     - name: start
       parts:
+          - demo1
+          - demo2
+          - demobreak
+          - demo1
+          - demo2
+          - demobreak
           - beat44
           - beat44-2
           - beat44
