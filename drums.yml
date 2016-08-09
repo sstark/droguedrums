@@ -40,8 +40,8 @@ parts:
           - -- -- -- lt cl -- ht -- -- -- cl -- ht -- ht --
 
     - name: beat44
-      step: 8
-      bpm: 160
+      step: 16
+      bpm: 120
       lanes:
           - hc -- ho -- hc -- hc --
           - bd -- -- -- -- -- -- bd
@@ -49,8 +49,8 @@ parts:
           - -- -- -- -- cl -- -- --
 
     - name: beat44-2
-      step: 8
-      bpm: 160
+      step: 16
+      bpm: 120
       lanes:
           - hc -- ho -- hc -- hc --
           - bd -- bd -- -- bd -- --
@@ -61,8 +61,8 @@ parts:
       step: 12
       bpm: 160
       lanes:
-          - hc -- hc -- hc -- hc -- lt cf -- --
-          - sd -- sd -- -- ht sd -- bd -- sd --
+          - hc -- hc -- hc -- hc -- lt cf
+          - sd -- sd -- -- ht sd -- bd --
 
 seqs:
     - name: start
@@ -77,3 +77,8 @@ seqs:
           - beat44-2
           - beat44
           - beat44-2
+          - beat44
+          - beat44-2
+          - beat44
+          - beat44-2
+          - break1
