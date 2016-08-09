@@ -1,53 +1,27 @@
-# drougedrums
-#
-# to play this:
-#
-# drougedrums drums.yml seqfull
-#
-# the file can be changed while it is being played.
-#
+# drougedrums file
 
-# define a drum set:
 sets:
     - name: basicset
-      # lane midichannel notenumber
       kit:
-          - key: --
-            channel: 5
-            note: 0
-          - key: bd  # bass drum
-            channel: 5
-            note: 1
-          - key: lt  # low tom
-            channel: 5
-            note: 2
-          - key: ht  # high tom
-            channel: 5
-            note: 3
-          - key: sd  # snare drum
-            channel: 5
-            note: 5
-          - key: hc  # hi hat closed
-            channel: 5
-            note: 6
-          - key: ho  # hi hat opened
-            channel: 5
-            note: 8
-          - key: cs  # cymbal short
-            channel: 5
-            note: 9
-          - key: cf  # cymbal full
-            channel: 5
-            note: 11 
-          - key: cl  # clap
-            channel: 5
-            note: 12
+          - {key: --, channel:  5, note:  0} # pause
+          - {key: bd, channel:  5, note:  1} # bass drum
+          - {key: lt, channel:  5, note:  2} # low tom
+          - {key: ht, channel:  5, note:  3} # high tom
+          - {key: sd, channel:  5, note:  5} # snare drum
+          - {key: hc, channel:  5, note:  6} # hi hat closed
+          - {key: ho, channel:  5, note:  8} # hi hat opened
+          - {key: cs, channel:  5, note:  9} # cymbal short
+          - {key: cf, channel:  5, note: 11} # cymbal full
+          - {key: cl, channel:  5, note: 12} # clap
 
 parts:
     - name: beat44
       set: basicset
       step: 8
       bpm: 160
+      fx:
+          - type: randomvelocity
+            randomness: 60
       lanes:
           - hc -- ho -- hc -- hc --
           - bd -- -- -- -- -- -- bd
@@ -68,7 +42,7 @@ parts:
       set: basicset
       step: 12
       bpm: 160
-      lanes: 
+      lanes:
           - hc -- hc -- hc -- hc -- lt cf -- --
           - sd -- sd -- -- ht sd -- bd -- sd --
 
@@ -76,18 +50,19 @@ parts:
 seqs:
     - name: straightseq
       parts:
-          - 4 x beat44
+          - beat44
+          - beat44
+          - beat44
+          - beat44
     - name: breakseq
       parts:
-          - 1 x break
+          - break
     - name: oddseq
       parts:
-          - 1 x odd
-    - name: full
+          - odd
+    - name: start
       parts:
-          - 2 x straightseq
-          - 1 x breakseq
-          - 2 x oddseq
-          - 1 x breakseq
-          - repeat
-
+          - beat44
+          - beat44-2
+          - beat44
+          - beat44-2

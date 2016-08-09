@@ -10,7 +10,7 @@ import (
 
 func playChord(s *portmidi.Stream, c row) {
     fmt.Println(c)
-    dev := 32
+    dev := 60
     for _, i := range c {
         v := (rand.Int() % dev) - (dev/2)
         v = 127-(dev/2) + v
@@ -62,15 +62,19 @@ func main() {
     drums.LoadFromFile()
     sets := drums.GetSets()
     parts := drums.GetParts(sets)
+    seqs := drums.GetSeqs()
     fmt.Println(sets)
+    fmt.Println(parts)
+    fmt.Println(seqs)
 
     trackQueue := make(chan Part)
 
     go player(out, trackQueue)
 
     for {
-        trackQueue <- parts[0]
-        trackQueue <- parts[1]
-        trackQueue <- parts[2]
+        for _, part := range seqs["start"] {
+            fmt.Println("next in seq:", part)
+            trackQueue <- parts[part]
+        }
     }
 }

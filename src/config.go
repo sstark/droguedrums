@@ -66,16 +66,28 @@ func text2matrix(set NoteMap, txt []string) matrix {
     return m
 }
 
-func (d *Drums) GetParts(sets map[string]NoteMap) []Part {
-    var parts []Part
+func (d *Drums) GetSeqs() map[string][]string {
+    seqs := make(map[string][]string)
+    for _, s := range d.Seqs {
+        var seqparts []string
+        for _, partname := range s.Parts {
+            seqparts = append(seqparts, partname)
+        }
+        seqs[s.Name] = seqparts
+    }
+    return seqs
+}
+
+func (d *Drums) GetParts(sets map[string]NoteMap) map[string]Part {
+    parts := make(map[string]Part)
     for _, inp := range d.Parts {
-        parts = append(parts, Part{
+        parts[inp.Name] = Part{
             Name: inp.Name,
             Set: inp.Set,
             Step: inp.Step,
             Bpm: inp.Bpm,
             Lanes: text2matrix(sets[inp.Set], inp.Lanes),
-        })
+        }
     }
     return parts
 }
