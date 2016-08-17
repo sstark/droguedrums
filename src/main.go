@@ -71,6 +71,14 @@ func checkErr (err error) {
 
 func main() {
     logger = log.New(os.Stderr, "", log.Lshortfile)
+
+    var drumsfile string
+    if len(os.Args) > 1 {
+        drumsfile = os.Args[1]
+    } else {
+        drumsfile = "drums.yml"
+    }
+
     err := portmidi.Initialize()
     checkErr(err)
     defer portmidi.Terminate()
@@ -80,7 +88,7 @@ func main() {
     defer out.Close()
 
     drums := new(Drums)
-    drums.LoadFromFile()
+    drums.LoadFromFile(drumsfile)
     sets := drums.GetSets()
     parts := drums.GetParts(sets)
     seqs := drums.GetSeqs()

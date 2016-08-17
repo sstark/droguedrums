@@ -115,8 +115,8 @@ func (d *Drums) GetSets() map[string]NoteMap {
     return sets
 }
 
-func (d *Drums) LoadFromFile() {
-    data, err := ioutil.ReadFile("drums.yml")
+func (d *Drums) LoadFromFile(fn string) {
+    data, err := ioutil.ReadFile(fn)
     if err != nil {
         panic(err)
     }
