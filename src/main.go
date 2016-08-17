@@ -84,14 +84,31 @@ func main() {
     sets := drums.GetSets()
     parts := drums.GetParts(sets)
     seqs := drums.GetSeqs()
-
     numSets := len(sets)
     numParts := len(parts)
     numSeqs := len(seqs)
+
     fmt.Printf("Read %d sets, %d parts, %d seqs\n", numSets, numParts, numSeqs)
     Debugf("main(): sets: %+v", sets)
     Debugf("main(): parts: %+v", parts)
     Debugf("main(): seqs: %+v", seqs)
+
+    if (numSets < 1) {
+        fmt.Println("no sets found")
+        os.Exit(1)
+    }
+    if (numParts < 1) {
+        fmt.Println("no parts found")
+        os.Exit(1)
+    }
+    if (numSeqs < 1) {
+        fmt.Println("no seqs found")
+        os.Exit(1)
+    }
+    if _, ok := seqs["start"]; !ok {
+        fmt.Println("start sequence not found")
+        os.Exit(1)
+    }
 
     trackQueue := make(chan Part)
 
