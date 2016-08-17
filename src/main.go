@@ -19,7 +19,7 @@ func Debugf(format string, args ...interface{}) {
 }
 
 func playChord(s *portmidi.Stream, c row) {
-    fmt.Println(c)
+    Debugf("playChord(): %v", c)
     dev := 60
     for _, i := range c {
         v := (rand.Int() % dev) - (dev/2)
@@ -51,7 +51,7 @@ func player(s *portmidi.Stream, q chan Part) {
             currentPart := <-q
             ticker.Stop()
             ticker = makeTicker(currentPart.Bpm, currentPart.Step)
-            fmt.Println("part:", currentPart.Name)
+            fmt.Printf("> %s (%d/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
             go func() {
                 for _, c := range currentPart.Lanes.transpose() {
                     eventQueue <- c
@@ -124,7 +124,7 @@ func main() {
 
     for {
         for _, part := range seqs["start"] {
-            fmt.Println("next:", part)
+            Debugf("next: %v", part)
             trackQueue <- parts[part]
         }
     }
