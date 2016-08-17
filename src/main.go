@@ -121,7 +121,9 @@ func main() {
     trackQueue := make(chan Part)
 
     go player(out, trackQueue)
-
+    for _, part := range seqs["precount"] {
+        trackQueue <- parts[part]
+    }
     for {
         for _, part := range seqs["start"] {
             Debugf("next: %v", part)
