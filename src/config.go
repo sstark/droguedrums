@@ -1,24 +1,23 @@
-
 package main
 
 import (
-    "io/ioutil"
-    "gopkg.in/yaml.v2"
     "fmt"
+    "gopkg.in/yaml.v2"
+    "io/ioutil"
     "strings"
 )
 
 type Part struct {
-    Name string
-    Set string
-    Step int
-    Bpm int
+    Name  string
+    Set   string
+    Step  int
+    Bpm   int
     Lanes matrix
 }
 
 type MidiNote struct {
     Channel int
-    Note int
+    Note    int
 }
 
 type NoteMap map[string]MidiNote
@@ -26,21 +25,21 @@ type NoteMap map[string]MidiNote
 type Drums struct {
     Sets []struct {
         Name string
-        Kit []struct {
-            Key string
+        Kit  []struct {
+            Key     string
             Channel int
-            Note int
+            Note    int
         }
     }
     Parts []struct {
-        Name string
-        Set string
-        Step int
-        Bpm int
+        Name  string
+        Set   string
+        Step  int
+        Bpm   int
         Lanes []string
     }
     Seqs []struct {
-        Name string
+        Name  string
         Parts []string
     }
 }
@@ -88,10 +87,10 @@ func (d *Drums) GetParts(sets map[string]NoteMap) map[string]Part {
             partset = inp.Set
         }
         parts[inp.Name] = Part{
-            Name: inp.Name,
-            Set: inp.Set,
-            Step: inp.Step,
-            Bpm: inp.Bpm,
+            Name:  inp.Name,
+            Set:   inp.Set,
+            Step:  inp.Step,
+            Bpm:   inp.Bpm,
             Lanes: text2matrix(sets[partset], inp.Lanes),
         }
     }
@@ -106,7 +105,7 @@ func (d *Drums) GetSets() map[string]NoteMap {
         for _, note := range set.Kit {
             notes[note.Key] = MidiNote{
                 Channel: note.Channel,
-                Note: note.Note,
+                Note:    note.Note,
             }
             Debugf("GetSets(): %+v", note)
         }

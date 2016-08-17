@@ -1,13 +1,12 @@
-
 package main
 
 import (
-    "github.com/rakyll/portmidi"
     "fmt"
-    "time"
+    "github.com/rakyll/portmidi"
+    "log"
     "math/rand"
     "os"
-    "log"
+    "time"
 )
 
 var logger *log.Logger
@@ -22,14 +21,14 @@ func playChord(s *portmidi.Stream, c row) {
     Debugf("playChord(): %v", c)
     dev := 60
     for _, i := range c {
-        v := (rand.Int() % dev) - (dev/2)
-        v = 127-(dev/2) + v
+        v := (rand.Int() % dev) - (dev / 2)
+        v = 127 - (dev / 2) + v
         s.WriteShort(0x95, int64(i), int64(v))
     }
 }
 
 func makeTicker(bpm int, step int) *time.Ticker {
-    step = step/4
+    step = step / 4
     timing := (time.Minute / time.Duration(bpm)) / time.Duration(step)
     Debugf("makeTicker(): timing: %v", timing)
     return time.NewTicker(timing)
@@ -62,7 +61,7 @@ func player(s *portmidi.Stream, q chan Part) {
     }
 }
 
-func checkErr (err error) {
+func checkErr(err error) {
     if err != nil {
         fmt.Println(err)
         os.Exit(1)
@@ -101,13 +100,13 @@ func main() {
     Debugf("main(): parts: %+v", parts)
     Debugf("main(): seqs: %+v", seqs)
 
-    if (numSets < 1) {
+    if numSets < 1 {
         logger.Fatalf("no sets found")
     }
-    if (numParts < 1) {
+    if numParts < 1 {
         logger.Fatalf("no parts found")
     }
-    if (numSeqs < 1) {
+    if numSeqs < 1 {
         logger.Fatalf("no seqs found")
     }
     if _, ok := seqs["start"]; !ok {
