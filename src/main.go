@@ -6,6 +6,7 @@ import (
     "fmt"
     "time"
     "math/rand"
+    "os"
 )
 
 func playChord(s *portmidi.Stream, c row) {
@@ -51,11 +52,20 @@ func player(s *portmidi.Stream, q chan Part) {
     }
 }
 
+func checkErr (err error) {
+    if err != nil {
+        fmt.Println(err)
+        os.Exit(1)
+    }
+}
+
 func main() {
-    portmidi.Initialize()
+    err := portmidi.Initialize()
+    checkErr(err)
     defer portmidi.Terminate()
     defaultOut := portmidi.DefaultOutputDeviceID()
-    out, _ := portmidi.NewOutputStream(defaultOut, 1024, 0)
+    out, err := portmidi.NewOutputStream(defaultOut, 1024, 0)
+    checkErr(err)
     defer out.Close()
 
     drums := new(Drums)
