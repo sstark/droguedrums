@@ -1,9 +1,9 @@
 todos
 
-- error handling
 - definition file monitoring
 - seqs can refer to other seqs
 - command line parsing
+- fix hardcoded midi channel
 
 ideas
 
