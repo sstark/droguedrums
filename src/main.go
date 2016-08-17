@@ -7,7 +7,16 @@ import (
     "time"
     "math/rand"
     "os"
+    "log"
 )
+
+var logger *log.Logger
+
+func Debugf(format string, args ...interface{}) {
+    if os.Getenv("DRD_DEBUG") == "1" {
+        logger.Output(2, fmt.Sprintf(format, args...))
+    }
+}
 
 func playChord(s *portmidi.Stream, c row) {
     fmt.Println(c)
@@ -22,7 +31,7 @@ func playChord(s *portmidi.Stream, c row) {
 func makeTicker(bpm int, step int) *time.Ticker {
     step = step/4
     timing := (time.Minute / time.Duration(bpm)) / time.Duration(step)
-    fmt.Println("timing:", timing)
+    Debugf("makeTicker(): timing: %v", timing)
     return time.NewTicker(timing)
 }
 
@@ -30,7 +39,7 @@ func player(s *portmidi.Stream, q chan Part) {
     eventQueue := make(chan row)
     dacapo := make(chan bool)
     ticker := time.NewTicker(time.Millisecond)
-    fmt.Println("starting player loop")
+    Debugf("player(): starting player loop")
     go func() { dacapo <- true }()
     for {
         select {
@@ -38,6 +47,7 @@ func player(s *portmidi.Stream, q chan Part) {
             go playChord(s, e)
             <-ticker.C
         case <-dacapo:
+            Debugf("player(): dacapo")
             currentPart := <-q
             ticker.Stop()
             ticker = makeTicker(currentPart.Bpm, currentPart.Step)
@@ -60,6 +70,7 @@ func checkErr (err error) {
 }
 
 func main() {
+    logger = log.New(os.Stderr, "", log.Lshortfile)
     err := portmidi.Initialize()
     checkErr(err)
     defer portmidi.Terminate()
@@ -73,9 +84,14 @@ func main() {
     sets := drums.GetSets()
     parts := drums.GetParts(sets)
     seqs := drums.GetSeqs()
-    fmt.Println(sets)
-    fmt.Println(parts)
-    fmt.Println(seqs)
+
+    numSets := len(sets)
+    numParts := len(parts)
+    numSeqs := len(seqs)
+    fmt.Printf("Read %d sets, %d parts, %d seqs\n", numSets, numParts, numSeqs)
+    Debugf("main(): sets: %+v", sets)
+    Debugf("main(): parts: %+v", parts)
+    Debugf("main(): seqs: %+v", seqs)
 
     trackQueue := make(chan Part)
 

@@ -101,14 +101,14 @@ func (d *Drums) GetParts(sets map[string]NoteMap) map[string]Part {
 func (d *Drums) GetSets() map[string]NoteMap {
     sets := make(map[string]NoteMap)
     for _, set := range d.Sets {
-        fmt.Println(set)
+        Debugf("GetSets(): %+v", set)
         notes := make(NoteMap)
         for _, note := range set.Kit {
             notes[note.Key] = MidiNote{
                 Channel: note.Channel,
                 Note: note.Note,
             }
-            fmt.Println(note)
+            Debugf("GetSets(): %+v", note)
         }
         sets[set.Name] = notes
     }
