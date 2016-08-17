@@ -118,7 +118,10 @@ func (d *Drums) GetSets() map[string]NoteMap {
 func (d *Drums) LoadFromFile(fn string) {
     data, err := ioutil.ReadFile(fn)
     if err != nil {
-        panic(err)
+        logger.Fatalf("%v", err)
     }
-    yaml.Unmarshal(data, d)
+    err = yaml.Unmarshal(data, d)
+    if err != nil {
+        logger.Fatalf("Syntax error when reading file \"%s\". Maybe it is not proper YAML format.\n%v", fn, err)
+    }
 }

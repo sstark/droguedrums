@@ -102,25 +102,21 @@ func main() {
     Debugf("main(): seqs: %+v", seqs)
 
     if (numSets < 1) {
-        fmt.Println("no sets found")
-        os.Exit(1)
+        logger.Fatalf("no sets found")
     }
     if (numParts < 1) {
-        fmt.Println("no parts found")
-        os.Exit(1)
+        logger.Fatalf("no parts found")
     }
     if (numSeqs < 1) {
-        fmt.Println("no seqs found")
-        os.Exit(1)
+        logger.Fatalf("no seqs found")
     }
     if _, ok := seqs["start"]; !ok {
-        fmt.Println("start sequence not found")
-        os.Exit(1)
+        logger.Fatalf("start sequence not found")
     }
 
     trackQueue := make(chan Part)
-
     go player(out, trackQueue)
+
     for _, part := range seqs["precount"] {
         trackQueue <- parts[part]
     }
