@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type Part struct {
+type part struct {
 	Name  string
 	Set   string
 	Step  int
@@ -15,14 +15,14 @@ type Part struct {
 	Lanes matrix
 }
 
-type MidiNote struct {
+type midiNote struct {
 	Channel int
 	Note    int
 }
 
-type NoteMap map[string]MidiNote
+type noteMap map[string]midiNote
 
-type Drums struct {
+type drums struct {
 	Sets []struct {
 		Name string
 		Kit  []struct {
@@ -44,15 +44,15 @@ type Drums struct {
 	}
 }
 
-func (d *Drums) Dump() {
+func (d *drums) dump() {
 	fmt.Println(*d)
 }
 
-func translateKit(set NoteMap, s string) int {
+func translateKit(set noteMap, s string) int {
 	return set[s].Note
 }
 
-func text2matrix(set NoteMap, txt []string) matrix {
+func text2matrix(set noteMap, txt []string) matrix {
 	var m []row
 	for _, line := range txt {
 		var r []int
@@ -65,7 +65,7 @@ func text2matrix(set NoteMap, txt []string) matrix {
 	return m
 }
 
-func (d *Drums) GetSeqs() map[string][]string {
+func (d *drums) getSeqs() map[string][]string {
 	seqs := make(map[string][]string)
 	for _, s := range d.Seqs {
 		var seqparts []string
@@ -77,8 +77,8 @@ func (d *Drums) GetSeqs() map[string][]string {
 	return seqs
 }
 
-func (d *Drums) GetParts(sets map[string]NoteMap) map[string]Part {
-	parts := make(map[string]Part)
+func (d *drums) getParts(sets map[string]noteMap) map[string]part {
+	parts := make(map[string]part)
 	for _, inp := range d.Parts {
 		var partset string
 		if inp.Set == "" {
@@ -86,7 +86,7 @@ func (d *Drums) GetParts(sets map[string]NoteMap) map[string]Part {
 		} else {
 			partset = inp.Set
 		}
-		parts[inp.Name] = Part{
+		parts[inp.Name] = part{
 			Name:  inp.Name,
 			Set:   inp.Set,
 			Step:  inp.Step,
@@ -97,24 +97,24 @@ func (d *Drums) GetParts(sets map[string]NoteMap) map[string]Part {
 	return parts
 }
 
-func (d *Drums) GetSets() map[string]NoteMap {
-	sets := make(map[string]NoteMap)
+func (d *drums) getSets() map[string]noteMap {
+	sets := make(map[string]noteMap)
 	for _, set := range d.Sets {
-		Debugf("GetSets(): %+v", set)
-		notes := make(NoteMap)
+		debugf("getSets(): %+v", set)
+		notes := make(noteMap)
 		for _, note := range set.Kit {
-			notes[note.Key] = MidiNote{
+			notes[note.Key] = midiNote{
 				Channel: note.Channel,
 				Note:    note.Note,
 			}
-			Debugf("GetSets(): %+v", note)
+			debugf("getSets(): %+v", note)
 		}
 		sets[set.Name] = notes
 	}
 	return sets
 }
 
-func (d *Drums) LoadFromFile(fn string) {
+func (d *drums) loadFromFile(fn string) {
 	data, err := ioutil.ReadFile(fn)
 	if err != nil {
 		logger.Fatalf("%v", err)
