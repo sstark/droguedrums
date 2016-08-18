@@ -5,4 +5,4 @@ then
 else
     diff="-d"
 fi
-gofmt -tabs=false -tabwidth=4 $diff src/*.go
+gofmt $diff src/*.go
