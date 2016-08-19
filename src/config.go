@@ -93,6 +93,10 @@ func (d *drums) getParts(sets map[string]noteMap) map[string]part {
 			Bpm:   inp.Bpm,
 			Lanes: text2matrix(sets[partset], inp.Lanes),
 		}
+		err := parts[inp.Name].Lanes.check()
+		if err != nil {
+			logger.Fatalf("part \"%s\" has wrong format: %v", inp.Name, err)
+		}
 	}
 	return parts
 }
