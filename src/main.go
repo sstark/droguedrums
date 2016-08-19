@@ -120,9 +120,15 @@ func main() {
 		trackQueue <- parts[part]
 	}
 	for {
-		for _, part := range seqs["start"] {
-			debugf("main(): next: %v", part)
-			trackQueue <- parts[part]
+		for _, partname := range seqs["start"] {
+			debugf("main(): next: %v", partname)
+			if part, ok := parts[partname]; !ok {
+				logger.Printf("unknown part \"%s\"", partname)
+				// avoid busy loop when all parts are unknown
+				time.Sleep(time.Millisecond * 50)
+			} else {
+				trackQueue <- part
+			}
 		}
 	}
 }
