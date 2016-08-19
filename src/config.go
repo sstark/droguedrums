@@ -79,19 +79,25 @@ func (d *drums) getSeqs() map[string][]string {
 
 func (d *drums) getParts(sets map[string]noteMap) map[string]part {
 	parts := make(map[string]part)
+	var partsetname string
+	var partset noteMap
 	for _, inp := range d.Parts {
-		var partset string
 		if inp.Set == "" {
-			partset = "default"
+			partsetname = "default"
 		} else {
-			partset = inp.Set
+			partsetname = inp.Set
+		}
+		if partset, ok := sets[partsetname]; !ok {
+			logger.Printf("unknown set \"%s\"", partsetname)
+		} else {
+			debugf("getParts(): partset %v", partset)
 		}
 		parts[inp.Name] = part{
 			Name:  inp.Name,
 			Set:   inp.Set,
 			Step:  inp.Step,
 			Bpm:   inp.Bpm,
-			Lanes: text2matrix(sets[partset], inp.Lanes),
+			Lanes: text2matrix(partset, inp.Lanes),
 		}
 		err := parts[inp.Name].Lanes.check()
 		if err != nil {
