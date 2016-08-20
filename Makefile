@@ -4,7 +4,7 @@ BUILD_TIME=	$(shell date +%FT%T%z)
 LDFLAGS=	-ldflags "-X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}"
 SRC=		src
 GOFILES:=	$(wildcard ${SRC}/*.go)
-SRCFILES:=	$(patsubst src/%_test.go,,${GOFILES})
+SRCFILES:=	$(patsubst ${SRC}/%_test.go,,${GOFILES})
 
 ${BIN}: ${SRCFILES} Makefile
 	go build ${LDFLAGS} -o ${BIN} ${SRCFILES}
