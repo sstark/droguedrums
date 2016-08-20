@@ -63,7 +63,7 @@ func player(s *portmidi.Stream, q chan part) {
 	}
 }
 
-func feeder(drumsfile string, trackQueue chan part) {
+func getDrumsfile(drumsfile string) (map[string]part, map[string]seq) {
 	drums := new(drums)
 	drums.loadFromFile(drumsfile)
 	sets := drums.getSets()
@@ -72,12 +72,10 @@ func feeder(drumsfile string, trackQueue chan part) {
 	numSets := len(sets)
 	numParts := len(parts)
 	numSeqs := len(seqs)
-
 	fmt.Printf("droguedrums: %d sets, %d parts, %d seqs\n", numSets, numParts, numSeqs)
-	debugf("main(): sets: %+v", sets)
-	debugf("main(): parts: %+v", parts)
-	debugf("main(): seqs: %+v", seqs)
-
+	debugf("getDrumsfile(): sets: %+v", sets)
+	debugf("getDrumsfile(): parts: %+v", parts)
+	debugf("getDrumsfile(): seqs: %+v", seqs)
 	if numSets < 1 {
 		logger.Fatalf("no sets found")
 	}
@@ -90,19 +88,24 @@ func feeder(drumsfile string, trackQueue chan part) {
 	if _, ok := seqs["start"]; !ok {
 		logger.Fatalf("start sequence not found")
 	}
+	return parts, seqs
+}
 
+func feeder(drumsfile string, trackQueue chan part) {
+	parts, seqs := getDrumsfile(drumsfile)
 	for _, part := range seqs["precount"] {
 		trackQueue <- parts[part]
 	}
-
 	sigc := make(chan os.Signal, 1)
 	signal.Notify(sigc, syscall.SIGUSR1)
 	debugf("installed signal handler")
-
 	for {
 		select {
 		case sig := <-sigc:
-			debugf("feeder(): got signal %v", sig)
+			debugf("feeder(): got signal %v, re-reading drumsfile", sig)
+			fmt.Println("re-reading input file")
+			parts, seqs = getDrumsfile(drumsfile)
+			debugf("feeder(): done re-reading drumsfile", sig)
 		default:
 			for _, partname := range seqs["start"] {
 				debugf("feeder(): next: %v", partname)

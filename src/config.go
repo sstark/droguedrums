@@ -15,6 +15,8 @@ type part struct {
 	Lanes matrix
 }
 
+type seq []string
+
 type midiNote struct {
 	Channel int
 	Note    int
@@ -65,8 +67,8 @@ func text2matrix(set noteMap, txt []string) matrix {
 	return m
 }
 
-func (d *drums) getSeqs() map[string][]string {
-	seqs := make(map[string][]string)
+func (d *drums) getSeqs() map[string]seq {
+	seqs := make(map[string]seq)
 	for _, s := range d.Seqs {
 		var seqparts []string
 		for _, partname := range s.Parts {
