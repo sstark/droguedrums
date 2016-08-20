@@ -40,12 +40,27 @@ parts:
       lanes:
           - -- -- bd -- -- --
           - hc hc -- hc ho hc
-          - -- -- sd -- cl --
+          - -- -- -- -- cl --
     - name: br2
       bpm: 80
       step: 16
       lanes:
           - hc hc ho hc hc hc -- ho -- -- -- hc -- -- -- -- hc -- -- -- -- hc
+    - name: wrl1
+      bpm: 110
+      step: 32
+      lanes:
+          - sd -- sd sd
+    - name: wrl2
+      bpm: 140
+      step: 32
+      lanes:
+          - sd sd sd sd
+    - name: wrl3
+      bpm: 180
+      step: 32
+      lanes:
+          - sd sd sd sd
 
 seqs:
     - name: precount
@@ -58,3 +73,6 @@ seqs:
           - short2
           - br1
           - br2
+          - wrl1
+          - wrl2
+          - wrl3
