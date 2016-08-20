@@ -6,6 +6,8 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -61,31 +63,7 @@ func player(s *portmidi.Stream, q chan part) {
 	}
 }
 
-func checkErr(err error) {
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}
-
-func main() {
-	logger = log.New(os.Stderr, "", log.Lshortfile)
-
-	var drumsfile string
-	if len(os.Args) > 1 {
-		drumsfile = os.Args[1]
-	} else {
-		drumsfile = "drums.yml"
-	}
-
-	err := portmidi.Initialize()
-	checkErr(err)
-	defer portmidi.Terminate()
-	defaultOut := portmidi.DefaultOutputDeviceID()
-	out, err := portmidi.NewOutputStream(defaultOut, 1024, 0)
-	checkErr(err)
-	defer out.Close()
-
+func feeder(drumsfile string, trackQueue chan part) {
 	drums := new(drums)
 	drums.loadFromFile(drumsfile)
 	sets := drums.getSets()
@@ -113,22 +91,62 @@ func main() {
 		logger.Fatalf("start sequence not found")
 	}
 
-	trackQueue := make(chan part)
-	go player(out, trackQueue)
-
 	for _, part := range seqs["precount"] {
 		trackQueue <- parts[part]
 	}
+
+	sigc := make(chan os.Signal, 1)
+	signal.Notify(sigc, syscall.SIGUSR1)
+	debugf("installed signal handler")
+
 	for {
-		for _, partname := range seqs["start"] {
-			debugf("main(): next: %v", partname)
-			if part, ok := parts[partname]; !ok {
-				logger.Printf("unknown part \"%s\"", partname)
-				// avoid busy loop when all parts are unknown
-				time.Sleep(time.Millisecond * 50)
-			} else {
-				trackQueue <- part
+		select {
+		case sig := <-sigc:
+			debugf("feeder(): got signal %v", sig)
+		default:
+			for _, partname := range seqs["start"] {
+				debugf("feeder(): next: %v", partname)
+				if part, ok := parts[partname]; !ok {
+					logger.Printf("unknown part \"%s\"", partname)
+					// avoid busy loop when all parts are unknown
+					time.Sleep(time.Millisecond * 50)
+				} else {
+					trackQueue <- part
+				}
 			}
 		}
 	}
+}
+
+func checkErr(err error) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+
+func main() {
+	logger = log.New(os.Stderr, "", log.Lshortfile)
+
+	var drumsfile string
+	if len(os.Args) > 1 {
+		drumsfile = os.Args[1]
+	} else {
+		drumsfile = "drums.yml"
+	}
+
+	err := portmidi.Initialize()
+	checkErr(err)
+	defer portmidi.Terminate()
+	defaultOut := portmidi.DefaultOutputDeviceID()
+	out, err := portmidi.NewOutputStream(defaultOut, 1024, 0)
+	checkErr(err)
+	defer out.Close()
+
+	trackQueue := make(chan part)
+
+	go player(out, trackQueue)
+
+	feeder(drumsfile, trackQueue)
+
 }
