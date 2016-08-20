@@ -11,7 +11,11 @@ import (
 	"time"
 )
 
-var logger *log.Logger
+var (
+	Version   string
+	BuildTime string
+	logger    *log.Logger
+)
 
 func debugf(format string, args ...interface{}) {
 	if os.Getenv("DRD_DEBUG") == "1" {
@@ -72,7 +76,7 @@ func getDrumsfile(drumsfile string) (map[string]part, map[string]seq) {
 	numSets := len(sets)
 	numParts := len(parts)
 	numSeqs := len(seqs)
-	fmt.Printf("droguedrums: %d sets, %d parts, %d seqs\n", numSets, numParts, numSeqs)
+	fmt.Printf("%d sets, %d parts, %d seqs\n", numSets, numParts, numSeqs)
 	debugf("getDrumsfile(): sets: %+v", sets)
 	debugf("getDrumsfile(): parts: %+v", parts)
 	debugf("getDrumsfile(): seqs: %+v", seqs)
@@ -130,6 +134,7 @@ func checkErr(err error) {
 
 func main() {
 	logger = log.New(os.Stderr, "", log.Lshortfile)
+	fmt.Printf("droguedrums %s (built %s)\n", Version, BuildTime)
 
 	var drumsfile string
 	if len(os.Args) > 1 {
