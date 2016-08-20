@@ -7,6 +7,18 @@ import (
 type row []int
 type matrix []row
 
+func (r1 row) eq(r2 row) bool {
+	if len(r1) != len(r2) {
+		return false
+	}
+	for i := range r1 {
+		if r1[i] != r2[i] {
+			return false
+		}
+	}
+	return true
+}
+
 // check returns an error if matrix is irregular
 // and cannot be transposed.
 func (m matrix) check() (err error) {
