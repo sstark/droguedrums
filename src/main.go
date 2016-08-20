@@ -95,7 +95,7 @@ func main() {
 	numParts := len(parts)
 	numSeqs := len(seqs)
 
-	fmt.Printf("Read %d sets, %d parts, %d seqs\n", numSets, numParts, numSeqs)
+	fmt.Printf("droguedrums: %d sets, %d parts, %d seqs\n", numSets, numParts, numSeqs)
 	debugf("main(): sets: %+v", sets)
 	debugf("main(): parts: %+v", parts)
 	debugf("main(): seqs: %+v", seqs)
