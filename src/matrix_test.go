@@ -70,7 +70,7 @@ var transposePairs = []transposeTestPair{
 	},
 }
 
-func TestEq(t *testing.T) {
+func TestRowEq(t *testing.T) {
 	for _, r := range eqPairs {
 		if !r.a.eq(r.b) {
 			t.Errorf("equality test failed: %v == %v", r.a, r.b)
