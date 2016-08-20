@@ -19,6 +19,18 @@ func (r1 row) eq(r2 row) bool {
 	return true
 }
 
+func (m1 matrix) eq(m2 matrix) bool {
+	if len(m1) != len(m2) {
+		return false
+	}
+	for i := range m1 {
+		if !m1[i].eq(m2[i]) {
+			return false
+		}
+	}
+	return true
+}
+
 // check returns an error if matrix is irregular
 // and cannot be transposed.
 func (m matrix) check() (err error) {

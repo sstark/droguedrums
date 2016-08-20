@@ -83,21 +83,12 @@ func TestEq(t *testing.T) {
 	}
 }
 
-func assertMatrixEq(t *testing.T, got matrix, want matrix) {
-	var eq bool = true
-	for i := range got {
-		if got[i].eq(want[i]) == false {
-			eq = false
-			break
-		}
-	}
-	if eq == false {
-		t.Errorf("got %v, wanted %v", got, want)
-	}
-}
-
 func TestTranspose(t *testing.T) {
 	for _, pair := range transposePairs {
-		assertMatrixEq(t, pair.normal.transpose(), pair.transposed)
+		got := pair.normal.transpose()
+		want := pair.transposed
+		if !got.eq(want) {
+			t.Errorf("got %v, wanted %v", got, want)
+		}
 	}
 }
