@@ -1,0 +1,29 @@
+# drougedrums file
+
+sets:
+    - name: default
+      kit:
+          - {key: --, channel:  5, note:  0} # pause
+          - {key: bd, channel:  5, note:  1} # bass drum
+          - {key: lt, channel:  5, note:  2} # low tom
+          - {key: ht, channel:  5, note:  3} # high tom
+          - {key: sd, channel:  5, note:  5} # snare drum
+          - {key: hc, channel:  5, note:  6} # hi hat closed
+          - {key: ho, channel:  5, note:  8} # hi hat opened
+          - {key: cs, channel:  5, note:  9} # cymbal short
+          - {key: cf, channel:  5, note: 11} # cymbal full
+          - {key: cl, channel:  5, note: 12} # clap
+
+parts:
+    - name: demo1
+      bpm: 160
+      step: 8
+      lanes:
+          - sd sd sd
+          - hc hc hc
+
+seqs:
+    - name: start
+      parts:
+          - bla
+          - demo1

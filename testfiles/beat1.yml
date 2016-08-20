@@ -1,0 +1,50 @@
+# drougedrums file
+
+sets:
+    - name: default
+      kit:
+          - {key: --, channel:  5, note:  0} # pause
+          - {key: bd, channel:  5, note:  1} # bass drum
+          - {key: lt, channel:  5, note:  2} # low tom
+          - {key: ht, channel:  5, note:  3} # high tom
+          - {key: sd, channel:  5, note:  5} # snare drum
+          - {key: hc, channel:  5, note:  6} # hi hat closed
+          - {key: ho, channel:  5, note:  8} # hi hat opened
+          - {key: cs, channel:  5, note:  9} # cymbal short
+          - {key: cf, channel:  5, note: 11} # cymbal full
+          - {key: cl, channel:  5, note: 12} # clap
+
+parts:
+    - name: count in
+      bpm: 100
+      step: 4 
+      lanes:
+          - hc hc hc hc hc hc
+    - name: p1
+      bpm: 100
+      step: 8 
+      lanes:
+          - bd -- -- bd -- -- -- bd -- -- -- --
+          - cf -- cf -- cf -- cf -- cf -- cf --
+          - -- -- -- -- cl -- -- -- -- sd -- --
+    - name: p2
+      bpm: 100
+      step: 8 
+      lanes:
+          - bd -- -- bd -- -- -- bd -- -- -- bd -- --
+          - cf -- cf -- cf -- cf -- cf -- cf -- cf --
+          - -- -- -- -- cl -- -- -- -- sd -- -- -- --
+    - name: b1
+      bpm: 100
+      step: 32
+      lanes:
+          - sd -- sd -- sd sd sd sd
+
+seqs:
+    - name: precount
+      parts: [count in]
+    - name: start
+      parts:
+          - p1
+          - p2
+          - b1

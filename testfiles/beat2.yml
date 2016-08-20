@@ -1,0 +1,60 @@
+# drougedrums file
+
+sets:
+    - name: default
+      kit:
+          - {key: --, channel:  5, note:  0} # pause
+          - {key: bd, channel:  5, note:  1} # bass drum
+          - {key: lt, channel:  5, note:  2} # low tom
+          - {key: ht, channel:  5, note:  3} # high tom
+          - {key: sd, channel:  5, note:  5} # snare drum
+          - {key: hc, channel:  5, note:  6} # hi hat closed
+          - {key: ho, channel:  5, note:  8} # hi hat opened
+          - {key: cs, channel:  5, note:  9} # cymbal short
+          - {key: cf, channel:  5, note: 11} # cymbal full
+          - {key: cl, channel:  5, note: 12} # clap
+
+parts:
+    - name: precount
+      bpm: 140
+      step: 4
+      lanes:
+          - hc hc hc hc
+    - name: short1
+      bpm: 140
+      step: 16
+      lanes:
+          - bd -- -- -- sd -- -- -- cl bd -- -- -- -- -- --
+          - hc -- hc -- hc -- hc -- hc -- hc -- hc -- hc --
+          - -- -- -- -- -- -- -- cs -- -- -- lt -- -- -- cs
+    - name: short2
+      bpm: 140
+      step: 16
+      lanes:
+          - -- -- -- -- sd -- -- -- -- bd -- -- sd -- -- --
+          - hc -- hc -- hc -- ho -- hc -- hc -- ho -- hc --
+          - -- lt -- ht -- -- -- cs -- -- -- -- cf -- -- cs
+    - name: br1
+      bpm: 120
+      step: 16
+      lanes:
+          - -- -- bd -- -- --
+          - hc hc -- hc ho hc
+          - -- -- sd -- cl --
+    - name: br2
+      bpm: 80
+      step: 16
+      lanes:
+          - hc hc ho hc hc hc -- ho -- -- -- hc -- -- -- -- hc -- -- -- -- hc
+
+seqs:
+    - name: precount
+      parts: [ precount ]
+    - name: start
+      parts:
+          - short1
+          - short2
+          - short1
+          - short2
+          - br1
+          - br2
