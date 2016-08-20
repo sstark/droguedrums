@@ -36,7 +36,7 @@ func makeTicker(bpm int, step int) *time.Ticker {
 	return time.NewTicker(timing)
 }
 
-func player(s *portmidi.Stream, q chan part) {
+func player(s *portmidi.Stream, playQ chan part) {
 	eventQueue := make(chan row)
 	dacapo := make(chan bool)
 	ticker := time.NewTicker(time.Millisecond)
@@ -49,7 +49,7 @@ func player(s *portmidi.Stream, q chan part) {
 			<-ticker.C
 		case <-dacapo:
 			debugf("player(): dacapo")
-			currentPart := <-q
+			currentPart := <-playQ
 			ticker.Stop()
 			ticker = makeTicker(currentPart.Bpm, currentPart.Step)
 			fmt.Printf("> %s (%d/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
@@ -91,10 +91,10 @@ func getDrumsfile(drumsfile string) (map[string]part, map[string]seq) {
 	return parts, seqs
 }
 
-func feeder(drumsfile string, trackQueue chan part) {
+func feeder(drumsfile string, playQ chan part) {
 	parts, seqs := getDrumsfile(drumsfile)
 	for _, part := range seqs["precount"] {
-		trackQueue <- parts[part]
+		playQ <- parts[part]
 	}
 	sigc := make(chan os.Signal, 1)
 	signal.Notify(sigc, syscall.SIGUSR1)
@@ -114,7 +114,7 @@ func feeder(drumsfile string, trackQueue chan part) {
 					// avoid busy loop when all parts are unknown
 					time.Sleep(time.Millisecond * 50)
 				} else {
-					trackQueue <- part
+					playQ <- part
 				}
 			}
 		}
@@ -142,14 +142,12 @@ func main() {
 	checkErr(err)
 	defer portmidi.Terminate()
 	defaultOut := portmidi.DefaultOutputDeviceID()
-	out, err := portmidi.NewOutputStream(defaultOut, 1024, 0)
+	midiout, err := portmidi.NewOutputStream(defaultOut, 1024, 0)
 	checkErr(err)
-	defer out.Close()
+	defer midiout.Close()
 
-	trackQueue := make(chan part)
-
-	go player(out, trackQueue)
-
-	feeder(drumsfile, trackQueue)
+	playQ := make(chan part)
+	go player(midiout, playQ)
+	feeder(drumsfile, playQ)
 
 }
