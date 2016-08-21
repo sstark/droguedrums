@@ -46,11 +46,11 @@ func player(playQ chan part) {
 			ticker = makeTicker(currentPart.Bpm, currentPart.Step)
 			fmt.Printf("> %s (%d/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
 			go func() {
-				for _, c := range currentPart.Lanes.transpose() {
-					vmap := genVelocityMap(c, currentPart)
+				vmap := genVelocityMap(currentPart).transpose()
+				for i, c := range currentPart.Lanes.transpose() {
 					eventQueue <- event{
 						Notes:      c,
-						Velocities: vmap,
+						Velocities: vmap[i],
 					}
 				}
 				dacapo <- true

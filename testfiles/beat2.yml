@@ -51,16 +51,19 @@ parts:
     - name: wrl1
       bpm: 110
       step: 32
+      fx: [rampv: 30-60]
       lanes:
           - sd -- sd sd
     - name: wrl2
       bpm: 140
       step: 32
+      fx: [rampv: 61-90]
       lanes:
           - sd sd sd sd
     - name: wrl3
       bpm: 180
       step: 32
+      fx: [rampv: 91-127]
       lanes:
           - sd sd sd sd
 
