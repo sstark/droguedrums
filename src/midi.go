@@ -71,6 +71,9 @@ func genVelocityMap(part part) matrix {
 		if randomness != 0 {
 			v := (rand.Int() % randomness) - (randomness / 2)
 			v = vmap[i] - (randomness / 2) + v
+			if v < 0 {
+				v = 0
+			}
 			vmap[i] = v
 		}
 	}
