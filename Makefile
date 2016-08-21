@@ -14,7 +14,7 @@ ${BIN}: ${SRCFILES} Makefile
 	go build ${LDFLAGS} -o ${BIN} ${SRCFILES}
 
 test:
-	cd ${SRC} && go test
+	cd src && go test
 
 clean:
 	rm ${BIN}
