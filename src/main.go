@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/rakyll/portmidi"
 	"log"
-	"math/rand"
 	"os"
 	"os/signal"
 	"syscall"
@@ -23,16 +21,6 @@ func debugf(format string, args ...interface{}) {
 	}
 }
 
-func playChord(s *portmidi.Stream, c row) {
-	debugf("playChord(): %v", c)
-	dev := 60
-	for _, i := range c {
-		v := (rand.Int() % dev) - (dev / 2)
-		v = 127 - (dev / 2) + v
-		s.WriteShort(0x95, int64(i), int64(v))
-	}
-}
-
 func makeTicker(bpm int, step int) *time.Ticker {
 	step = step / 4
 	timing := (time.Minute / time.Duration(bpm)) / time.Duration(step)
@@ -40,7 +28,7 @@ func makeTicker(bpm int, step int) *time.Ticker {
 	return time.NewTicker(timing)
 }
 
-func player(s *portmidi.Stream, playQ chan part) {
+func player(playQ chan part) {
 	eventQueue := make(chan row)
 	dacapo := make(chan bool)
 	ticker := time.NewTicker(time.Millisecond)
@@ -49,7 +37,7 @@ func player(s *portmidi.Stream, playQ chan part) {
 	for {
 		select {
 		case e := <-eventQueue:
-			go playChord(s, e)
+			go playChord(e)
 			<-ticker.C
 		case <-dacapo:
 			debugf("player(): dacapo")
@@ -143,16 +131,10 @@ func main() {
 		drumsfile = "drums.yml"
 	}
 
-	err := portmidi.Initialize()
-	checkErr(err)
-	defer portmidi.Terminate()
-	defaultOut := portmidi.DefaultOutputDeviceID()
-	midiout, err := portmidi.NewOutputStream(defaultOut, 1024, 0)
-	checkErr(err)
-	defer midiout.Close()
+	initMidi()
+	defer closeMidi()
 
 	playQ := make(chan part)
-	go player(midiout, playQ)
+	go player(playQ)
 	feeder(drumsfile, playQ)
-
 }

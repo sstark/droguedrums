@@ -2,11 +2,15 @@ BIN=		droguedrums
 VERSION=	0.9
 BUILD_TIME=	$(shell date +%FT%T%z)
 LDFLAGS=	-ldflags "-X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}"
-SRC=		src
-GOFILES:=	$(wildcard ${SRC}/*.go)
-SRCFILES:=	$(patsubst ${SRC}/%_test.go,,${GOFILES})
+MIDILIB=	portmidi
+SRCFILES=	src/main.go \
+			src/matrix.go \
+			src/config.go \
+			src/midi.go \
+			src/midi-${MIDILIB}.go
 
 ${BIN}: ${SRCFILES} Makefile
+	@echo building for ${MIDILIB}
 	go build ${LDFLAGS} -o ${BIN} ${SRCFILES}
 
 test:
