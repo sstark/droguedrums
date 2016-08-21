@@ -42,10 +42,10 @@ Build from source:
 
   - libportmidi headers
     - OSX:      `brew install portmidi`
-    - Ubuntu:   `apt-get install libportmidi0-dev`
+    - Ubuntu:   `apt-get install libportmidi-dev`
   
   - The go programming language: https://golang.org/
 
   - libportmidi bindings for go: (https://github.com/rakyll/portmidi)
     - `go get github.com/rakyll/portmidi`
-    - run the supplied `build.sh` script
+    - run `make`
