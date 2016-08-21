@@ -7,6 +7,7 @@ sets:
           - {key: bd, channel:  5, note:  1} # bass drum
           - {key: lt, channel:  5, note:  2} # low tom
           - {key: ht, channel:  5, note:  3} # high tom
+          - {key: mu, channel:  5, note:  4} # multi
           - {key: sd, channel:  5, note:  5} # snare drum
           - {key: hc, channel:  5, note:  6} # hi hat closed
           - {key: ho, channel:  5, note:  8} # hi hat opened
@@ -29,6 +30,7 @@ parts:
           - hc -- hc -- hc ho hc -- hc -- hc -- hc ho hc --
           - -- -- -- -- -- -- -- -- sd -- -- sd -- -- -- ht
           - bd -- -- -- -- -- bd -- -- -- lt -- -- -- -- --
+          - mu -- -- -- -- -- mu -- -- -- -- -- mu -- -- --
     - name: part2
       bpm: 180
       step: 16
@@ -38,6 +40,7 @@ parts:
           - hc -- hc -- hc ho hc -- hc -- hc -- hc ho hc --
           - -- -- -- -- sd -- -- -- -- -- -- -- sd -- -- lt
           - bd -- -- -- -- -- -- -- -- -- bd -- -- -- -- --
+          - mu -- -- -- -- -- mu -- -- -- -- -- mu -- -- --
     - name: part3
       bpm: 180
       step: 16
@@ -46,15 +49,16 @@ parts:
           - hc -- hc -- hc ho hc -- hc -- hc -- hc ho hc --
           - -- -- -- -- sd -- -- -- -- -- -- -- sd -- -- lt
           - bd -- -- -- -- -- -- -- -- -- bd -- -- -- -- --
+          - -- -- -- -- -- -- -- -- -- -- mu -- -- -- mu --
     - name: br1
-      bpm: 130
+      bpm: 135
       step: 16
       fx: [randv: 20]
       lanes:
           - bd cs bd hc -- hc
           - co -- -- -- sd --
     - name: br2
-      bpm: 130
+      bpm: 135
       step: 16
       fx: [randv: 20]
       lanes:
