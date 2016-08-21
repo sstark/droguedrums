@@ -6,18 +6,37 @@ todos
 - looping of parts/seqs
 - command line parsing
   - midi device selection
+    - https://github.com/rakyll/launchpad/blob/master/launchpad.go
 - fix hardcoded midi channel
+- other midi libs
+  - jack
+  - coremidi
 - velocity lanes
-- tests
+- more tests
+- combination of parts
+  - merge lanes if same size
+  - cut/expand if not the same size?
+  - how to merge fx?
+- rework yaml parsing, it can probably be made easier
+- try to help with portmidi bindings issues:
+  - https://github.com/rakyll/portmidi/issues/11
+  - https://github.com/rakyll/portmidi/issues/27
+- make it possible to set the "step" value in parts
+  to triplets (or any other fraction)
 
 ideas
 
-- velocity fx
-  - random range velocity
-  - velocity ramp
 - bpm ramps
 - fancy console output
   - https://github.com/gizak/termui
+  - https://github.com/gosuri/uilive
+- microtiming map
+  - enable per lane dragging/rushing
+  - random timing "errors"
+- delay effect
+- sequence fx
+  - song velocity curve
+  - algorithmic part selection
 
 wishful thinking
 

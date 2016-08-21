@@ -46,10 +46,30 @@ parts:
           - hc -- hc -- hc ho hc -- hc -- hc -- hc ho hc --
           - -- -- -- -- sd -- -- -- -- -- -- -- sd -- -- lt
           - bd -- -- -- -- -- -- -- -- -- bd -- -- -- -- --
+    - name: br1
+      bpm: 130
+      step: 16
+      fx: [randv: 20]
+      lanes:
+          - bd cs bd hc -- hc
+          - co -- -- -- sd --
+    - name: br2
+      bpm: 130
+      step: 16
+      fx: [randv: 20]
+      lanes:
+          - bd cs hc bd -- hc
+          - co -- -- -- sd --
 seqs:
     - name: start
       parts:
           - part1
           - part2
           - part3
+          - br1
+          - br1
+          - part1
+          - part2
           - part3
+          - br2
+          - br2
