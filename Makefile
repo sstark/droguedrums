@@ -18,3 +18,6 @@ test:
 
 clean:
 	rm ${BIN}
+
+checkfmt:
+	@gofmt -d src/*.go
