@@ -23,6 +23,7 @@ parts:
     - name: short1
       bpm: 140
       step: 16
+      fx: [randv: 10]
       lanes:
           - bd -- -- -- sd -- -- -- cl bd -- -- -- -- -- --
           - hc -- hc -- hc -- hc -- hc -- hc -- hc -- hc --
@@ -44,6 +45,7 @@ parts:
     - name: br2
       bpm: 80
       step: 16
+      fx: [randv: 60]
       lanes:
           - hc hc ho hc hc hc -- ho -- -- -- hc -- -- -- -- hc -- -- -- -- hc
     - name: wrl1

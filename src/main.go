@@ -29,7 +29,7 @@ func makeTicker(bpm int, step int) *time.Ticker {
 }
 
 func player(playQ chan part) {
-	eventQueue := make(chan row)
+	eventQueue := make(chan event)
 	dacapo := make(chan bool)
 	ticker := time.NewTicker(time.Millisecond)
 	debugf("player(): starting player loop")
@@ -47,7 +47,11 @@ func player(playQ chan part) {
 			fmt.Printf("> %s (%d/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
 			go func() {
 				for _, c := range currentPart.Lanes.transpose() {
-					eventQueue <- c
+					vmap := genVelocityMap(c, currentPart)
+					eventQueue <- event{
+						Notes:      c,
+						Velocities: vmap,
+					}
 				}
 				dacapo <- true
 			}()

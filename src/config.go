@@ -12,6 +12,7 @@ type part struct {
 	Set   string
 	Step  int
 	Bpm   int
+	Fx    []map[string]string
 	Lanes matrix
 }
 
@@ -38,6 +39,7 @@ type drums struct {
 		Set   string
 		Step  int
 		Bpm   int
+		Fx    []map[string]string
 		Lanes []string
 	}
 	Seqs []struct {
@@ -97,6 +99,7 @@ func (d *drums) getParts(sets map[string]noteMap) map[string]part {
 			Set:   inp.Set,
 			Step:  inp.Step,
 			Bpm:   inp.Bpm,
+			Fx:    inp.Fx,
 			Lanes: text2matrix(partset, inp.Lanes),
 		}
 		err := parts[inp.Name].Lanes.check()
