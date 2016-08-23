@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 func gen_equid(gl map[string]string) (out string, err error) {
@@ -40,7 +41,10 @@ func gen_equid(gl map[string]string) (out string, err error) {
 	if err != nil {
 		return
 	}
-	for i := start - 1; i < length+start-1; i++ {
+	for i := 0; i < start-1; i++ {
+		buffer.WriteString("-- ")
+	}
+	for i := 0; i < length-start+1; i++ {
 		if i%dist == 0 {
 			buffer.WriteString(inpNote)
 		} else {
@@ -48,7 +52,7 @@ func gen_equid(gl map[string]string) (out string, err error) {
 		}
 		buffer.WriteString(" ")
 	}
-	out = buffer.String()
+	out = strings.TrimSpace(buffer.String())
 	debugf("gen_equid(): %v", out)
 	return
 }
