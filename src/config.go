@@ -60,7 +60,7 @@ func text2matrix(set noteMap, txt []string) matrix {
 	var m []row
 	for _, line := range txt {
 		var r []int
-		lane := strings.Split(line, " ")
+		lane := strings.Split(strings.TrimSpace(line), " ")
 		for _, elem := range lane {
 			r = append(r, translateKit(set, elem))
 		}
