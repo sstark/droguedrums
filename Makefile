@@ -8,6 +8,7 @@ SRCFILES=	src/main.go \
 			src/config.go \
 			src/midi.go \
 			src/midi-${MIDILIB}.go
+PREFIX=		/usr/local
 
 ${BIN}: ${SRCFILES} Makefile
 	@echo building for ${MIDILIB}
@@ -21,3 +22,6 @@ clean:
 
 checkfmt:
 	@gofmt -d src/*.go
+
+install: ${BIN}
+	install ${BIN} ${PREFIX}/bin
