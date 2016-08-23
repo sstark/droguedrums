@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -53,13 +54,13 @@ func gen_equid(gl map[string]string) (out string, err error) {
 }
 
 func renderGenlanes(lanes []map[string]map[string]string) (genlanes []string, outerr error) {
-	for _, inLane := range lanes {
+	for i, inLane := range lanes {
 		if gen, ok := inLane["equid"]; ok {
 			debugf("renderGenlanes(): found equid gen %v", gen)
 			outLane, err := gen_equid(gen)
 			if err != nil {
 				debugf("renderGenlanes(): gen_equid() failed")
-				outerr = err
+				outerr = fmt.Errorf("error in genlane#%d: %s", i, err)
 				return
 			}
 			genlanes = append(genlanes, outLane)

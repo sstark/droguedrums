@@ -95,7 +95,10 @@ func (d *drums) getParts(sets map[string]noteMap) map[string]part {
 		if !ok {
 			logger.Printf("unknown set \"%s\"", partsetname)
 		}
-		genlanes, _ := renderGenlanes(inp.Genlanes)
+		genlanes, err := renderGenlanes(inp.Genlanes)
+		if err != nil {
+			logger.Print(err)
+		}
 		lanes := inp.Lanes
 		lanes = append(lanes, genlanes...)
 		debugf("getParts(): %#v", lanes)
@@ -107,7 +110,7 @@ func (d *drums) getParts(sets map[string]noteMap) map[string]part {
 			Fx:    inp.Fx,
 			Lanes: text2matrix(partset, lanes),
 		}
-		err := parts[inp.Name].Lanes.check()
+		err = parts[inp.Name].Lanes.check()
 		if err != nil {
 			logger.Fatalf("part \"%s\" has wrong format: %v", inp.Name, err)
 		}
