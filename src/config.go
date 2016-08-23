@@ -18,13 +18,6 @@ type part struct {
 
 type seq []string
 
-type midiNote struct {
-	Channel int
-	Note    int
-}
-
-type noteMap map[string]midiNote
-
 type drums struct {
 	Sets []struct {
 		Name string
