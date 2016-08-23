@@ -7,6 +7,7 @@ SRCFILES=	src/main.go \
 			src/matrix.go \
 			src/config.go \
 			src/midi.go \
+			src/genlanes.go \
 			src/midi-${MIDILIB}.go
 PREFIX=		/usr/local
 

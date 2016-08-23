@@ -35,12 +35,13 @@ type drums struct {
 		}
 	}
 	Parts []struct {
-		Name  string
-		Set   string
-		Step  int
-		Bpm   int
-		Fx    []map[string]string
-		Lanes []string
+		Name     string
+		Set      string
+		Step     int
+		Bpm      int
+		Fx       []map[string]string
+		Lanes    []string
+		Genlanes []map[string]map[string]string
 	}
 	Seqs []struct {
 		Name  string
@@ -94,13 +95,17 @@ func (d *drums) getParts(sets map[string]noteMap) map[string]part {
 		if !ok {
 			logger.Printf("unknown set \"%s\"", partsetname)
 		}
+		genlanes, _ := renderGenlanes(inp.Genlanes)
+		lanes := inp.Lanes
+		lanes = append(lanes, genlanes...)
+		debugf("getParts(): %#v", lanes)
 		parts[inp.Name] = part{
 			Name:  inp.Name,
 			Set:   inp.Set,
 			Step:  inp.Step,
 			Bpm:   inp.Bpm,
 			Fx:    inp.Fx,
-			Lanes: text2matrix(partset, inp.Lanes),
+			Lanes: text2matrix(partset, lanes),
 		}
 		err := parts[inp.Name].Lanes.check()
 		if err != nil {
