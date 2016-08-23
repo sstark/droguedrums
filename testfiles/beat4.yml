@@ -1,0 +1,112 @@
+# drougedrums file
+
+sets:
+    - name: default
+      kit:
+          - {key: --, channel:  5, note:  0} # pause
+          - {key: bd, channel:  5, note:  1} # bass drum
+          - {key: lt, channel:  5, note:  2} # low tom
+          - {key: ht, channel:  5, note:  3} # high tom
+          - {key: sd, channel:  5, note:  5} # snare drum
+          - {key: hc, channel:  5, note:  6} # hi hat closed
+          - {key: ho, channel:  5, note:  8} # hi hat opened
+          - {key: cs, channel:  5, note:  9} # cymbal short
+          - {key: cf, channel:  5, note: 11} # cymbal full
+          - {key: cl, channel:  5, note: 12} # clap
+
+parts:
+    - name: up1
+      bpm: 300
+      step: 16
+      fx: [rampv: 1-127]
+      lanes:
+          - hc hc hc hc hc hc hc hc hc hc hc hc hc hc hc hc
+    - name: down1
+      bpm: 300
+      step: 16
+      fx: [rampv: 127-1]
+      lanes:
+          - hc hc hc hc hc hc hc hc hc hc hc hc hc hc hc hc
+    - name: up2
+      bpm: 300
+      step: 16
+      fx: [rampv: 1-127]
+      lanes:
+          - cs cs cs cs cs cs cs cs cs cs cs cs cs cs cs cs
+    - name: down2
+      bpm: 300
+      step: 16
+      fx: [rampv: 127-1]
+      lanes:
+          - cs cs cs cs cs cs cs cs cs cs cs cs cs cs cs cs
+    - name: rand1
+      bpm: 300
+      step: 16
+      fx: [rampv: 60-60, randv: 127]
+      lanes:
+          - sd sd -- sd sd -- sd sd sd -- sd sd sd sd -- sd
+          - cs cs cs cs cs cs cs cs cs cs cs cs cs cs cs cs
+    - name: rand2
+      bpm: 300
+      step: 16
+      fx: [rampv: 60-120, randv: 127]
+      lanes:
+          - -- -- lt -- lt lt -- lt lt lt -- lt lt lt lt --
+          - cs cs cs cs cs cs cs cs cs cs cs cs cs cs cs cs
+    - name: randF
+      bpm: 300
+      step: 32
+      fx: [randv: 127]
+      lanes:
+          - cs cf hc cs cs cs cs hc hc sd -- bd sd sd -- --
+          - -- cs cf hc cs cs cs cs hc hc sd -- bd sd sd --
+          - -- -- cs cf hc cs cs cs cs hc hc sd -- bd sd sd
+    - name: randS
+      bpm: 300
+      step: 8 
+      fx: [randv: 50]
+      lanes:
+          - cs cf hc cs -- -- --
+          - -- cs cf hc cs -- --
+          - -- -- cs cf hc cs --
+          - -- -- -- cs cf hc cs
+    - name: randT
+      bpm: 300
+      step: 8 
+      fx: [randv: 50]
+      lanes:
+          - lt -- lt -- lt -- lt -- lt -- lt -- lt
+          - -- ht -- ht -- ht -- ht -- ht -- ht --
+
+seqs:
+    - name: start
+      parts:
+          - up1
+          - down1
+          - up2
+          - down2
+          - up1
+          - down1
+          - rand1
+          - up2
+          - down2
+          - randS
+          - randT
+          - up1
+          - down1
+          - up2
+          - down2
+          - up1
+          - down1
+          - rand1
+          - up1
+          - down1
+          - up2
+          - down2
+          - rand1
+          - up1
+          - down1
+          - up2
+          - down2
+          - rand2
+          - randF
