@@ -157,6 +157,8 @@ func main() {
 	if drumsfile == "" {
 		fmt.Println("no input file")
 		os.Exit(1)
+	} else {
+		fmt.Printf("input file: %s\n", drumsfile)
 	}
 	fmt.Println("-- player starting --")
 
