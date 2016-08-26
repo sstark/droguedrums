@@ -7,7 +7,6 @@ todos
 - command line parsing
   - midi device selection
     - https://github.com/rakyll/launchpad/blob/master/launchpad.go
-- fix hardcoded midi channel
 - other midi libs
   - jack
   - coremidi

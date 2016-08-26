@@ -9,7 +9,7 @@ var midiOut *portmidi.Stream
 
 func sendMidiNote(channel, note, velocity int) {
 	if note != 0 {
-		midiOut.WriteShort(0x95, int64(note), int64(velocity))
+		midiOut.WriteShort(midiNoteOn+int64(channel), int64(note), int64(velocity))
 	}
 }
 

@@ -34,6 +34,7 @@ func (m1 matrix) eq(m2 matrix) bool {
 // check returns an error if matrix is irregular
 // and cannot be transposed.
 func (m matrix) check() (err error) {
+	debugf("check(): %v", m)
 	l := len(m[0])
 	for _, x := range m {
 		// as long as first line is the longest we're fine

@@ -9,11 +9,11 @@ import (
 
 type part struct {
 	Name  string
-	Set   string
+	Set   noteMap
 	Step  int
 	Bpm   int
 	Fx    []map[string]string
-	Lanes matrix
+	Lanes []string
 }
 
 type seq []string
@@ -46,21 +46,28 @@ func (d *drums) dump() {
 	fmt.Println(*d)
 }
 
-func translateKit(set noteMap, s string) int {
-	return set[s].Note
+func translateKit(set noteMap, s string) (channel, note int) {
+	channel = set[s].Channel
+	note = set[s].Note
+	return
 }
 
-func text2matrix(set noteMap, txt []string) matrix {
-	var m []row
+// text2matrix takes the lanes as strings, looks up the channel
+// and note number of the events and returns them as separate
+// matrices.
+func text2matrix(set noteMap, txt []string) (channels, notes matrix) {
 	for _, line := range txt {
-		var r []int
+		var chanV, noteV []int
 		lane := strings.Split(strings.TrimSpace(line), " ")
 		for _, elem := range lane {
-			r = append(r, translateKit(set, elem))
+			c, n := translateKit(set, elem)
+			chanV = append(chanV, c)
+			noteV = append(noteV, n)
 		}
-		m = append(m, row(r))
+		channels = append(channels, row(chanV))
+		notes = append(notes, row(noteV))
 	}
-	return m
+	return
 }
 
 func (d *drums) getSeqs() map[string]seq {
@@ -97,15 +104,11 @@ func (d *drums) getParts(sets map[string]noteMap) map[string]part {
 		debugf("getParts(): %#v", lanes)
 		parts[inp.Name] = part{
 			Name:  inp.Name,
-			Set:   inp.Set,
+			Set:   partset,
 			Step:  inp.Step,
 			Bpm:   inp.Bpm,
 			Fx:    inp.Fx,
-			Lanes: text2matrix(partset, lanes),
-		}
-		err = parts[inp.Name].Lanes.check()
-		if err != nil {
-			logger.Fatalf("part \"%s\" has wrong format: %v", inp.Name, err)
+			Lanes: lanes,
 		}
 	}
 	return parts

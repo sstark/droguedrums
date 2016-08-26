@@ -46,11 +46,22 @@ func player(playQ chan part) {
 			ticker = makeTicker(currentPart.Bpm, currentPart.Step)
 			fmt.Printf("> %s (%d/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
 			go func() {
+				channels, notes := text2matrix(currentPart.Set, currentPart.Lanes)
+				debugf("player(): %v", channels)
+				debugf("player(): %v", notes)
+				// sanity check before transposing
+				// FIXME: should probably be done in the matrix lib
+				err := notes.check()
+				if err != nil {
+					logger.Fatalf("part \"%s\" has wrong format: %v", currentPart.Name, err)
+				}
 				vmap := genVelocityMap(currentPart).transpose()
-				for i, c := range currentPart.Lanes.transpose() {
+				cmap := channels.transpose()
+				for i, c := range notes.transpose() {
 					eventQueue <- event{
 						Notes:      c,
 						Velocities: vmap[i],
+						Channels:   cmap[i],
 					}
 				}
 				dacapo <- true
