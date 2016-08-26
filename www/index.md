@@ -120,6 +120,15 @@ main building blocks. Each part has its own bpm value, step size and drumset.
 Patterns are defined in an arbitrary number of lanes, using the keys from
 the drum set defined earlier.
 
+_Bpm_ defines how many 4th note are in one minute for this pattern. _Step_
+defines the duration of events in a lane. This could be 8 for saying the lane
+contains 8th notes or 16th, 32th and so on. Technically you could also give
+values like 3 or 7.o
+
+The length of the first lane defines the length of the pattern. If you have
+many lanes, all other lanes must be the same length or shorter than the first
+one.
+
 #### Example
 
 ```
@@ -196,6 +205,62 @@ part. Useful for cresecndo or diminuendo, but also for limiting velocity.
 ### Genlanes
 
 Genlanes are lanes with algorithmically generated events.
+
+#### equid
+
+Usage: `- equid {note: <key>, length: 16, dist: 1, start: 1}`
+
+Generates equidistant events starting at _start_, with distance _dist_.
+
+Example:
+
+```yaml
+- equid {note: hc, length 8, dist: 1, start: 1}
+- equid {note: sd, length 8, dist: 2, start: 4}
+```
+
+will generate two lanes as if manually written like this:
+
+```yaml
+- hc hc hc hc hc hc hc hc
+- -- -- -- sd -- sd -- sd
+```
+
+#### sinez
+
+Usage: `- sinez {note: <key>, length: 32, period: 1.0, xshift: 0.0, yshift: 0.0}`
+
+Projects a sine wave onto a lane of _length_ events. Events are generated at
+zero crossings of the sine through the lane.
+
+With the default _period_ of 1.0, the period if the sine is exactly the length
+of the lane. A smaller period value than 1 will shrink the wave, a higher value
+will stretch it. You could think of the period value as wave length in relation
+to lane length. Period values close to or over 2 will give you no events. With
+_xshift_ you can move the sine by time, while a shift value of 1 or -1 means
+shift by one event. With _yshift_ you can move the sine up or down by up to -1
+or 1. Higher or lower values do not make sense, as the sine will not have any
+zero crossings with the lane then.
+
+The sinez function can be seen as a not-quite-random generation of events. Just
+play around to find combinations of values that you find musical. For smaller
+values of length or higher values of period the result of sinez can be
+disappointing, since little or no events are generated.
+
+Also, rounding errors can make the result a bit unpredictable, but not less
+interesting.
+
+Example:
+
+```
+- sinez: {note: ag, length: 32, period: 0.1, yshift: 0.9, xshift: 4}
+```
+
+will generate a lane like this:
+```
+- -- -- ag ag -- -- -- -- -- -- -- -- ag ag -- ag ag -- ag ag -- -- -- -- -- -- -- -- ag ag -- ag
+```
+
 
 # Controlling devices
 
