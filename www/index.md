@@ -16,13 +16,31 @@ sequences. The file is specified at the command line.
 
 # Installation
 
-For the easiest possible start just download one of the binary archives below
-and run one of the contained example files. Or continue reading.
+For the easiest possible start just download the source and one of the
+precompiled binaries below and run one of the contained example files:
 
-## Download binary
+```
+$ ./droguedrums testfiles/beat1.yml
+```
 
-- compiled on Ubuntu 16.04: ...
-- compiled on OSX 10.9.5: ...
+Or continue reading.
+
+## Download
+
+### Source archive
+
+**Version 1.0**: droguedrums-1.0.zip
+
+Download this in any case, it has all the examples.
+
+### Precompiled
+
+For convenience you can download precompiled versions of the binary:
+
+- compiled on Ubuntu 16.04: droguedrums-1.0-linux.zip
+- compiled on OSX 10.9.5: droguedrums-1.0-darwin.zip
+
+Just unzip into the unpacked source archive downloaded before.
 
 ## Requirements for running
 
@@ -38,9 +56,9 @@ Requirements for running the binary:
     - OSX:      `brew install portmidi`
     - Ubuntu:   `apt-get install libportmidi-dev`
 
-2. The go programming language: https://golang.org/
+2. The go programming language: <https://golang.org/>
 
-3. libportmidi bindings for go (https://github.com/rakyll/portmidi): `go get
+3. libportmidi bindings for go (<https://github.com/rakyll/portmidi>): `go get
    github.com/rakyll/portmidi`
 
     > Unfortunately the current versions of the Ubuntu (v200) and Debian (v184)
@@ -69,7 +87,7 @@ input file: myfile.yml
 ```
 
 It will try to choose a working midi out port. But it will also list all it
-found so you can choose a sepcific one using the `-port` parameter:
+found so you can choose a specific one using the `-port` parameter:
 
 ```
 $ droguedrums -port 1 myfile.yml
@@ -83,6 +101,14 @@ input file: myfile.yml
 > demo1 (160/8)
 ...
 ```
+
+While it is running you can tell the program to re-read its input file by sending it SIGUSR1, e. g. like this:
+
+```
+$ killall -USR1 droguedrums
+```
+
+It will play the new file after the current sequence has finished.
 
 # Writing input files
 
@@ -238,7 +264,7 @@ Usage: `- sinez {note: <key>, length: 32, period: 1.0, xshift: 0.0, yshift: 0.0}
 Projects a sine wave onto a lane of _length_ events. Events are generated at
 zero crossings of the sine through the lane.
 
-With the default _period_ of 1.0, the period if the sine is exactly the length
+With the default _period_ of 1.0, the period of the sine is exactly the length
 of the lane. A smaller period value than 1 will shrink the wave, a higher value
 will stretch it. You could think of the period value as wave length in relation
 to lane length. Period values close to or over 2 will give you no events. With
@@ -269,9 +295,9 @@ will generate a lane like this:
 
 # Controlling devices
 
-droguedrums has been tested with a Vermona DRM1-MKIII and fluidsynth. In theory
-everything that can receive MIDI events can be controlled, but the main focus of
-the program is rhythms.
+droguedrums has been tested with a Vermona DRM1-MKIII drum synthesizer and
+fluidsynth. In theory everything that can receive MIDI events can be
+controlled, but the main focus of the program is rhythms.
 
 Currently no midi note off events are ever sent. With some sounds that can lead
 to notes playing forever. With percussive sounds this should not be a problem
