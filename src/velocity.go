@@ -19,10 +19,10 @@ func fx_randv(part part) int {
 	return 0
 }
 
-func fx_rampv(part part) row {
-	vmap := make(row, len(part.Lanes[0]))
+func fx_rampv(part part, notes matrix) row {
+	vmap := make(row, len(notes[0]))
 	if len(vmap) == 0 {
-		debugf("fx_rampv(): empty part: %v", part)
+		debugf("fx_rampv(): empty part: %v", notes)
 		return nil
 	}
 	for _, ef := range part.Fx {
@@ -50,13 +50,15 @@ func fx_rampv(part part) row {
 	return nil
 }
 
-func genVelocityMap(part part) matrix {
+func genVelocityMap(part part, notes matrix) matrix {
 	// if available, use ramp as base for vmap
 	// otherwise initialise one with max velocity
 	var vmatrix matrix
-	vmap := fx_rampv(part)
+	debugf("genVelocityMap(): notes: %v", notes)
+	vmap := fx_rampv(part, notes)
+	debugf("genVelocityMap(): part length: %v", len(vmap))
 	if vmap == nil {
-		vmap = make(row, len(part.Lanes[0]))
+		vmap = make(row, len(notes[0]))
 		for i := range vmap {
 			vmap[i] = midiVmax
 		}
@@ -72,7 +74,7 @@ func genVelocityMap(part part) matrix {
 			vmap[i] = v
 		}
 	}
-	for range part.Lanes {
+	for range notes {
 		vmatrix = append(vmatrix, vmap)
 	}
 	debugf("genVelocityMap(): vmatrix: %v", vmatrix)

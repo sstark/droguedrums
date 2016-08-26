@@ -56,7 +56,9 @@ func player(playQ chan part) {
 				if err != nil {
 					logger.Fatalf("part \"%s\" has wrong format: %v", currentPart.Name, err)
 				}
-				vmap := genVelocityMap(currentPart).transpose()
+				debugf("player(): %+v:", currentPart)
+				vmap := genVelocityMap(currentPart, notes).transpose()
+				debugf("player(): vmap: %v:", vmap)
 				cmap := channels.transpose()
 				for i, c := range notes.transpose() {
 					eventQueue <- event{
