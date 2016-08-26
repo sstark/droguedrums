@@ -1,4 +1,6 @@
 
+![droguetrees](droguetrees.jpg)
+
 # About
 
 droguedrums is a text file based drum sequencer for the command line.
@@ -235,7 +237,8 @@ part. Useful for cresecndo or diminuendo, but also for limiting velocity.
 
 ### Genlanes
 
-Genlanes are lanes with algorithmically generated events.
+Genlanes are lanes with algorithmically generated events. Parts can have a
+_genlanes_ section in addition to normal lanes, or even genlanes only.
 
 #### equid
 
