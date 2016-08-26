@@ -124,7 +124,7 @@ lanes, using the strings from the drum set defined earlier.
 parts:
     - name: countin
       bpm: 100
-      bpm: 4
+      step: 4
       lanes:
           - hc hc hc hc
 
