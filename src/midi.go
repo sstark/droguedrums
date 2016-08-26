@@ -1,8 +1,9 @@
 package main
 
 const (
-	midiNoteOff = 0x80
-	midiNoteOn  = 0x90
+	midiNoteOff int64 = 0x80
+	midiNoteOn  int64 = 0x90
+	midiVmax    int   = 127
 )
 
 type midiNote struct {
@@ -17,10 +18,6 @@ type event struct {
 	Velocities row
 	Channels   row
 }
-
-const (
-	midiVmax int = 127
-)
 
 func playChord(e event) {
 	debugf("playChord(): %v", e)
