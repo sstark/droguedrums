@@ -182,15 +182,15 @@ See the full example files provided with droguedrums for some possibilities.
 Usage: `fx: [randv: <randomness>]`
 
 Random velocity. Will make the velocity values of the events vary randomly by
-<randomness> steps up or down. The velocity range is limited by midi and goes
+_randomness_ steps up or down. The velocity range is limited by midi and goes
 from 0 to 127. Will be applied _after_ rampv.
 
 #### rampv
 
 Usage: `fx: [rampv: <start>-<end>]`
 
-Ramp velocity. Will make the velocity go from <start> to <end> over the whole
-part.
+Ramp velocity. Will make the velocity go from _start_ to _end_ over the whole
+part. Useful for cresecndo or diminuendo, but also for limiting velocity.
 
 ### Genlanes
 
