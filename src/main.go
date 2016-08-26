@@ -150,11 +150,14 @@ func main() {
 	}
 
 	err := initMidi(chosenPort)
-	if err != nil {
-		os.Exit(1)
-	}
+	checkErr(err)
+
 	defer closeMidi()
 
+	if drumsfile == "" {
+		fmt.Println("no input file")
+		os.Exit(1)
+	}
 	fmt.Println("-- player starting --")
 
 	playQ := make(chan part)
