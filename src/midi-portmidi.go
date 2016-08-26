@@ -18,12 +18,12 @@ func initMidi(chosenPort int) error {
 	midiDevCount := portmidi.CountDevices() // returns the number of MIDI devices
 	defaultOut := portmidi.DefaultOutputDeviceID()
 	var midiDeviceInfo *portmidi.DeviceInfo
-	fmt.Println("MIDI outputs found:")
+	fmt.Println("midi outputs found:")
 	for i := 0; i < midiDevCount; i++ {
 		midiDeviceInfo = portmidi.Info(portmidi.DeviceID(i)) // returns info about a MIDI device
 		if midiDeviceInfo.IsOutputAvailable {
 			fmt.Printf("%v: ", i)
-			fmt.Print(midiDeviceInfo.Interface, "/", midiDeviceInfo.Name)
+			fmt.Print("\"", midiDeviceInfo.Interface, "/", midiDeviceInfo.Name, "\"")
 			if i == int(defaultOut) {
 				fmt.Print(" <default>")
 			}
