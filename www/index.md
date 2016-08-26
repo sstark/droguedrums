@@ -115,9 +115,10 @@ sets:
 
 ### Parts
 
-*Parts* are the building blocks of rhythmic patterns. Each part has its own bpm
-value, step size and drumset. Patterns are defined in an arbitrary number of
-lanes, using the strings from the drum set defined earlier.
+*Parts* are the basic elements for building patterns. They provide lanes, the
+main building blocks. Each part has its own bpm value, step size and drumset.
+Patterns are defined in an arbitrary number of lanes, using the keys from
+the drum set defined earlier.
 
 #### Example
 
