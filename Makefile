@@ -27,3 +27,8 @@ checkfmt:
 
 install: ${BIN}
 	install ${BIN} ${PREFIX}/bin
+
+www: mkdocs.yml
+	mkdocs build --clean
+
+.PHONY: www

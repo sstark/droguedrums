@@ -1,0 +1,5 @@
+site_name: droguedrums
+docs_dir: www
+theme_dir: cinder
+pages:
+- Home: index.md
