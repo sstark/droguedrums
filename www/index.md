@@ -19,7 +19,7 @@ sequences. The file is specified at the command line.
 ## Download binary
 
 - compiled on Ubuntu 16.04: ...
-- compiled on OSX 10.9: ...
+- compiled on OSX 10.9.5: ...
 
 ## Requirements for running
 
@@ -41,7 +41,8 @@ Requirements for running the binary:
   
 2. The go programming language: https://golang.org/
 
-3. libportmidi bindings for go: (https://github.com/rakyll/portmidi) `go get github.com/rakyll/portmidi`
+3. libportmidi bindings for go: (https://github.com/rakyll/portmidi) `go get
+   github.com/rakyll/portmidi`
 
 4. run `make`
 
@@ -84,8 +85,8 @@ input file: myfile.yml
 
 The YAML file format seems like a good compromise between easy machine
 readability and human editing. For this reason, but also for ease of
-development (making a program read yaml is simple), YAML was chosen as the input
-file format for drougedrums.
+development (making a program read yaml is simple), YAML was chosen as the
+input file format for drougedrums.
 
 ## Input file sections
 
@@ -139,13 +140,14 @@ parts:
 
 ### Seqs
 
-*Seqs* are playlists of parts. They can define whole projects or simply play back
-some parts in a loop.
+*Seqs* are playlists of parts. They can define whole projects or simply play
+back some parts in a loop.
 
 There are some reserved seq names:
 
   - *start*: This is always the first sequence played.
-  - *precount*: This will be played only once at the beginning, before the start seq.
+  - *precount*: This will be played only once at the beginning, before the
+    start seq.
   
 #### Example
 
@@ -166,7 +168,8 @@ seqs:
 
 ### Part FX
 
-Parts can have an fx section that will modify the events in the part. To use multiple effects you write them as a list like this:
+Parts can have an fx section that will modify the events in the part. To use
+multiple effects you write them as a list like this:
 
 ```
 fx: [rampv: 23-85, randv: 22]
@@ -178,13 +181,16 @@ See the full example files provided with droguedrums for some possibilities.
 
 Usage: `fx: [randv: <randomness>]`
 
-Random velocity. Will make the velocity values of the events vary randomly by <randomness> steps up or down. The velocity range is limited by midi and goes from 0 to 127. Will be applied _after_ rampv.
+Random velocity. Will make the velocity values of the events vary randomly by
+<randomness> steps up or down. The velocity range is limited by midi and goes
+from 0 to 127. Will be applied _after_ rampv.
 
 #### rampv
 
 Usage: `fx: [rampv: <start>-<end>]`
 
-Ramp velocity. Will make the velocity go from <start> to <end> over the whole part.
+Ramp velocity. Will make the velocity go from <start> to <end> over the whole
+part.
 
 ### Genlanes
 
@@ -192,9 +198,20 @@ Genlanes are lanes with algorithmically generated events.
 
 # Controlling devices
 
-Hardware ...
+droguedrums has been tested with a Vermona DRM1-MKIII and fluidsynth. In theory
+everything that can receive MIDI events can be controlled, but the main focus of
+the program is rhythms.
 
-Software ...
+Currently no midi note off events are ever sent. With some sounds that can lead
+to notes playing forever. With percussive sounds this should not be a problem
+usually.
+
+Program change messages are not implemented, so you have to map notes to
+different banks or midi channels.
+
+# Workaround for libportmidi on Debian/Ubuntu
+
+...
 
 # License
 
