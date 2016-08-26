@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -139,15 +140,22 @@ func main() {
 	logger = log.New(os.Stderr, "", log.Lshortfile)
 	fmt.Printf("droguedrums %s (built %s)\n", Version, BuildTime)
 
+	var chosenPort int
+	flag.IntVar(&chosenPort, "port", -1, "choose output port")
+	flag.Parse()
+
 	var drumsfile string
-	if len(os.Args) > 1 {
-		drumsfile = os.Args[1]
-	} else {
-		drumsfile = "drums.yml"
+	if flag.NArg() > 0 {
+		drumsfile = flag.Args()[0]
 	}
 
-	initMidi()
+	err := initMidi(chosenPort)
+	if err != nil {
+		os.Exit(1)
+	}
 	defer closeMidi()
+
+	fmt.Println("-- player starting --")
 
 	playQ := make(chan part)
 	go player(playQ)

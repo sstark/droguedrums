@@ -13,7 +13,7 @@ func sendMidiNote(channel, note, velocity int) {
 	}
 }
 
-func initMidi() {
+func initMidi(chosenPort int) error {
 	err := portmidi.Initialize()
 	midiDevCount := portmidi.CountDevices() // returns the number of MIDI devices
 	defaultOut := portmidi.DefaultOutputDeviceID()
@@ -21,18 +21,26 @@ func initMidi() {
 	fmt.Println("MIDI outputs found:")
 	for i := 0; i < midiDevCount; i++ {
 		midiDeviceInfo = portmidi.Info(portmidi.DeviceID(i)) // returns info about a MIDI device
-		fmt.Printf("%d: ", i)
 		if midiDeviceInfo.IsOutputAvailable {
+			fmt.Printf("%v: ", i)
 			fmt.Print(midiDeviceInfo.Interface, "/", midiDeviceInfo.Name)
-		}
-		if i == int(defaultOut) {
-			fmt.Println(" (default)")
-		} else {
+			if i == int(defaultOut) {
+				fmt.Print(" <default>")
+			}
+			if i == chosenPort {
+				fmt.Print(" <selected>")
+			}
 			fmt.Println()
 		}
 	}
-	midiOut, err = portmidi.NewOutputStream(defaultOut, 1024, 0)
-	checkErr(err)
+	var outid portmidi.DeviceID
+	if chosenPort != -1 {
+		outid = portmidi.DeviceID(chosenPort)
+	} else {
+		outid = defaultOut
+	}
+	midiOut, err = portmidi.NewOutputStream(outid, 1024, 0)
+	return err
 }
 
 func closeMidi() {
