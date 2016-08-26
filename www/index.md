@@ -16,6 +16,9 @@ sequences. The file is specified at the command line.
 
 # Installation
 
+For the easiest possible start just download one of the binary archives below
+and run one of the contained example files. Or continue reading.
+
 ## Download binary
 
 - compiled on Ubuntu 16.04: ...
@@ -35,22 +38,22 @@ Requirements for running the binary:
     - OSX:      `brew install portmidi`
     - Ubuntu:   `apt-get install libportmidi-dev`
 
-    Unfortunately the current versions of the Ubuntu (v200) and Debian (v187)
-    libportmidi packages do not link properly with the portmidi go bindings.
-    See below for a workaround.
-  
 2. The go programming language: https://golang.org/
 
-3. libportmidi bindings for go: (https://github.com/rakyll/portmidi) `go get
+3. libportmidi bindings for go (https://github.com/rakyll/portmidi): `go get
    github.com/rakyll/portmidi`
+
+    > Unfortunately the current versions of the Ubuntu (v200) and Debian (v184)
+    > libportmidi packages do not link properly with the portmidi go bindings,
+    > which could make this step fail.  See below for a workaround.
 
 4. run `make`
 
-5. (optional) run `make install`
+5. (optional) run `make install` or copy the binary to a convenient place yourself.
 
 # Usage
 
-start like this:
+Start the program like this:
 
 ```
 $ droguedrums myfile.yml
@@ -88,6 +91,10 @@ readability and human editing. For this reason, but also for ease of
 development (making a program read yaml is simple), YAML was chosen as the
 input file format for drougedrums.
 
+The following sections will give an overview of what things you can put into a
+droguedrums input file. See the full example files provided with the download
+for some possibilities.
+
 ## Input file sections
 
 ### Sets
@@ -123,7 +130,7 @@ the drum set defined earlier.
 _Bpm_ defines how many 4th note are in one minute for this pattern. _Step_
 defines the duration of events in a lane. This could be 8 for saying the lane
 contains 8th notes or 16th, 32th and so on. Technically you could also give
-values like 3 or 7.o
+values like 3 or 7.
 
 The length of the first lane defines the length of the pattern. If you have
 many lanes, all other lanes must be the same length or shorter than the first
@@ -184,8 +191,6 @@ multiple effects you write them as a list like this:
 ```
 fx: [rampv: 23-85, randv: 22]
 ```
-
-See the full example files provided with droguedrums for some possibilities.
 
 #### randv
 
@@ -277,7 +282,41 @@ different banks or midi channels.
 
 # Workaround for libportmidi on Debian/Ubuntu
 
-...
+On Ubuntu (and probably on Debian) you will see the following error when
+running "go get" for the portmidi bindings:
+
+```
+> go get github.com/rakyll/portmidi
+# github.com/rakyll/portmidi
+/usr/bin/ld: $WORK/github.com/rakyll/portmidi/_obj/portmidi.cgo2.o: undefined reference to symbol 'Pt_Start'
+//usr/lib/libporttime.so.0: error adding symbols: DSO missing from command line
+collect2: error: ld returned 1 exit status
+```
+
+This is because Ubuntu 16.04 does not provide the current (6 years old!)
+version of libportmidi (217). A bug report has been filed already.
+
+You can work around that by editing the source code of the go bindings after
+the error message above. Load the following two files in your editor:
+
+  - $GOPATH/src/github.com/rakyll/portmidi/portmidi.go
+  - $GOPATH/src/github.com/rakyll/portmidi/stream.go
+
+and change the line that reads
+
+```
+  // #cgo LDFLAGS: -lportmidi
+```
+
+to this:
+
+```
+  // #cgo LDFLAGS: -lportmidi -lporttime
+```
+
+After this little change you can run `go get github.com/rakyll/portmidi` again
+and it will use your changed copy of the source code to compile, now
+sucessfully, the package.
 
 # License
 
