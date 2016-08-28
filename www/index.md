@@ -31,7 +31,7 @@ Or continue reading.
 
 ### Source archive
 
-**Version 1.0**: droguedrums-1.0.zip
+**Version 1.0**: [droguedrums-1.0.zip](droguedrums-1.0.zip)
 
 Download this in any case, it has all the examples.
 
@@ -39,8 +39,10 @@ Download this in any case, it has all the examples.
 
 For convenience you can download precompiled versions of the binary:
 
-- compiled on Ubuntu 16.04: droguedrums-1.0-linux.zip
-- compiled on OSX 10.9.5: droguedrums-1.0-darwin.zip
+- compiled on Ubuntu 16.04: [droguedrums-1.0-linux.zip](droguedrums-1.0-linux.zip)
+
+- compiled on OSX 10.9.5: [droguedrums-1.0-darwin.zip](droguedrums-1.0-darwin.zip)
+
 
 Just unzip into the unpacked source archive downloaded before.
 
@@ -111,6 +113,8 @@ $ killall -USR1 droguedrums
 ```
 
 It will play the new file after the current sequence has finished.
+
+To stop the program press `Ctrl-C`.
 
 # Writing input files
 
@@ -233,7 +237,7 @@ from 0 to 127. Will be applied _after_ rampv.
 Usage: `fx: [rampv: <start>-<end>]`
 
 Ramp velocity. Will make the velocity go from _start_ to _end_ over the whole
-part. Useful for cresecndo or diminuendo, but also for limiting velocity.
+part. Useful for crescendo or diminuendo, but also for limiting velocity.
 
 ### Genlanes
 
@@ -281,7 +285,7 @@ play around to find combinations of values that you find musical. For smaller
 values of length or higher values of period the result of sinez can be
 disappointing, since little or no events are generated.
 
-Also, rounding errors can make the result a bit unpredictable, but not less
+Also, aliasing effects make the result a bit unpredictable, but not less
 interesting.
 
 Example:
@@ -295,12 +299,26 @@ will generate a lane like this:
 - -- -- ag ag -- -- -- -- -- -- -- -- ag ag -- ag ag -- ag ag -- -- -- -- -- -- -- -- ag ag -- ag
 ```
 
+# Listen
+
+Demo patterns produced with droguedrums. The demo yaml files you can find in the
+testfiles/ directory of the distribution archive.
+
+beat2.yml <audio src="beat2.mp3" controls ></audio> (Sound: Vermona DRM1-MKIII)
+
+beat3.yml <audio src="beat3.mp3" controls ></audio> (Sound: Vermona DRM1-MKIII)
+
+beat4.yml <audio src="beat4.mp3" controls ></audio> (Sound: Vermona DRM1-MKIII)
+
+beat5.yml <audio src="beat5.mp3" controls ></audio> (Sound: Vermona DRM1-MKIII)
+
+beat6.yml <audio src="beat6.mp3" controls ></audio> (Sound: fluidsynth/FluidR3 GM2-2 soundfont)
 
 # Controlling devices
 
 droguedrums has been tested with a Vermona DRM1-MKIII drum synthesizer and
-fluidsynth. In theory everything that can receive MIDI events can be
-controlled, but the main focus of the program is rhythms.
+[fluidsynth](http://www.fluidsynth.org). In theory everything that can receive
+MIDI events can be controlled, but the main focus of the program is rhythms.
 
 Currently no midi note off events are ever sent. With some sounds that can lead
 to notes playing forever. With percussive sounds this should not be a problem
@@ -323,7 +341,9 @@ collect2: error: ld returned 1 exit status
 ```
 
 This is because Ubuntu 16.04 does not provide the current (6 years old!)
-version of libportmidi (217). A bug report has been filed already.
+version of libportmidi (217). A [bug
+report](https://bugs.launchpad.net/ubuntu/+source/portmidi/+bug/1616384) has
+been filed already.
 
 You can work around that by editing the source code of the go bindings after
 the error message above. Load the following two files in your editor:
