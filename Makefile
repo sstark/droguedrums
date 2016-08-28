@@ -1,4 +1,5 @@
 BIN=		droguedrums
+GITDIR=		${BIN}
 VERSION=	1.0
 BUILD_TIME=	$(shell date +%FT%T%z)
 LDFLAGS=	-ldflags "-X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}"
@@ -20,7 +21,7 @@ test:
 	cd src && go test
 
 clean:
-	rm ${BIN}
+	rm -f ${BIN}
 
 checkfmt:
 	@gofmt -d src/*.go
@@ -30,5 +31,11 @@ install: ${BIN}
 
 www: mkdocs.yml
 	mkdocs build --clean
+
+zip:
+	cd .. && zip -r ${GITDIR}-${VERSION}.zip ${GITDIR} --exclude "${GITDIR}/${BIN}" "${GITDIR}/site/*" "${GITDIR}/cinder/*" "*/.*"
+
+binzip: clean ${BIN}
+	cd .. && zip ${GITDIR}-${VERSION}-$(shell uname -s).zip ${GITDIR}/${BIN}
 
 .PHONY: www
