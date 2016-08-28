@@ -31,9 +31,11 @@ Or continue reading.
 
 ### Source archive
 
-**Version 1.0**: [droguedrums-1.0.zip](droguedrums-1.0.zip)
+**Version 1.0 (2016-08-28)**: [droguedrums-1.0.zip](droguedrums-1.0.zip)
 
 Download this in any case, it has all the examples.
+
+[Github project](https://github.com/sstark/droguedrums)
 
 ### Precompiled
 
