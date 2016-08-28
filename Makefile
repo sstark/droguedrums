@@ -1,5 +1,5 @@
 BIN=		droguedrums
-VERSION=	0.9
+VERSION=	1.0
 BUILD_TIME=	$(shell date +%FT%T%z)
 LDFLAGS=	-ldflags "-X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}"
 MIDILIB=	portmidi
