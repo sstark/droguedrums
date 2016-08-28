@@ -1,0 +1,79 @@
+# drougedrums file
+
+sets:
+    - name: default
+      kit:
+          - {key: --, channel:  5, note:  0} # pause
+          - {key: bd, channel:  5, note:  1} # bass drum
+          - {key: lt, channel:  5, note:  2} # low tom
+          - {key: ht, channel:  5, note:  3} # high tom
+          - {key: mu, channel:  5, note:  4} # multi
+          - {key: sd, channel:  5, note:  5} # snare drum
+          - {key: hc, channel:  5, note:  6} # hi hat closed
+          - {key: ho, channel:  5, note:  8} # hi hat opened
+          - {key: cs, channel:  5, note:  9} # cymbal short
+          - {key: cf, channel:  5, note: 11} # cymbal full
+          - {key: cl, channel:  5, note: 12} # clap
+
+parts:
+    - name: precount
+      bpm: 140
+      step: 4
+      lanes:
+          - hc hc hc hc
+    - name: part1
+      bpm: 180
+      step: 16
+      fx: [rampv: 20-127, randv: 20]
+      lanes:
+          - cs -- cs -- cs -- cs -- cs -- cs -- cs -- cs --
+          - hc -- hc -- hc ho hc -- hc -- hc -- hc ho hc --
+          - -- -- -- -- -- -- -- -- sd -- -- sd -- -- -- ht
+          - bd -- -- -- -- -- bd -- -- -- lt -- -- -- -- --
+          - mu -- -- -- -- -- mu -- -- -- -- -- mu -- -- --
+    - name: part2
+      bpm: 180
+      step: 16
+      fx: [rampv: 127-80, randv: 50]
+      lanes:
+          - cs -- cs -- cs -- cs -- cs -- cs -- cs -- cs --
+          - hc -- hc -- hc ho hc -- hc -- hc -- hc ho hc --
+          - -- -- -- -- sd -- -- -- -- -- -- -- sd -- -- lt
+          - bd -- -- -- -- -- -- -- -- -- bd -- -- -- -- --
+          - mu -- -- -- -- -- mu -- -- -- -- -- mu -- -- --
+    - name: part3
+      bpm: 180
+      step: 16
+      fx: [randv: 127]
+      lanes:
+          - hc -- hc -- hc ho hc -- hc -- hc -- hc ho hc --
+          - -- -- -- -- sd -- -- -- -- -- -- -- sd -- -- lt
+          - bd -- -- -- -- -- -- -- -- -- bd -- -- -- -- --
+          - -- -- -- -- -- -- -- -- -- -- mu -- -- -- mu --
+    - name: br1
+      bpm: 135
+      step: 16
+      fx: [randv: 20]
+      lanes:
+          - bd cs bd hc -- hc
+          - co -- -- -- sd --
+    - name: br2
+      bpm: 135
+      step: 16
+      fx: [randv: 20]
+      lanes:
+          - bd cs hc bd -- hc
+          - co -- -- -- sd --
+seqs:
+    - name: start
+      parts:
+          - part1
+          - part2
+          - part3
+          - br1
+          - br1
+          - part1
+          - part2
+          - part3
+          - br2
+          - br2

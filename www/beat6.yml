@@ -1,0 +1,56 @@
+# drougedrums file
+
+sets:
+    - name: default
+      kit:
+          # fluidsynth: 5: prog47 (timpani), 6: 113 (agogo), 7: 13 (xylophone)
+          - {key: --, channel:  5, note:  0}
+          - {key: ce, channel:  5, note:  50}
+          - {key: es, channel:  5, note:  53}
+          - {key: fi, channel:  5, note:  56}
+          - {key: hi, channel:  5, note:  70}
+          - {key: ag, channel:  6, note:  45}
+          - {key: fn, channel:  7, note:  67}
+          - {key: fl, channel:  7, note:  69}
+
+parts:
+    - name: demo0
+      bpm: 80
+      step: 16
+      fx: [rampv: 110-10]
+      lanes:
+          - ce -- ce -- -- -- ce -- ce -- ce -- ce
+          - -- -- -- es -- -- es -- -- es -- es --
+    - name: demo1
+      bpm: 80
+      step: 16
+      fx: [randv: 30]
+      genlanes:
+          - sinez: {note: ce, length: 32, period: 0.2, yshift: 0.3}
+          - sinez: {note: ce, length: 32, period: 0.4, yshift: 0.3}
+          - sinez: {note: es, length: 32, period: 0.2}
+          - sinez: {note: es, length: 32, period: 0.2, yshift: 0.2}
+          - sinez: {note: fi, length: 32, period: 0.9, yshift: 0.6}
+          - sinez: {note: hi, length: 32, period: 0.1, yshift: 0.9}
+          - sinez: {note: ag, length: 32, period: 0.1, yshift: 0.9, xshift: 4}
+          - equid: {note: fn, length: 32, dist: 1}
+    - name: demo2
+      bpm: 80
+      step: 16
+      fx: [rampv: 70-120, randv: 25]
+      genlanes:
+          - sinez: {note: ce, length: 32, period: 0.2, yshift: 0.3}
+          - sinez: {note: ce, length: 32, period: 0.4, yshift: 0.3}
+          - sinez: {note: es, length: 32, period: 0.2}
+          - sinez: {note: es, length: 32, period: 0.2, yshift: 0.2}
+          - sinez: {note: fi, length: 32, period: 0.9, yshift: 0.6}
+          - sinez: {note: hi, length: 32, period: 0.1, yshift: 0.9}
+          - sinez: {note: ag, length: 32, period: 0.1, yshift: 0.9, xshift: 4}
+          - equid: {note: fn, length: 32, dist: 1}
+          - equid: {note: fl, length: 32, dist: 1, start: 2}
+seqs:
+    - name: start
+      parts:
+          - demo0
+          - demo1
+          - demo2
