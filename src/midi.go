@@ -1,9 +1,9 @@
 package main
 
 const (
-	midiNoteOff int64 = 0x80
-	midiNoteOn  int64 = 0x90
-	midiVmax    int   = 127
+	midiNoteOff int = 0x80
+	midiNoteOn  int = 0x90
+	midiVmax    int = 127
 )
 
 type midiNote struct {
