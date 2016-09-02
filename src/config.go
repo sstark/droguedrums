@@ -11,7 +11,7 @@ type part struct {
 	Name  string
 	Set   noteMap
 	Step  int
-	Bpm   int
+	Bpm   string
 	Fx    []map[string]string
 	Lanes []string
 }
@@ -31,7 +31,7 @@ type drums struct {
 		Name     string
 		Set      string
 		Step     int
-		Bpm      int
+		Bpm      string
 		Fx       []map[string]string
 		Lanes    []string
 		Genlanes []map[string]map[string]string

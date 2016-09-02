@@ -10,6 +10,7 @@ SRCFILES=	src/main.go \
 			src/midi.go \
 			src/genlanes.go \
 			src/velocity.go \
+			src/timer.go \
 			src/midi-${MIDILIB}.go
 PREFIX=		/usr/local
 

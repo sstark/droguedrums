@@ -161,10 +161,13 @@ main building blocks. Each part has its own bpm value, step size and drumset.
 Patterns are defined in an arbitrary number of lanes, using the keys from
 the drum set defined earlier.
 
-_Bpm_ defines how many 4th note are in one minute for this pattern. _Step_
-defines the duration of events in a lane. This could be 8 for saying the lane
-contains 8th notes or 16th, 32th and so on. Technically you could also give
-values like 3 or 7.
+_Bpm_ defines how many 4th note are in one minute for this pattern. You can
+also write a bpm value like "120-150", which will make the bpm rate go from 120
+to 150 gradually over the duration of the part.
+
+_Step_ defines the duration of events in a lane. This could be 8 for saying the
+lane contains 8th notes or 16th, 32th and so on. Technically you could also
+give values like 3 or 7.
 
 The length of the first lane defines the length of the pattern. If you have
 many lanes, all other lanes must be the same length or shorter than the first

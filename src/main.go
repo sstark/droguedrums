@@ -22,17 +22,14 @@ func debugf(format string, args ...interface{}) {
 	}
 }
 
-func makeTicker(bpm int, step int) *time.Ticker {
-	step = step / 4
-	timing := (time.Minute / time.Duration(bpm)) / time.Duration(step)
-	debugf("makeTicker(): timing: %v", timing)
-	return time.NewTicker(timing)
-}
-
 func player(playQ chan part) {
+	var err error
 	eventQueue := make(chan event)
 	dacapo := make(chan bool)
-	ticker := time.NewTicker(time.Millisecond)
+	var ticker VarTicker
+	var eventCounter int = 0
+	ticker.SetDuration(time.Millisecond)
+	var timing, timingIncrement time.Duration
 	debugf("player(): starting player loop")
 	go func() { dacapo <- true }()
 	for {
@@ -40,19 +37,35 @@ func player(playQ chan part) {
 		case e := <-eventQueue:
 			go playChord(e)
 			<-ticker.C
+			// variable bpm processing only if needed
+			if timingIncrement != 0 {
+				dur := timing + timingIncrement*time.Duration(eventCounter)
+				debugf("player(): setDuration counter:%v dur:%v, timingIncrement:%v",
+					eventCounter, dur, timingIncrement)
+				ticker.SetDuration(dur)
+				eventCounter += 1
+			}
 		case <-dacapo:
 			debugf("player(): dacapo")
 			currentPart := <-playQ
-			ticker.Stop()
-			ticker = makeTicker(currentPart.Bpm, currentPart.Step)
-			fmt.Printf("> %s (%d/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
+			fmt.Printf("> %s (%s/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
 			go func() {
 				channels, notes := text2matrix(currentPart.Set, currentPart.Lanes)
 				debugf("player(): %v", channels)
 				debugf("player(): %v", notes)
+
+				timing, timingIncrement, err = makeTiming(currentPart.Bpm,
+					currentPart.Step,
+					len(notes[0]))
+				if err != nil {
+					logger.Fatalf("bpm value could not be read: %s, %v", currentPart.Bpm, err)
+				}
+				eventCounter = 0
+				ticker.SetDuration(timing)
+
 				// sanity check before transposing
 				// FIXME: should probably be done in the matrix lib
-				err := notes.check()
+				err = notes.check()
 				if err != nil {
 					logger.Fatalf("part \"%s\" has wrong format: %v", currentPart.Name, err)
 				}
