@@ -19,9 +19,24 @@ type event struct {
 	Channels   row
 }
 
-func playChord(e event) {
+type midiEvent struct {
+	channel  int
+	note     int
+	velocity int
+}
+
+func playChord(e event, q chan midiEvent) {
 	debugf("playChord(): %v", e)
 	for i, note := range e.Notes {
-		sendMidiNote(e.Channels[i], note, e.Velocities[i])
+		q <- midiEvent{e.Channels[i], note, e.Velocities[i]}
+	}
+}
+
+func processMidiQ(q chan midiEvent) {
+	debugf("processMidiQ(): started")
+	var ev midiEvent
+	for {
+		ev = <-q
+		sendMidiNote(ev.channel, ev.note, ev.velocity)
 	}
 }

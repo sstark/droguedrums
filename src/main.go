@@ -30,12 +30,14 @@ func player(playQ chan part) {
 	var eventCounter int = 0
 	ticker.SetDuration(time.Millisecond)
 	var timing, timingIncrement time.Duration
+	midiQueue := make(chan midiEvent)
+	go processMidiQ(midiQueue)
 	debugf("player(): starting player loop")
 	go func() { dacapo <- true }()
 	for {
 		select {
 		case e := <-eventQueue:
-			go playChord(e)
+			go playChord(e, midiQueue)
 			<-ticker.C
 			// variable bpm processing only if needed
 			if timingIncrement != 0 {
