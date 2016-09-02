@@ -60,6 +60,9 @@ func text2matrix(set noteMap, txt []string) (channels, notes matrix) {
 		var chanV, noteV []int
 		lane := strings.Split(strings.TrimSpace(line), " ")
 		for _, elem := range lane {
+			if elem == "" {
+				continue
+			}
 			c, n := translateKit(set, elem)
 			chanV = append(chanV, c)
 			noteV = append(noteV, n)
