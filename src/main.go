@@ -37,8 +37,8 @@ func player(playQ chan part) {
 	for {
 		select {
 		case e := <-eventQueue:
-			go playChord(e, midiQueue)
 			<-ticker.C
+			go playChord(e, midiQueue)
 			// variable bpm processing only if needed
 			if timingIncrement != 0 {
 				dur := timing + timingIncrement*time.Duration(eventCounter)
