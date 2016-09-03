@@ -4,22 +4,15 @@ VERSION=	1.0
 BUILD_TIME=	$(shell date +%FT%T%z)
 LDFLAGS=	-ldflags "-X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}"
 MIDILIB=	portmidi
-SRCFILES=	src/main.go \
-			src/matrix.go \
-			src/config.go \
-			src/midi.go \
-			src/genlanes.go \
-			src/velocity.go \
-			src/timer.go \
-			src/midi-${MIDILIB}.go
 PREFIX=		/usr/local
 
-${BIN}: ${SRCFILES} Makefile
+${BIN}: src/* Makefile
 	@echo building for ${MIDILIB}
-	go build ${LDFLAGS} -o ${BIN} ${SRCFILES}
+	cd src && go build -tags ${MIDILIB} ${LDFLAGS} -o ../${BIN}
 
 test:
-	cd src && go test
+	cd src && go test -tags portmidi
+	cd src && go test -tags coremidi
 
 clean:
 	rm -f ${BIN}

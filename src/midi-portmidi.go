@@ -1,3 +1,5 @@
+// +build portmidi
+
 package main
 
 import (
