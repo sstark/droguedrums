@@ -5,6 +5,7 @@ BUILD_TIME=	$(shell date +%FT%T%z)
 LDFLAGS=	-ldflags "-X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}"
 MIDILIB=	portmidi
 PREFIX=		/usr/local
+OS=         $(shell uname)
 
 ${BIN}: src/* Makefile
 	@echo building for ${MIDILIB}
@@ -12,7 +13,9 @@ ${BIN}: src/* Makefile
 
 test:
 	cd src && go test -tags portmidi
+ifeq ($(OS),Darwin)
 	cd src && go test -tags coremidi
+endif
 
 clean:
 	rm -f ${BIN}
