@@ -95,7 +95,7 @@ func player(playQ chan part) {
 	}
 }
 
-func getDrumsfile(drumsfile string) (map[string]part, map[string]seq) {
+func getDrumsfile(drumsfile string) (map[string]part, seqMap) {
 	drums := new(drums)
 	drums.loadFromFile(drumsfile)
 	sets := drums.getSets()
@@ -123,6 +123,7 @@ func getDrumsfile(drumsfile string) (map[string]part, map[string]seq) {
 	if _, ok := seqs["start"]; !ok {
 		logger.Fatalf("start sequence not found")
 	}
+	fmt.Println(seqs.flatten("start"))
 	return parts, seqs
 }
 
@@ -142,7 +143,7 @@ func feeder(drumsfile string, playQ chan part) {
 			parts, seqs = getDrumsfile(drumsfile)
 			debugf("feeder(): done re-reading drumsfile", sig)
 		default:
-			for _, partname := range seqs["start"] {
+			for _, partname := range seqs.flatten("start") {
 				debugf("feeder(): next: %v", partname)
 				if part, ok := parts[partname]; !ok {
 					logger.Printf("unknown part \"%s\"", partname)

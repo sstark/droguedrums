@@ -24,6 +24,7 @@ type part struct {
 }
 
 type seq []string
+type seqMap map[string]seq
 
 type drums struct {
 	Sets []struct {
@@ -122,8 +123,8 @@ func text2matrix(set noteMap, figures map[string]figure, txt []string) (channels
 	return
 }
 
-func (d *drums) getSeqs() map[string]seq {
-	seqs := make(map[string]seq)
+func (d *drums) getSeqs() seqMap {
+	seqs := make(seqMap)
 	for _, s := range d.Seqs {
 		var seqparts []string
 		for _, partname := range s.Parts {
@@ -132,6 +133,23 @@ func (d *drums) getSeqs() map[string]seq {
 		seqs[s.Name] = seqparts
 	}
 	return seqs
+}
+
+// chains up all seqs by looking up references to other
+// seqs or parts and returns a list of part names.
+// should detect loops.
+
+func (sm seqMap) flatten(startAt string) []string {
+	var l []string
+	for _, p := range sm[startAt] {
+		_, ok := sm[p]
+		if ok {
+			l = append(l, sm.flatten(p)...)
+		} else {
+			l = append(l, p)
+		}
+	}
+	return l
 }
 
 func (d *drums) getParts(sets map[string]noteMap, figures map[string]figure) map[string]part {

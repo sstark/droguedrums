@@ -22,6 +22,9 @@ todos
   - https://github.com/rakyll/portmidi/issues/27
 - make it possible to set the "step" value in parts
   to triplets (or any other fraction)
+- detect loops when flattening seqs
+- handle case when parts have no step value (currently
+  leads to div by zero)
 
 ideas
 
