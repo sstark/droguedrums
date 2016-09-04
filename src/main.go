@@ -39,6 +39,12 @@ func player(playQ chan part) {
 		case e := <-eventQueue:
 			<-ticker.C
 			go playChord(e, midiQueue)
+			// figures are played independently to keep the timing tight for
+			// normal events. But they should never be longer then the duration
+			// of a player tick, so we pass the current timing to playFigure().
+			for _, fig := range e.Figures {
+				go playFigure(fig, timing, midiQueue)
+			}
 			// variable bpm processing only if needed
 			if timingIncrement != 0 {
 				dur := timing + timingIncrement*time.Duration(eventCounter)
@@ -52,7 +58,7 @@ func player(playQ chan part) {
 			currentPart := <-playQ
 			fmt.Printf("> %s (%s/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
 			go func() {
-				channels, notes := text2matrix(currentPart.Set, currentPart.Lanes)
+				channels, notes, figures := text2matrix(currentPart.Set, currentPart.Figures, currentPart.Lanes)
 				debugf("player(): %v", channels)
 				debugf("player(): %v", notes)
 
@@ -80,6 +86,7 @@ func player(playQ chan part) {
 						Notes:      c,
 						Velocities: vmap[i],
 						Channels:   cmap[i],
+						Figures:    figures[i],
 					}
 				}
 				dacapo <- true
@@ -92,13 +99,16 @@ func getDrumsfile(drumsfile string) (map[string]part, map[string]seq) {
 	drums := new(drums)
 	drums.loadFromFile(drumsfile)
 	sets := drums.getSets()
-	parts := drums.getParts(sets)
+	figures := drums.getFigures()
+	parts := drums.getParts(sets, figures)
 	seqs := drums.getSeqs()
 	numSets := len(sets)
+	numFigures := len(figures)
 	numParts := len(parts)
 	numSeqs := len(seqs)
-	fmt.Printf("%d sets, %d parts, %d seqs\n", numSets, numParts, numSeqs)
+	fmt.Printf("%d sets, %d figures, %d parts, %d seqs\n", numSets, numFigures, numParts, numSeqs)
 	debugf("getDrumsfile(): sets: %+v", sets)
+	debugf("getDrumsfile(): figures: %+v", figures)
 	debugf("getDrumsfile(): parts: %+v", parts)
 	debugf("getDrumsfile(): seqs: %+v", seqs)
 	if numSets < 1 {
