@@ -1,0 +1,62 @@
+# drougedrums file
+
+sets:
+    - name: default
+      kit:
+          # fluidsynth: 5: prog47 (timpani), 6: 113 (agogo), 7: 13 (xylophone)
+          - {key: --, channel:  5, note:  0}
+          - {key: ce, channel:  5, note:  50}
+          - {key: es, channel:  5, note:  53}
+          - {key: fi, channel:  5, note:  56}
+          - {key: hi, channel:  5, note:  70}
+          - {key: ag, channel:  6, note:  45}
+          - {key: fn, channel:  7, note:  62}
+          - {key: fl, channel:  7, note:  65}
+          - {key: b1, channel: 15, note:  62}
+          - {key: b2, channel: 15, note:  65}
+          - {key: b3, channel: 15, note:  67}
+
+parts:
+    - name: demo0
+      bpm: 80-300
+      step: 16
+      fx: [rampv: 110-30]
+      lanes:
+          - ag -- -- -- -- -- ag -- -- -- -- -- -- ag -- -- -- -- -- -- -- -- -- --
+          - b1 -- -- b1 -- -- b1 -- -- b1 -- -- b1 -- -- b1 -- -- b1 -- -- b1 -- --
+          - b2 -- -- b2 -- -- b2 -- -- b2 -- -- b2 -- -- b2 -- -- b2 -- -- b2 -- --
+          - b3 -- -- b3 -- -- b3 -- -- b3 -- -- b3 -- -- b3 -- -- b3 -- -- b3 -- --
+      genlanes:
+          - equid: {note: ce, length: 24, dist: 2}
+          - equid: {note: es, length: 24, dist: 2, start: 2}
+    - name: demo1
+      bpm: 120-50
+      step: 16
+      fx: [rampv: 50-120]
+      lanes:
+          - ce -- ce -- -- ce ce -- ce -- ce -- -- --
+          - -- es -- -- es -- -- es -- es -- -- -- --
+          - fn -- fn -- fn -- fn -- fn -- fn -- fn --
+          - -- fl -- fl -- fl -- fl -- fl -- fl -- fl
+    - name: demoF
+      bpm: 50-300
+      step: 32
+      fx: [rampv: 50-120]
+      genlanes:
+          - equid: {note: fl, length: 32, dist: 2, start: 2}
+          - equid: {note: fn, length: 32, dist: 2}
+    - name: demoS
+      bpm: 300-10
+      step: 32
+      fx: [rampv: 127-20]
+      genlanes:
+          - equid: {note: fl, length: 32, dist: 2, start: 2}
+          - equid: {note: fn, length: 32, dist: 2}
+
+seqs:
+    - name: start
+      parts:
+          - demoF
+          - demoS
+          - demo0
+          - demo1
