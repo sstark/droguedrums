@@ -45,7 +45,6 @@ func player(playQ chan part) {
 	for {
 		select {
 		case e := <-eventQueue:
-			<-ticker.C
 			go playChord(e, midiQueue)
 			// figures are played independently to keep the timing tight for
 			// normal events. But they should never be longer then the duration
@@ -53,6 +52,7 @@ func player(playQ chan part) {
 			for _, fig := range e.Figures {
 				go playFigure(fig, timing, midiQueue)
 			}
+			<-ticker.C
 			// variable bpm processing only if needed
 			if timingIncrement != 0 {
 				dur := timing + timingIncrement*time.Duration(eventCounter)
