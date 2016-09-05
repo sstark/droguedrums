@@ -9,6 +9,7 @@ import (
 
 const (
 	figurePrefix rune = '+'
+	seqPrefix    rune = ':'
 	patternPause rune = '.'
 	patternBeat  rune = 'x'
 )
@@ -103,9 +104,10 @@ func text2matrix(set noteMap, figures map[string]figure, txt []string) (channels
 				i -= 1
 				continue
 			}
-			if []rune(elem)[0] == figurePrefix {
+			first, rest := splitFirstRune(elem)
+			if first == figurePrefix {
 				// generate a micro pattern
-				figuremap[i] = append(figuremap[i], translateFigure(set, figures, elem[1:]))
+				figuremap[i] = append(figuremap[i], translateFigure(set, figures, rest))
 				// also generate an empty single note
 				chanV = append(chanV, 0)
 				noteV = append(noteV, 0)
@@ -135,16 +137,27 @@ func (d *drums) getSeqs() seqMap {
 	return seqs
 }
 
+// take on UTF-8 safe string splitting
+func splitFirstRune(s string) (first rune, rest string) {
+	r := []rune(s)
+	first = r[0]
+	rest = string(r[1:])
+	return
+}
+
 // chains up all seqs by looking up references to other
 // seqs or parts and returns a list of part names.
-// should detect loops.
 
 func (sm seqMap) flatten(startAt string) []string {
 	var l []string
 	for _, p := range sm[startAt] {
-		_, ok := sm[p]
+		ok := false
+		first, rest := splitFirstRune(p)
+		if first == seqPrefix {
+			_, ok = sm[rest]
+		}
 		if ok {
-			l = append(l, sm.flatten(p)...)
+			l = append(l, sm.flatten(rest)...)
 		} else {
 			l = append(l, p)
 		}
