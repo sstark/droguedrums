@@ -12,6 +12,7 @@ const (
 	seqPrefix    rune = ':'
 	patternPause rune = '.'
 	patternBeat  rune = 'x'
+	defaultStep  int  = 8
 )
 
 type part struct {
@@ -168,6 +169,7 @@ func (sm seqMap) flatten(startAt string) []string {
 func (d *drums) getParts(sets map[string]noteMap, figures map[string]figure) map[string]part {
 	parts := make(map[string]part)
 	var partsetname string
+	var partstep int
 	for _, inp := range d.Parts {
 		if inp.Set == "" {
 			partsetname = "default"
@@ -175,6 +177,11 @@ func (d *drums) getParts(sets map[string]noteMap, figures map[string]figure) map
 			partsetname = inp.Set
 		}
 		partset, ok := sets[partsetname]
+		if inp.Step == 0 {
+			partstep = defaultStep
+		} else {
+			partstep = inp.Step
+		}
 		if !ok {
 			logger.Printf("unknown set \"%s\"", partsetname)
 		}
@@ -189,7 +196,7 @@ func (d *drums) getParts(sets map[string]noteMap, figures map[string]figure) map
 			Name:    inp.Name,
 			Set:     partset,
 			Figures: figures,
-			Step:    inp.Step,
+			Step:    partstep,
 			Bpm:     inp.Bpm,
 			Fx:      inp.Fx,
 			Lanes:   lanes,
