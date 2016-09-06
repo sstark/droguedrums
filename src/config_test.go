@@ -111,3 +111,40 @@ func TestT2m(t *testing.T) {
 		}
 	}
 }
+
+type tlfTestPair struct {
+	in  string
+	out midiFigure
+}
+
+var tlfTestPairs = []tlfTestPair{
+	{
+		in:  "f1",
+		out: midiFigure{{0, 0, 0}, {7, 65, 65}, {7, 65, 65}},
+	},
+	{
+		in:  "f2",
+		out: midiFigure{{0, 0, 0}, {0, 0, 0}, {5, 50, 100}},
+	},
+	{
+		in:  "h1",
+		out: midiFigure{{0, 0, 0}, {0, 0, 0}, {5, 70, 80}},
+	},
+	{
+		in:  "qu",
+		out: midiFigure{{5, 58, 95}, {5, 58, 95}, {5, 58, 95}},
+	},
+}
+
+func TestFigures(t *testing.T) {
+	drums := new(drums)
+	drums.loadFromFile("../testfiles/beat8.yml")
+	sets := drums.getSets()
+	figures := drums.getFigures()
+	for _, fig := range tlfTestPairs {
+		got := translateFigure(sets[defaultSet], figures, fig.in)
+		if !reflect.DeepEqual(got, fig.out) {
+			t.Errorf("%s: got %v, wanted %v", fig.in, got, fig.out)
+		}
+	}
+}
