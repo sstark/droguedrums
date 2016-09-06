@@ -148,3 +148,39 @@ func TestFigures(t *testing.T) {
 		}
 	}
 }
+
+type seqFlattenTestPair struct {
+	in    seqMap
+	start string
+	out   []string
+}
+
+var seqFlattenTestPairs = []seqFlattenTestPair{
+	{
+		in: seqMap{
+			"bla":   {"b"},
+			"blu":   {":bla"},
+			"start": {"a", ":bla", ":blu", ":bla"},
+		},
+		start: "start",
+		out:   []string{"a", "b", "b", "b"},
+	},
+	{
+		in: seqMap{
+			"a":     {"b"},
+			"b":     {"c", ":a", "x"},
+			"start": {"d", ":a", ":b", ":a"},
+		},
+		start: "start",
+		out:   []string{"d", "b", "c", "b", "x", "b"},
+	},
+}
+
+func TestSeqFlatten(t *testing.T) {
+	for _, pair := range seqFlattenTestPairs {
+		got := pair.in.flatten(pair.start)
+		if !reflect.DeepEqual(got, pair.out) {
+			t.Errorf("got %v, wanted %v", got, pair.out)
+		}
+	}
+}

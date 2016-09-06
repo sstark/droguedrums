@@ -152,6 +152,11 @@ func splitFirstRune(s string) (first rune, rest string) {
 // seqs or parts and returns a list of part names.
 
 func (sm seqMap) flatten(startAt string) []string {
+	seen := make(map[string]bool)
+	return sm.flattenRecursive(startAt, seen)
+}
+
+func (sm seqMap) flattenRecursive(startAt string, seen map[string]bool) []string {
 	var l []string
 	for _, p := range sm[startAt] {
 		ok := false
@@ -160,7 +165,14 @@ func (sm seqMap) flatten(startAt string) []string {
 			_, ok = sm[rest]
 		}
 		if ok {
-			l = append(l, sm.flatten(rest)...)
+			s, ok := seen[rest]
+			if ok && s {
+				logger.Fatalf("flattenRecursive(): loop in sequence \"%v\". You can not make circular seqs.", rest)
+			} else {
+				seen[rest] = true
+			}
+			l = append(l, sm.flattenRecursive(rest, seen)...)
+			seen[rest] = false
 		} else {
 			l = append(l, p)
 		}
