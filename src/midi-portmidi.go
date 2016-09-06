@@ -27,16 +27,16 @@ func initMidi(chosenPort int) error {
 			fmt.Printf("%v: ", i)
 			fmt.Print("\"", midiDeviceInfo.Interface, "/", midiDeviceInfo.Name, "\"")
 			if i == int(defaultOut) {
-				fmt.Print(" <default>")
+				fmt.Print(" ", labelPortDefault)
 			}
 			if i == chosenPort {
-				fmt.Print(" <selected>")
+				fmt.Print(" ", labelPortSelected)
 			}
 			fmt.Println()
 		}
 	}
 	var outid portmidi.DeviceID
-	if chosenPort != -1 {
+	if chosenPort != defaultMidiPort {
 		outid = portmidi.DeviceID(chosenPort)
 	} else {
 		outid = defaultOut

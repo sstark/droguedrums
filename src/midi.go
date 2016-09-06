@@ -3,9 +3,11 @@ package main
 import "time"
 
 const (
-	midiNoteOff int = 0x80
-	midiNoteOn  int = 0x90
-	midiVmax    int = 127
+	midiNoteOff       int    = 0x80
+	midiNoteOn        int    = 0x90
+	midiVmax          int    = 127
+	labelPortDefault  string = "<default>"
+	labelPortSelected string = "<selected>"
 )
 
 type midiNote struct {

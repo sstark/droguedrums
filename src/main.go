@@ -12,10 +12,12 @@ import (
 )
 
 const (
-	seqNameStart    string = "start"
-	seqNamePrecount string = "precount"
-	partNameStop    string = "_stop_"
-	stopMessage     string = "Press 'Enter' to continue..."
+	seqNameStart    string        = "start"
+	seqNamePrecount string        = "precount"
+	partNameStop    string        = "_stop_"
+	stopMessage     string        = "Press 'Enter' to continue..."
+	unknownPartWait time.Duration = time.Millisecond * 50
+	defaultMidiPort int           = -1
 )
 
 var (
@@ -166,7 +168,7 @@ func feeder(drumsfile string, playQ chan part) {
 				if part, ok := parts[partname]; !ok {
 					logger.Printf("unknown part \"%s\"", partname)
 					// avoid busy loop when all parts are unknown
-					time.Sleep(time.Millisecond * 50)
+					time.Sleep(unknownPartWait)
 				} else {
 					playQ <- part
 				}
@@ -187,7 +189,7 @@ func main() {
 	fmt.Printf("droguedrums %s (built %s)\n", Version, BuildTime)
 
 	var chosenPort int
-	flag.IntVar(&chosenPort, "port", -1, "choose output port")
+	flag.IntVar(&chosenPort, "port", defaultMidiPort, "choose output port")
 	flag.Parse()
 
 	var drumsfile string

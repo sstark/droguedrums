@@ -23,14 +23,14 @@ func initMidi(chosenPort int) (err error) {
 	for i, d := range allDests {
 		fmt.Printf("%d: \"(%s), %s\"", i, d.Manufacturer(), d.Name())
 		if i == 0 {
-			fmt.Print(" <default>")
+			fmt.Print(" ", labelPortDefault)
 		}
 		if i == chosenPort {
-			fmt.Print(" <selected>")
+			fmt.Print(" ", labelPortSelected)
 		}
 		fmt.Println()
 	}
-	if chosenPort != -1 {
+	if chosenPort != defaultMidiPort {
 		if chosenPort >= len(allDests) {
 			logger.Fatalf("selected midi port does not exist: %d\n", chosenPort)
 		}

@@ -8,11 +8,13 @@ import (
 )
 
 const (
-	figurePrefix rune = '+'
-	seqPrefix    rune = ':'
-	patternPause rune = '.'
-	patternBeat  rune = 'x'
-	defaultStep  int  = 8
+	figurePrefix rune   = '+'
+	seqPrefix    rune   = ':'
+	patternPause rune   = '.'
+	patternBeat  rune   = 'x'
+	laneSplitStr string = " "
+	defaultStep  int    = 8
+	defaultSet   string = "default"
 )
 
 type part struct {
@@ -95,7 +97,7 @@ func text2matrix(set noteMap, figures map[string]figure, txt []string) (channels
 	figuremap = make(map[int][]midiFigure)
 	for _, line := range txt {
 		var chanV, noteV []int
-		lane := strings.Split(strings.TrimSpace(line), " ")
+		lane := strings.Split(strings.TrimSpace(line), laneSplitStr)
 		// use our own index because we need to be able to decrease it
 		// if we encounter unwanted (uncounted) characters
 		var i int = -1
@@ -172,7 +174,7 @@ func (d *drums) getParts(sets map[string]noteMap, figures map[string]figure) map
 	var partstep int
 	for _, inp := range d.Parts {
 		if inp.Set == "" {
-			partsetname = "default"
+			partsetname = defaultSet
 		} else {
 			partsetname = inp.Set
 		}
@@ -223,12 +225,18 @@ func (d *drums) getSets() map[string]noteMap {
 }
 
 func (d *drums) getFigures() map[string]figure {
+	var figurevelocity int
 	figures := make(map[string]figure)
 	for _, f := range d.Figures {
 		debugf("getFigures(): %+v", f)
+		if f.Velocity == 0 {
+			figurevelocity = midiVmax
+		} else {
+			figurevelocity = f.Velocity
+		}
 		figures[f.Name] = figure{
 			key:      f.Key,
-			velocity: f.Velocity,
+			velocity: figurevelocity,
 			pattern:  f.Pattern,
 		}
 	}
