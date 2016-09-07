@@ -4,21 +4,21 @@ sets:
     - name: default
       kit:
           # fluidsynth: 5: prog47 (timpani), 6: 113 (agogo), 7: 13 (xylophone)
-          - {key: --, channel:  5, note:  0}
-          - {key: ce, channel:  5, note:  50}
-          - {key: es, channel:  5, note:  53}
-          - {key: qu, channel:  5, note:  58}
-          - {key: fi, channel:  5, note:  56}
-          - {key: hi, channel:  5, note:  70}
-          - {key: ag, channel:  6, note:  45}
-          - {key: fn, channel:  7, note:  62}
-          - {key: fl, channel:  7, note:  65}
-          - {key: b1, channel: 10, note:  62}
-          - {key: b2, channel: 10, note:  65}
-          - {key: b3, channel: 10, note:  67}
-          - {key: b4, channel: 10, note:  70}
-          - {key: b5, channel: 10, note:  69}
-          - {key: b6, channel: 10, note:  74}
+          - {key: --, channel:  0, note:  0}
+          - {key: ce, channel: &t 5, note:  50}
+          - {key: es, channel: *t, note:  53}
+          - {key: qu, channel: *t, note:  58}
+          - {key: fi, channel: *t, note:  56}
+          - {key: hi, channel: *t, note:  70}
+          - {key: ag, channel: &a 6, note:  45}
+          - {key: fn, channel: &x 7, note:  62}
+          - {key: fl, channel: *x, note:  65}
+          - {key: b1, channel: &v 10, note:  62}
+          - {key: b2, channel: *v, note:  65}
+          - {key: b3, channel: *v, note:  67}
+          - {key: b4, channel: *v, note:  70}
+          - {key: b5, channel: *v, note:  69}
+          - {key: b6, channel: *v, note:  74}
 
 figures:
     # some triplet patterns
@@ -31,7 +31,7 @@ parts:
     - name: demo0
       bpm: 100
       step: 8
-      fx: [randv: 20, rampv: 100-127]
+      fx: [randv: 20, rampv: 80-127]
       lanes:
         - +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1
         - --  --  hi  hi  --  --  --  --  --  hi  --  hi  --  hi  --  --
@@ -44,7 +44,7 @@ parts:
     - name: demo1
       bpm: 100
       step: 8
-      fx: [randv: 20, rampv: 127-110]
+      fx: [randv: 20, rampv: 110-90]
       lanes:
         - +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 --  --  --
         - --  --  hi  hi  --  --  --  --  --  hi  --  hi  --  hi  hi  hi
@@ -53,9 +53,22 @@ parts:
         - --  --  --  fl  fl  --  --  fl  --  --  --  fl  --  --  --  --
         - --  --  --  +f1 +f1 --  --  +f1 --  --  --  +f1 --  --  --  --
         - --  --  b4  --  --  --  --  b5  --  --  --  --  b2  --  --  --
+    - name: demo2
+      bpm: 100
+      step: 8
+      fx: [randv: 20, rampv: 127-110]
+      lanes:
+        - +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 --  --  --
+        - es  --  --  --  es  --  --  --  es  --  --  --  es  qu  qu  +qu
+        - --  --  --  --  --  --  --  --  --  --  --  +f2 --  --  --  --
+        - --  --  --  +f1 +f1 --  --  +f1 --  --  --  +f1 --  --  --  --
+        - --  --  b4  --  --  --  --  b5  --  --  --  --  b2  --  b4  --
+        - --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  b5
 
 seqs:
     - name: start
       parts:
-          - demo0
-          - demo1
+        - demo0
+        - demo1
+        - demo0
+        - demo2
