@@ -1,0 +1,74 @@
+# drougedrums file
+
+sets:
+    - name: default
+      kit:
+          # fluidsynth: 5: prog47 (timpani), 6: 113 (agogo), 7: 13 (xylophone)
+          - {key: --, channel:  0, note:  0}
+          - {key: ce, channel: &t 5, note:  50}
+          - {key: es, channel: *t, note:  53}
+          - {key: qu, channel: *t, note:  58}
+          - {key: fi, channel: *t, note:  56}
+          - {key: hi, channel: *t, note:  70}
+          - {key: ag, channel: &a 6, note:  45}
+          - {key: fn, channel: &x 7, note:  62}
+          - {key: fl, channel: *x, note:  65}
+          - {key: b1, channel: &v 10, note:  62}
+          - {key: b2, channel: *v, note:  65}
+          - {key: b3, channel: *v, note:  67}
+          - {key: b4, channel: *v, note:  70}
+          - {key: b5, channel: *v, note:  69}
+          - {key: b6, channel: *v, note:  74}
+
+figures:
+    # some triplet patterns
+    - {name: f1, key: fl, velocity:  65, pattern: .xx}
+    - {name: f2, key: ce, velocity: 100, pattern: ..x}
+    - {name: h1, key: hi, velocity:  80, pattern: ..x}
+    - {name: qu, key: qu, velocity:  95, pattern: xxx}
+
+parts:
+    - name: demo0
+      bpm: 100
+      step: 8
+      fx: [randv: 20, rampv: 80-127]
+      lanes:
+        - +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1
+        - --  --  hi  hi  --  --  --  --  --  hi  --  hi  --  hi  --  --
+        - ce  --  --  --  ce  --  --  --  ce  --  --  --  ce  --  --  --
+        - --  --  --  --  --  --  --  --  --  --  --  +f2 --  --  --  --
+        - --  --  --  fl  fl  --  --  fl  --  --  --  fl  --  --  --  --
+        - --  --  --  +f1 +f1 --  --  +f1 --  --  --  +f1 --  --  --  --
+        - b1  --  --  --  --  b2  --  --  --  --  b3  --  --  --  --  --
+        - b6
+    - name: demo1
+      bpm: 100
+      step: 8
+      fx: [randv: 20, rampv: 110-90]
+      lanes:
+        - +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 --  --  --
+        - --  --  hi  hi  --  --  --  --  --  hi  --  hi  --  hi  hi  hi
+        - es  --  --  --  es  --  --  --  es  --  --  --  es  qu  qu  +qu
+        - --  --  --  --  --  --  --  --  --  --  --  +f2 --  --  --  --
+        - --  --  --  fl  fl  --  --  fl  --  --  --  fl  --  --  --  --
+        - --  --  --  +f1 +f1 --  --  +f1 --  --  --  +f1 --  --  --  --
+        - --  --  b4  --  --  --  --  b5  --  --  --  --  b2  --  --  --
+    - name: demo2
+      bpm: 100
+      step: 8
+      fx: [randv: 20, rampv: 127-110]
+      lanes:
+        - +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 +h1 --  --  --
+        - es  --  --  --  es  --  --  --  es  --  --  --  es  qu  qu  +qu
+        - --  --  --  --  --  --  --  --  --  --  --  +f2 --  --  --  --
+        - --  --  --  +f1 +f1 --  --  +f1 --  --  --  +f1 --  --  --  --
+        - --  --  b4  --  --  --  --  b5  --  --  --  --  b2  --  b4  --
+        - --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  b5
+
+seqs:
+    - name: start
+      parts:
+        - demo0
+        - demo1
+        - demo0
+        - demo2

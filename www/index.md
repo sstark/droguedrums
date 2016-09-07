@@ -31,7 +31,9 @@ Or continue reading.
 
 ### Source archive
 
-**Version 1.0 (2016-08-28)**: [droguedrums-1.0.zip](droguedrums-1.0.zip)
+- **Version 1.1 (2016-09-07)**: [droguedrums-1.1.zip](droguedrums-1.1.zip)
+    - New in 1.1: support for coremidi on OSX, variable bpm in parts, figures (micro patterns)
+- **Version 1.0 (2016-08-28)**: [droguedrums-1.0.zip](droguedrums-1.0.zip)
 
 Download this in any case, it has all the examples.
 
@@ -41,10 +43,8 @@ Download this in any case, it has all the examples.
 
 For convenience you can download precompiled versions of the binary:
 
-- compiled on Ubuntu 16.04: [droguedrums-1.0-linux.zip](droguedrums-1.0-linux.zip)
-
-- compiled on OSX 10.9.5: [droguedrums-1.0-darwin.zip](droguedrums-1.0-darwin.zip)
-
+- compiled on Ubuntu 16.04: [droguedrums-1.1-linux.zip](droguedrums-1.1-linux.zip) (using portmidi)
+- compiled on OSX 10.9.5: [droguedrums-1.1-darwin.zip](droguedrums-1.1-darwin.zip) (using coremidi)
 
 Just unzip into the unpacked source archive downloaded before.
 
@@ -53,27 +53,34 @@ Just unzip into the unpacked source archive downloaded before.
 Requirements for running the binary:
 
   - portmidi library
-    - OSX:      `brew install portmidi`
+    - OSX:      `brew install portmidi` (not needed if you compiled with coremidi)
     - Ubuntu:   `apt-get install libportmidi0`
 
 ## Requirements for building from source
 
 1. libportmidi headers
-    - OSX:      `brew install portmidi`
+    - OSX:      `brew install portmidi` (not needed if you compile with coremidi)
     - Ubuntu:   `apt-get install libportmidi-dev`
 
 2. The go programming language: <https://golang.org/>
 
-3. libportmidi bindings for go (<https://github.com/rakyll/portmidi>): `go get
-   github.com/rakyll/portmidi`
+3. (if not using coremidi, mandatory on Linux) libportmidi bindings for go
+   (<https://github.com/rakyll/portmidi>): `go get github.com/rakyll/portmidi`
 
     > Unfortunately the current versions of the Ubuntu (v200) and Debian (v184)
     > libportmidi packages do not link properly with the portmidi go bindings,
     > which could make this step fail.  See below for a workaround.
 
-4. run `make`
+4. (OSX only, optional) coremidi bindings for go
+   (<https://github.com/youpy/go-coremidi>): `go get
+   github.com/youpy/go-coremidi`
 
-5. (optional) run `make install` or copy the binary to a convenient place yourself.
+5. run `make`
+
+6. (OSX only, optional) run `make MIDILIB=coremidi` to use coremidi directly,
+   which is recommended on OSX.
+
+7. (optional) run `make install` or copy the binary to a convenient place yourself.
 
 # Usage
 
@@ -202,6 +209,8 @@ There are some reserved seq names:
   - *start*: This is always the first sequence played.
   - *precount*: This will be played only once at the beginning, before the
     start seq.
+
+You can refer to other seqs by using their name as a part name prefixed by a ":".
   
 #### Example
 
@@ -210,12 +219,15 @@ seqs:
     - name: precount
       parts:
           - countin
+    - name: end
+          - end1
+          - end2
     - name: start
       parts:
           - part1
           - part2
           - part3
-          - end
+          - :end
 ```
 
 ## Advanced concepts
@@ -243,6 +255,45 @@ Usage: `fx: [rampv: <start>-<end>]`
 
 Ramp velocity. Will make the velocity go from _start_ to _end_ over the whole
 part. Useful for crescendo or diminuendo, but also for limiting velocity.
+
+
+### Figures
+
+A _figure_ is a short pattern that can be played like a normal note. Just
+instead it will play the defined pattern. Figures let you add micro beats,
+dead notes, grace notes, triplet feels or subliminal timings in general.
+
+The name of a figure will be used to refer to it in the lanes of a part,
+prefixed by a "+". The key defines which key from the set it will play.
+The pattern is a sequence of "." or "x" signs, . denoting a pause and x
+denoting a trigger of the chosen key. All events in the pattern (beats and
+pauses) are timed such that the first one happens at the beat and the remaining
+ones are equally spaced until the next beat. This means a figure always has the
+same length in time, but since you can place as many micro events in it as you
+like, their spacing will change accordingly to fit into that single beat.
+
+For instance, to get a very short grace note you could define a figure pattern
+like ".....x" and place it just one beat before the actual beat. The "x" will
+play very shortly before.
+
+Examples:
+
+```
+figures:
+    # some triplet patterns
+    - {name: f1, key: fl, velocity:  65, pattern: .xx}
+    - {name: f2, key: ce, velocity: 100, pattern: ..x}
+
+parts:
+    - name: part1
+      bpm: 120
+      step: 8
+      lanes:
+        - +f2 ce +f2 ce
+```
+
+See testfiles/beat8.yml for a more elaborate example.
+
 
 ### Genlanes
 
@@ -309,15 +360,17 @@ will generate a lane like this:
 Demo patterns produced with droguedrums. The demo yaml files you can find in the
 testfiles/ directory of the distribution archive.
 
-[beat2.yml](beat2.yml) <audio src="beat2.mp3" controls ></audio> (Sound: Vermona DRM1-MKIII)
+[beat2.yml](beat2.yml) <audio src="beat2.mp3" controls></audio> (Sound: Vermona DRM1-MKIII)
 
-[beat3.yml](beat3.yml) <audio src="beat3.mp3" controls ></audio> (Sound: Vermona DRM1-MKIII)
+[beat3.yml](beat3.yml) <audio src="beat3.mp3" controls></audio> (Sound: Vermona DRM1-MKIII)
 
-[beat4.yml](beat4.yml) <audio src="beat4.mp3" controls ></audio> (Sound: Vermona DRM1-MKIII)
+[beat4.yml](beat4.yml) <audio src="beat4.mp3" controls></audio> (Sound: Vermona DRM1-MKIII)
 
-[beat5.yml](beat5.yml) <audio src="beat5.mp3" controls ></audio> (Sound: Vermona DRM1-MKIII)
+[beat5.yml](beat5.yml) <audio src="beat5.mp3" controls></audio> (Sound: Vermona DRM1-MKIII)
 
-[beat6.yml](beat6.yml) <audio src="beat6.mp3" controls ></audio> (Sound: fluidsynth/FluidR3 GM2-2 soundfont)
+[beat6.yml](beat6.yml) <audio src="beat6.mp3" controls></audio> (Sound: fluidsynth/FluidR3 GM2-2 soundfont)
+
+[beat8.yml](beat8.yml) <audio src="beat8.mp3" controls></audio> (Sound: fluidsynth/FluidR3 GM2-2 soundfont)
 
 # Controlling devices
 
