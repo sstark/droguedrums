@@ -3,6 +3,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"github.com/youpy/go-coremidi"
 )
@@ -19,6 +20,9 @@ func sendMidiNote(channel, note, velocity int) {
 
 func initMidi(chosenPort int) (err error) {
 	allDests, err := coremidi.AllDestinations()
+	if len(allDests) == 0 {
+		return errors.New("no midi output found")
+	}
 	fmt.Println("midi outputs found:")
 	for i, d := range allDests {
 		fmt.Printf("%d: \"(%s), %s\"", i, d.Manufacturer(), d.Name())

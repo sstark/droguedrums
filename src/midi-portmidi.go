@@ -3,6 +3,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"github.com/rakyll/portmidi"
 )
@@ -18,6 +19,9 @@ func sendMidiNote(channel, note, velocity int) {
 func initMidi(chosenPort int) error {
 	err := portmidi.Initialize()
 	midiDevCount := portmidi.CountDevices() // returns the number of MIDI devices
+	if midiDevCount == 0 {
+		return errors.New("no midi device found")
+	}
 	defaultOut := portmidi.DefaultOutputDeviceID()
 	var midiDeviceInfo *portmidi.DeviceInfo
 	fmt.Println("midi outputs found:")
