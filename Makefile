@@ -7,21 +7,20 @@ MIDILIB=	portmidi
 PREFIX=		/usr/local
 OS=         $(shell uname)
 
-${BIN}: src/* Makefile
-	@echo building for ${MIDILIB}
-	cd src && go build -tags ${MIDILIB} ${LDFLAGS} -o ../${BIN}
+${BIN}: *.go Makefile
+	go build -tags ${MIDILIB} ${LDFLAGS} -o ${BIN}
 
 test:
-	cd src && go test -tags portmidi
+	go test -tags portmidi
 ifeq ($(OS),Darwin)
-	cd src && go test -tags coremidi
+	go test -tags coremidi
 endif
 
 clean:
 	rm -f ${BIN}
 
 checkfmt:
-	@gofmt -d src/*.go
+	@gofmt -d *.go
 
 install: ${BIN}
 	install ${BIN} ${PREFIX}/bin

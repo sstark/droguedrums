@@ -138,7 +138,7 @@ var tlfTestPairs = []tlfTestPair{
 
 func TestFigures(t *testing.T) {
 	drums := new(drums)
-	drums.loadFromFile("../testfiles/beat8.yml")
+	drums.loadFromFile("testfiles/beat8.yml")
 	sets := drums.getSets()
 	figures := drums.getFigures()
 	for _, fig := range tlfTestPairs {
