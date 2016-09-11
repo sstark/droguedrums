@@ -41,14 +41,14 @@ func makeTiming(bpm string, step int, numEvents int) (timing, timingIncrement ti
 	return
 }
 
-type VarTicker struct {
+type varTicker struct {
 	C    <-chan time.Time
 	ch   chan<- time.Time
 	t    *time.Ticker
 	done chan bool
 }
 
-func (t *VarTicker) SetDuration(d time.Duration) {
+func (t *varTicker) SetDuration(d time.Duration) {
 	if t.t != nil {
 		t.t.Stop()
 		close(t.done)

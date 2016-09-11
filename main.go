@@ -34,7 +34,7 @@ func player(playQ chan part) {
 	var err error
 	eventQueue := make(chan event)
 	dacapo := make(chan bool)
-	var ticker VarTicker
+	var ticker varTicker
 	var eventCounter int
 	ticker.SetDuration(time.Millisecond)
 	var timing, timingIncrement time.Duration
@@ -64,17 +64,17 @@ func player(playQ chan part) {
 		case <-dacapo:
 			debugf("player(): dacapo")
 			currentPart := <-playQ
-			fmt.Printf("> %s (%s/%d)\n", currentPart.Name, currentPart.Bpm, currentPart.Step)
+			fmt.Printf("> %s (%s/%d)\n", currentPart.name, currentPart.bpm, currentPart.step)
 			go func() {
-				channels, notes, figures := text2matrix(currentPart.Set, currentPart.Figures, currentPart.Lanes)
+				channels, notes, figures := text2matrix(currentPart.set, currentPart.figures, currentPart.lanes)
 				debugf("player(): %v", channels)
 				debugf("player(): %v", notes)
 
-				timing, timingIncrement, err = makeTiming(currentPart.Bpm,
-					currentPart.Step,
+				timing, timingIncrement, err = makeTiming(currentPart.bpm,
+					currentPart.step,
 					len(notes[0]))
 				if err != nil {
-					logger.Fatalf("bpm value could not be read: %s, %v", currentPart.Bpm, err)
+					logger.Fatalf("bpm value could not be read: %s, %v", currentPart.bpm, err)
 				}
 				eventCounter = 0
 				ticker.SetDuration(timing)
@@ -83,7 +83,7 @@ func player(playQ chan part) {
 				// FIXME: should probably be done in the matrix lib
 				err = notes.check()
 				if err != nil {
-					logger.Fatalf("part \"%s\" has wrong format: %v", currentPart.Name, err)
+					logger.Fatalf("part \"%s\" has wrong format: %v", currentPart.name, err)
 				}
 				debugf("player(): %+v:", currentPart)
 				vmap := genVelocityMap(currentPart, notes).transpose()
@@ -184,7 +184,7 @@ func checkErr(err error) {
 
 func main() {
 	logger = log.New(os.Stderr, "", log.Lshortfile)
-	fmt.Printf("droguedrums %s\n", Version)
+	fmt.Printf("droguedrums %s\n", version)
 
 	var chosenPort int
 	flag.IntVar(&chosenPort, "port", defaultMidiPort, "choose output port")

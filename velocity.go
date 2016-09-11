@@ -7,7 +7,7 @@ import (
 )
 
 func fxRandv(part part) int {
-	for _, ef := range part.Fx {
+	for _, ef := range part.fx {
 		if v, ok := ef["randv"]; ok {
 			debugf("fxRandv(): found randv value %v", v)
 			randomness, err := strconv.Atoi(v)
@@ -25,7 +25,7 @@ func fxRampv(part part, notes matrix) row {
 		debugf("fxRampv(): empty part: %v", notes)
 		return nil
 	}
-	for _, ef := range part.Fx {
+	for _, ef := range part.fx {
 		if v, ok := ef["rampv"]; ok {
 			debugf("fxRampv(): found rampv value %v", v)
 			values := strings.Split(v, "-")

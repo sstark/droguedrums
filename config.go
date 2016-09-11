@@ -18,13 +18,13 @@ const (
 )
 
 type part struct {
-	Name    string
-	Set     noteMap
-	Figures map[string]figure
-	Step    int
-	Bpm     string
-	Fx      []map[string]string
-	Lanes   []string
+	name    string
+	set     noteMap
+	figures map[string]figure
+	step    int
+	bpm     string
+	fx      []map[string]string
+	lanes   []string
 }
 
 type seq []string
@@ -207,13 +207,13 @@ func (d *drums) getParts(sets map[string]noteMap, figures map[string]figure) map
 		lanes = append(lanes, genlanes...)
 		debugf("getParts(): %#v", lanes)
 		parts[inp.Name] = part{
-			Name:    inp.Name,
-			Set:     partset,
-			Figures: figures,
-			Step:    partstep,
-			Bpm:     inp.Bpm,
-			Fx:      inp.Fx,
-			Lanes:   lanes,
+			name:    inp.Name,
+			set:     partset,
+			figures: figures,
+			step:    partstep,
+			bpm:     inp.Bpm,
+			fx:      inp.Fx,
+			lanes:   lanes,
 		}
 	}
 	return parts

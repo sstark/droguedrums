@@ -25,12 +25,12 @@ type genVelocityMapTestInput struct {
 var genVelocityMapInputList = []genVelocityMapTestInput{
 	{
 		part: part{
-			Fx: []map[string]string{
+			fx: []map[string]string{
 				{
 					"rampv": "20-30",
 				},
 			},
-			Lanes: []string{
+			lanes: []string{
 				"ab ab ab ab -- ab",
 				"cd cd -- -- cd --",
 			},
@@ -42,12 +42,12 @@ var genVelocityMapInputList = []genVelocityMapTestInput{
 	},
 	{
 		part: part{
-			Fx: []map[string]string{
+			fx: []map[string]string{
 				{
 					"rampv": "127-40",
 				},
 			},
-			Lanes: []string{
+			lanes: []string{
 				"ab ab ab ab -- ab ab -- ab",
 				"cd cd -- -- cd -- cd -- cd",
 			},
@@ -59,12 +59,12 @@ var genVelocityMapInputList = []genVelocityMapTestInput{
 	},
 	{
 		part: part{
-			Fx: []map[string]string{
+			fx: []map[string]string{
 				{
 					"rampv": "90-90",
 				},
 			},
-			Lanes: []string{
+			lanes: []string{
 				"ab ab ab ab -- ab ab -- ab",
 				"cd cd -- -- cd -- cd -- cd",
 			},
