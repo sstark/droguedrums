@@ -1,4 +1,5 @@
-// +build portmidi
+// +build linux portmidi
+// +build !coremidi
 
 package main
 

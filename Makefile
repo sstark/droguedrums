@@ -1,6 +1,6 @@
 BIN=		droguedrums
 GITDIR=		${BIN}
-MIDILIB=	portmidi
+MIDILIB=	""
 PREFIX=		/usr/local
 OS=         $(shell uname)
 

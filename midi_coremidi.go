@@ -1,4 +1,5 @@
-// +build coremidi
+// +build darwin coremidi
+// +build !portmidi
 
 package main
 
