@@ -100,11 +100,11 @@ func text2matrix(set noteMap, figures map[string]figure, txt []string) (channels
 		lane := strings.Split(strings.TrimSpace(line), laneSplitStr)
 		// use our own index because we need to be able to decrease it
 		// if we encounter unwanted (uncounted) characters
-		var i int = -1
+		var i = -1
 		for _, elem := range lane {
-			i += 1
+			i++
 			if elem == "" {
-				i -= 1
+				i--
 				continue
 			}
 			first, rest := splitFirstRune(elem)

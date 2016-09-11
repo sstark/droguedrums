@@ -50,7 +50,7 @@ var genEquidTestPairs = []genEquidTestPair{
 
 func TestGenEquid(t *testing.T) {
 	for _, p := range genEquidTestPairs {
-		got, err := gen_equid(p.in)
+		got, err := genEquid(p.in)
 		if got != p.wanted {
 			t.Errorf("got %#v, wanted %#v", got, p.wanted)
 			if err == nil {

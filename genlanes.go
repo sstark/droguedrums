@@ -15,7 +15,7 @@ func sineFunc(period, xshift, yshift float64) func(float64) float64 {
 	}
 }
 
-func gen_sinez(gl map[string]string) (out string, err error) {
+func genSinez(gl map[string]string) (out string, err error) {
 	//{note: hc, length: 13, period: 1.0, xshift: 0.4, yshift: -0.37}
 	var buffer bytes.Buffer
 	inpNote, ok := gl["note"]
@@ -57,7 +57,7 @@ func gen_sinez(gl map[string]string) (out string, err error) {
 		return
 	}
 	step := (2 * math.Pi) / float64(length)
-	debugf("gen_sinez(): step: %f, xshift: %f, yshift: %f", step, xshift, yshift)
+	debugf("genSinez(): step: %f, xshift: %f, yshift: %f", step, xshift, yshift)
 	sine := sineFunc(1/period, ((xshift)*step)/period, yshift)
 	// the i-1th step
 	lastsign := math.Signbit(sine(-step))
@@ -73,11 +73,11 @@ func gen_sinez(gl map[string]string) (out string, err error) {
 		buffer.WriteString(" ")
 	}
 	out = strings.TrimSpace(buffer.String())
-	debugf("gen_sinez(): %v", out)
+	debugf("genSinez(): %v", out)
 	return
 }
 
-func gen_equid(gl map[string]string) (out string, err error) {
+func genEquid(gl map[string]string) (out string, err error) {
 	//{note: hc, length: 13, dist: 2, start: 1}
 	var buffer bytes.Buffer
 	inpNote, ok := gl["note"]
@@ -122,7 +122,7 @@ func gen_equid(gl map[string]string) (out string, err error) {
 		buffer.WriteString(" ")
 	}
 	out = strings.TrimSpace(buffer.String())
-	debugf("gen_equid(): %v", out)
+	debugf("genEquid(): %v", out)
 	return
 }
 
@@ -130,7 +130,7 @@ func renderGenlanes(lanes []map[string]map[string]string) (genlanes []string, ou
 	for i, inLane := range lanes {
 		if gen, ok := inLane["equid"]; ok {
 			debugf("renderGenlanes(): found equid gen %v", gen)
-			outLane, err := gen_equid(gen)
+			outLane, err := genEquid(gen)
 			if err != nil {
 				debugf("renderGenlanes(): gen_equid() failed")
 				outerr = fmt.Errorf("error in genlane#%d: %s", i, err)
@@ -140,7 +140,7 @@ func renderGenlanes(lanes []map[string]map[string]string) (genlanes []string, ou
 		}
 		if gen, ok := inLane["sinez"]; ok {
 			debugf("renderGenlanes(): found sinez gen %v", gen)
-			outLane, err := gen_sinez(gen)
+			outLane, err := genSinez(gen)
 			if err != nil {
 				debugf("renderGenlanes(): gen_sinez() failed")
 				outerr = fmt.Errorf("error in genlane#%d: %s", i, err)

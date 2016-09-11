@@ -84,7 +84,7 @@ var genVelocityMapOutputList = []row{
 
 func TestRampv(t *testing.T) {
 	for i := range genVelocityMapOutputList {
-		got := fx_rampv(genVelocityMapInputList[i].part, genVelocityMapInputList[i].notes)
+		got := fxRampv(genVelocityMapInputList[i].part, genVelocityMapInputList[i].notes)
 		want := genVelocityMapOutputList[i]
 		if !got.eq(want) {
 			t.Errorf("got %v, wanted %v", got, want)

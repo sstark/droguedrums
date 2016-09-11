@@ -6,10 +6,10 @@ import (
 	"strings"
 )
 
-func fx_randv(part part) int {
+func fxRandv(part part) int {
 	for _, ef := range part.Fx {
 		if v, ok := ef["randv"]; ok {
-			debugf("fx_randv(): found randv value %v", v)
+			debugf("fxRandv(): found randv value %v", v)
 			randomness, err := strconv.Atoi(v)
 			if err == nil {
 				return randomness
@@ -19,15 +19,15 @@ func fx_randv(part part) int {
 	return 0
 }
 
-func fx_rampv(part part, notes matrix) row {
+func fxRampv(part part, notes matrix) row {
 	vmap := make(row, len(notes[0]))
 	if len(vmap) == 0 {
-		debugf("fx_rampv(): empty part: %v", notes)
+		debugf("fxRampv(): empty part: %v", notes)
 		return nil
 	}
 	for _, ef := range part.Fx {
 		if v, ok := ef["rampv"]; ok {
-			debugf("fx_rampv(): found rampv value %v", v)
+			debugf("fxRampv(): found rampv value %v", v)
 			values := strings.Split(v, "-")
 			if len(values) != 2 {
 				return nil
@@ -55,7 +55,7 @@ func genVelocityMap(part part, notes matrix) matrix {
 	// otherwise initialise one with max velocity
 	var vmatrix matrix
 	debugf("genVelocityMap(): notes: %v", notes)
-	vmap := fx_rampv(part, notes)
+	vmap := fxRampv(part, notes)
 	debugf("genVelocityMap(): part length: %v", len(vmap))
 	if vmap == nil {
 		vmap = make(row, len(notes[0]))
@@ -63,7 +63,7 @@ func genVelocityMap(part part, notes matrix) matrix {
 			vmap[i] = midiVmax
 		}
 	}
-	randomness := fx_randv(part)
+	randomness := fxRandv(part)
 	for i := range vmap {
 		if randomness != 0 {
 			v := (rand.Int() % randomness) - (randomness / 2)

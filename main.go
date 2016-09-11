@@ -35,7 +35,7 @@ func player(playQ chan part) {
 	eventQueue := make(chan event)
 	dacapo := make(chan bool)
 	var ticker VarTicker
-	var eventCounter int = 0
+	var eventCounter int
 	ticker.SetDuration(time.Millisecond)
 	var timing, timingIncrement time.Duration
 	midiQueue := make(chan midiEvent)
@@ -59,7 +59,7 @@ func player(playQ chan part) {
 				debugf("player(): setDuration counter:%v dur:%v, timingIncrement:%v",
 					eventCounter, dur, timingIncrement)
 				ticker.SetDuration(dur)
-				eventCounter += 1
+				eventCounter++
 			}
 		case <-dacapo:
 			debugf("player(): dacapo")
