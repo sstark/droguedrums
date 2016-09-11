@@ -8,10 +8,13 @@ ${BIN}: *.go Makefile
 	go build -tags ${MIDILIB} -o ${BIN}
 
 test:
-	go test -tags portmidi
+	go test
+
+test-all:
 ifeq ($(OS),Darwin)
 	go test -tags coremidi
 endif
+	go test -tags portmidi
 
 clean:
 	rm -f ${BIN}
