@@ -1,14 +1,11 @@
 BIN=		droguedrums
 GITDIR=		${BIN}
-VERSION=	1.1
-BUILD_TIME=	$(shell date +%FT%T%z)
-LDFLAGS=	-ldflags "-X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}"
 MIDILIB=	portmidi
 PREFIX=		/usr/local
 OS=         $(shell uname)
 
 ${BIN}: *.go Makefile
-	go build -tags ${MIDILIB} ${LDFLAGS} -o ${BIN}
+	go build -tags ${MIDILIB} -o ${BIN}
 
 test:
 	go test -tags portmidi

@@ -21,9 +21,7 @@ const (
 )
 
 var (
-	Version   string
-	BuildTime string
-	logger    *log.Logger
+	logger *log.Logger
 )
 
 func debugf(format string, args ...interface{}) {
@@ -186,7 +184,7 @@ func checkErr(err error) {
 
 func main() {
 	logger = log.New(os.Stderr, "", log.Lshortfile)
-	fmt.Printf("droguedrums %s (built %s)\n", Version, BuildTime)
+	fmt.Printf("droguedrums %s\n", Version)
 
 	var chosenPort int
 	flag.IntVar(&chosenPort, "port", defaultMidiPort, "choose output port")
