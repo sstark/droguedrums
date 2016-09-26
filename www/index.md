@@ -37,7 +37,7 @@ Or continue reading.
 
 Download this in any case, it has all the examples.
 
-[Github project](https://github.com/sstark/droguedrums)
+See or get the source code repository here: [Github project](https://github.com/sstark/droguedrums)
 
 ### Precompiled
 
