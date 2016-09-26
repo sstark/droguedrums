@@ -36,7 +36,6 @@ func player(playQ chan part) {
 	dacapo := make(chan bool)
 	var ticker varTicker
 	var eventCounter int
-	ticker.SetDuration(time.Millisecond)
 	var timing, timingIncrement time.Duration
 	midiQueue := make(chan midiEvent)
 	go processMidiQ(midiQueue)
