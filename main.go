@@ -63,7 +63,6 @@ func player(playQ chan part) {
 		case <-dacapo:
 			debugf("player(): dacapo")
 			currentPart := <-playQ
-			fmt.Printf("> %s (%s/%d)\n", currentPart.name, currentPart.bpm, currentPart.step)
 			go func() {
 				channels, notes, figures := text2matrix(currentPart.set, currentPart.figures, currentPart.lanes)
 				debugf("player(): %v", channels)
@@ -167,6 +166,7 @@ func feeder(drumsfile string, playQ chan part) {
 					// avoid busy loop when all parts are unknown
 					time.Sleep(unknownPartWait)
 				} else {
+					fmt.Printf("> %s (%s/%d)\n", part.name, part.bpm, part.step)
 					playQ <- part
 				}
 			}
