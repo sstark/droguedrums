@@ -3,6 +3,7 @@ GITDIR=		${BIN}
 MIDILIB=	""
 PREFIX=		/usr/local
 OS=         $(shell uname)
+VERSION=	$(shell sed '/version/!d;s/.*\"\(.*\)\"/\1/' version.go)
 
 ${BIN}: *.go Makefile
 	go build -tags ${MIDILIB} -o ${BIN}
