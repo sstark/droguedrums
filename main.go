@@ -135,17 +135,28 @@ func getDrumsfile(drumsfile string) (map[string]part, seqMap) {
 
 func feeder(drumsfile string, playQ chan part) {
 	parts, seqs := getDrumsfile(drumsfile)
-	for _, part := range seqs.flatten(seqNamePrecount) {
-		if part == partNameStop {
-			fmt.Println(stopMessage)
-			bufio.NewReader(os.Stdin).ReadBytes('\n')
-			continue
+	feedParts := func(startAt string) {
+		for _, partname := range seqs.flatten(startAt) {
+			debugf("feeder(): next: %v", partname)
+			if partname == partNameStop {
+				fmt.Println(stopMessage)
+				bufio.NewReader(os.Stdin).ReadBytes('\n')
+				continue
+			}
+			if part, ok := parts[partname]; !ok {
+				logger.Printf("unknown part \"%s\"", partname)
+				// avoid busy loop when all parts are unknown
+				time.Sleep(unknownPartWait)
+			} else {
+				fmt.Printf("> %s (%s/%d)\n", part.name, part.bpm, part.step)
+				playQ <- part
+			}
 		}
-		playQ <- parts[part]
 	}
 	sigc := make(chan os.Signal, 1)
 	signal.Notify(sigc, syscall.SIGUSR1)
 	debugf("installed signal handler")
+	feedParts(seqNamePrecount)
 	for {
 		select {
 		case sig := <-sigc:
@@ -154,22 +165,7 @@ func feeder(drumsfile string, playQ chan part) {
 			parts, seqs = getDrumsfile(drumsfile)
 			debugf("feeder(): done re-reading drumsfile", sig)
 		default:
-			for _, partname := range seqs.flatten(seqNameStart) {
-				debugf("feeder(): next: %v", partname)
-				if partname == partNameStop {
-					fmt.Println(stopMessage)
-					bufio.NewReader(os.Stdin).ReadBytes('\n')
-					continue
-				}
-				if part, ok := parts[partname]; !ok {
-					logger.Printf("unknown part \"%s\"", partname)
-					// avoid busy loop when all parts are unknown
-					time.Sleep(unknownPartWait)
-				} else {
-					fmt.Printf("> %s (%s/%d)\n", part.name, part.bpm, part.step)
-					playQ <- part
-				}
-			}
+			feedParts(seqNameStart)
 		}
 	}
 }
