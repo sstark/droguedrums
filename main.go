@@ -148,8 +148,8 @@ func feeder(drumsfile string, playQ chan part) {
 				// avoid busy loop when all parts are unknown
 				time.Sleep(unknownPartWait)
 			} else {
-				fmt.Printf("> %s (%s/%d)\n", part.name, part.bpm, part.step)
 				playQ <- part
+				fmt.Printf("> %s (%s/%d)\n", part.name, part.bpm, part.step)
 			}
 		}
 	}
