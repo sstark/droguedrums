@@ -4,17 +4,20 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 const (
-	figurePrefix rune   = '+'
-	seqPrefix    rune   = ':'
-	patternPause rune   = '.'
-	patternBeat  rune   = 'x'
-	laneSplitStr string = " "
-	defaultStep  int    = 8
-	defaultSet   string = "default"
+	figurePrefix   rune   = '+'
+	seqPrefix      rune   = ':'
+	patternPause   rune   = '.'
+	patternBeat    rune   = 'x'
+	laneSplitStr   string = " "
+	choiceSplitStr string = "|"
+	defaultStep    int    = 8
+	defaultSet     string = "default"
 )
 
 type part struct {
@@ -65,8 +68,11 @@ func (d *drums) dump() {
 }
 
 func translateKit(set noteMap, s string) (channel, note int) {
-	channel = set[s].Channel
-	note = set[s].Note
+	// pick a random note from choiceSplitStr separated choices
+	ss := strings.Split(s, choiceSplitStr)
+	pick := ss[rand.Intn(len(ss))]
+	channel = set[pick].Channel
+	note = set[pick].Note
 	return
 }
 
@@ -220,6 +226,8 @@ func (d *drums) getParts(sets map[string]noteMap, figures map[string]figure) map
 }
 
 func (d *drums) getSets() map[string]noteMap {
+	// Make sure we have a different random sequence for each invocation
+	rand.Seed(time.Now().Unix())
 	sets := make(map[string]noteMap)
 	for _, set := range d.Sets {
 		debugf("getSets(): %+v", set)

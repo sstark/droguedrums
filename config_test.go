@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math/rand"
 	"reflect"
 	"testing"
 )
@@ -181,6 +182,85 @@ func TestSeqFlatten(t *testing.T) {
 		got := pair.in.flatten(pair.start)
 		if !reflect.DeepEqual(got, pair.out) {
 			t.Errorf("got %v, wanted %v", got, pair.out)
+		}
+	}
+}
+
+type translateKitSeries []struct {
+	channel int
+	note    int
+}
+
+type translateKitPair struct {
+	inset noteMap
+	instr string
+	out   translateKitSeries
+}
+
+var translateKitPairs = []translateKitPair{
+	{
+		inset: noteMap{
+			"ab": midiNote{
+				Channel: 2,
+				Note:    70,
+			},
+			"cd": midiNote{
+				Channel: 3,
+				Note:    80,
+			},
+		},
+		instr: "ab",
+		out:   translateKitSeries{{2, 70}, {2, 70}, {2, 70}},
+	},
+	{
+		inset: noteMap{
+			"ab": midiNote{
+				Channel: 2,
+				Note:    70,
+			},
+			"cd": midiNote{
+				Channel: 3,
+				Note:    80,
+			},
+		},
+		instr: "ab|cd",
+		out:   translateKitSeries{{2, 70}, {3, 80}, {2, 70}, {3, 80}, {3, 80}},
+	},
+	{
+		inset: noteMap{
+			"ab": midiNote{
+				Channel: 2,
+				Note:    70,
+			},
+			"cd": midiNote{
+				Channel: 3,
+				Note:    80,
+			},
+			"ef": midiNote{
+				Channel: 4,
+				Note:    90,
+			},
+		},
+		instr: "ab|cd|ef",
+		out: translateKitSeries{{2, 70}, {2, 70}, {2, 70}, {4, 90},
+			{4, 90}, {2, 70}, {2, 70}, {2, 70}, {4, 90}, {4, 90}, {3, 80}},
+	},
+}
+
+func TestTranslateKit(t *testing.T) {
+	// for each iteration a different random value is chosen, which
+	// is reflected in the translateKitSeries slice. Because we use
+	// pseudo random numbers it's always the same ones.
+	rand.Seed(0)
+	for _, pair := range translateKitPairs {
+		for i := range pair.out {
+			outch, outn := translateKit(pair.inset, pair.instr)
+			if outch != pair.out[i].channel {
+				t.Errorf("%d: got %v, wanted %v", i, outch, pair.out[i].channel)
+			}
+			if outn != pair.out[i].note {
+				t.Errorf("%d: got %v, wanted %v", i, outn, pair.out[i].note)
+			}
 		}
 	}
 }
