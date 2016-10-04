@@ -149,7 +149,7 @@ func feeder(drumsfile string, playQ chan part) {
 				time.Sleep(unknownPartWait)
 			} else {
 				playQ <- part
-				fmt.Printf("> %s (%s/%d)\n", part.name, part.bpm, part.step)
+				fmt.Printf("[%s] ", part.name)
 			}
 		}
 	}
@@ -165,7 +165,9 @@ func feeder(drumsfile string, playQ chan part) {
 			parts, seqs = getDrumsfile(drumsfile)
 			debugf("feeder(): done re-reading drumsfile", sig)
 		default:
+			fmt.Printf("> ")
 			feedParts(seqNameStart)
+			fmt.Println()
 		}
 	}
 }
