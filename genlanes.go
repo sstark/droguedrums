@@ -15,6 +15,42 @@ func sineFunc(period, xshift, yshift float64) func(float64) float64 {
 	}
 }
 
+func genPlace(gl map[string]string) (out string, err error) {
+	//{note: hc, pos: 1 3 5 8}
+	// -> hc -- hc -- hc -- -- hc
+	var buffer bytes.Buffer
+	inpNote, ok := gl["note"]
+	if !ok {
+		err = errors.New("note value missing")
+		return
+	}
+	inpPos, ok := gl["pos"]
+	if !ok {
+		inpPos = "1"
+	}
+	positions := strings.Split(inpPos, " ")
+	if len(positions) == 0 {
+		return
+	}
+	lastI := 0
+	for _, pos := range positions {
+		posI, err := strconv.Atoi(pos)
+		// just ignore non-integers
+		if err != nil {
+			continue
+		}
+		for ii := lastI; ii < posI-1; ii++ {
+			buffer.WriteString("-- ")
+		}
+		lastI = posI
+		buffer.WriteString(inpNote)
+		buffer.WriteString(" ")
+	}
+	out = strings.TrimSpace(buffer.String())
+	debugf("genPlace(): %v", out)
+	return
+}
+
 func genSinez(gl map[string]string) (out string, err error) {
 	//{note: hc, length: 13, period: 1.0, xshift: 0.4, yshift: -0.37}
 	var buffer bytes.Buffer
@@ -143,6 +179,16 @@ func renderGenlanes(lanes []map[string]map[string]string) (genlanes []string, ou
 			outLane, err := genSinez(gen)
 			if err != nil {
 				debugf("renderGenlanes(): gen_sinez() failed")
+				outerr = fmt.Errorf("error in genlane#%d: %s", i, err)
+				return
+			}
+			genlanes = append(genlanes, outLane)
+		}
+		if gen, ok := inLane["place"]; ok {
+			debugf("renderGenlanes(): found place gen %v", gen)
+			outLane, err := genPlace(gen)
+			if err != nil {
+				debugf("renderGenlanes(): gen_place() failed")
 				outerr = fmt.Errorf("error in genlane#%d: %s", i, err)
 				return
 			}
