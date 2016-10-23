@@ -26,8 +26,8 @@ checkfmt:
 install: ${BIN}
 	install ${BIN} ${PREFIX}/bin
 
-www: mkdocs.yml
-	mkdocs build --clean
+www:
+	(cd hugo && hugo)
 
 zip:
 	cd .. && zip -r ${GITDIR}-${VERSION}.zip ${GITDIR} --exclude "${GITDIR}/${BIN}" "${GITDIR}/site/*" "${GITDIR}/cinder/*" "*/.*"

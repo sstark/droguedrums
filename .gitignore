@@ -2,3 +2,4 @@ droguedrums
 .*.swp
 site
 .DS_Store
+hugo/public
