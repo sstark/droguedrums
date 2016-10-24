@@ -166,36 +166,23 @@ func genEquid(gl map[string]string) (out string, err error) {
 }
 
 func renderGenlanes(lanes []map[string]map[string]string) (genlanes []string, outerr error) {
+	genFuncs := map[string]func(map[string]string) (string, error){
+		"equid": genEquid,
+		"sinez": genSinez,
+		"place": genPlace,
+	}
 	for i, inLane := range lanes {
-		if gen, ok := inLane["equid"]; ok {
-			debugf("renderGenlanes(): found equid gen %v", gen)
-			outLane, err := genEquid(gen)
-			if err != nil {
-				debugf("renderGenlanes(): gen_equid() failed")
-				outerr = fmt.Errorf("error in genlane#%d: %s", i, err)
-				return
+		for k, v := range genFuncs {
+			if gen, ok := inLane[k]; ok {
+				debugf("renderGenlanes(): found %s gen %v", k, gen)
+				outLane, err := v(gen)
+				if err != nil {
+					debugf("renderGenlanes(): gen%s() failed", k)
+					outerr = fmt.Errorf("error in genlane#%d: %s", i, err)
+					return
+				}
+				genlanes = append(genlanes, outLane)
 			}
-			genlanes = append(genlanes, outLane)
-		}
-		if gen, ok := inLane["sinez"]; ok {
-			debugf("renderGenlanes(): found sinez gen %v", gen)
-			outLane, err := genSinez(gen)
-			if err != nil {
-				debugf("renderGenlanes(): gen_sinez() failed")
-				outerr = fmt.Errorf("error in genlane#%d: %s", i, err)
-				return
-			}
-			genlanes = append(genlanes, outLane)
-		}
-		if gen, ok := inLane["place"]; ok {
-			debugf("renderGenlanes(): found place gen %v", gen)
-			outLane, err := genPlace(gen)
-			if err != nil {
-				debugf("renderGenlanes(): gen_place() failed")
-				outerr = fmt.Errorf("error in genlane#%d: %s", i, err)
-				return
-			}
-			genlanes = append(genlanes, outLane)
 		}
 	}
 	return
