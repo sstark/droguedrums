@@ -1,0 +1,7 @@
+div.sphinxsidebar {
+    position: fixed;
+    float: left;
+    width: 230px;
+    font-size: 90%;
+    margin-left: 0;
+}

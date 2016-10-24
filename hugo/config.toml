@@ -27,7 +27,7 @@ PygmentsCodeFences = true
 	github_repo   = "droguedrums"
 	github_banner = false
 
-	custom_css = []
+	custom_css = ["css/override.css"]
 	custom_js  = []
 
 	#highlightjs = "css/highlight.css"
