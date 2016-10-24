@@ -18,3 +18,7 @@ div.sphinxsidebar ul li.toctree-l1 > a {
 div.sphinxsidebar ul li.toctree-l2 > a {
     font-size: 115%;
 }
+
+pre {
+    background: #ecf0f3;
+}
