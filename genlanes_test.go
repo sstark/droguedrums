@@ -59,3 +59,37 @@ func TestGenEquid(t *testing.T) {
 		}
 	}
 }
+
+type genPlaceTestPair struct {
+	in     map[string]string
+	wanted string
+}
+
+var genPlaceTestPairs = []genPlaceTestPair{
+	{
+		in: map[string]string{
+			"note": "hc",
+			"pos":  "1 3 5 8",
+		},
+		wanted: "hc -- hc -- hc -- -- hc",
+	},
+	{
+		in: map[string]string{
+			"note": "bd",
+			"pos":  "2 9",
+		},
+		wanted: "-- bd -- -- -- -- -- -- bd",
+	},
+}
+
+func TestGenPlace(t *testing.T) {
+	for _, p := range genPlaceTestPairs {
+		got, err := genPlace(p.in)
+		if got != p.wanted {
+			t.Errorf("got %#v, wanted %#v", got, p.wanted)
+			if err == nil {
+				t.Errorf("also, error was not detected")
+			}
+		}
+	}
+}
