@@ -80,6 +80,20 @@ var genPlaceTestPairs = []genPlaceTestPair{
 		},
 		wanted: "-- bd -- -- -- -- -- -- bd",
 	},
+	{
+		in: map[string]string{
+			"note": "bd",
+			"pos":  "2 9 8",
+		},
+		wanted: "",
+	},
+	{
+		in: map[string]string{
+			"note": "xx",
+			"pos":  "1 1 1",
+		},
+		wanted: "",
+	},
 }
 
 func TestGenPlace(t *testing.T) {

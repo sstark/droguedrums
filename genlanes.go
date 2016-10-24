@@ -39,6 +39,9 @@ func genPlace(gl map[string]string) (out string, err error) {
 		if err != nil {
 			continue
 		}
+		if posI <= lastI {
+			return "", errors.New("positions must be sorted and unique")
+		}
 		for ii := lastI; ii < posI-1; ii++ {
 			buffer.WriteString("-- ")
 		}
