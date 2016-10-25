@@ -129,3 +129,24 @@ will generate a lane like this:
 ```yaml
 - -- -- ag ag -- -- -- -- -- -- -- -- ag ag -- ag ag -- ag ag -- -- -- -- -- -- -- -- ag ag -- ag
 ```
+
+#### place
+
+Usage: `- place {note: <key>, pos: p1 p2 ...}`
+
+Sometimes all you need is place an event at the 15th beat of a bar. This can be
+tedious if written out manually. With place you can do just that: It will place
+<key> at the positions p1, p2, ... in the generated lane, filling the rest with
+pauses. The individual positions (p1, p2, ...) need to be separated by _spaces_
+and strictly increasing in the definition.
+
+Example:
+
+```yaml
+- place: {note: fl, pos: 1 5 11}
+```
+
+will generate a lane like this:
+```yaml
+- fl -- -- -- fl -- -- -- -- -- fl
+```
