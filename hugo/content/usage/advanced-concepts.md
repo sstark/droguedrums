@@ -69,6 +69,19 @@ parts:
 
 See testfiles/beat8.yml for a more elaborate example.
 
+#### Alternating figures
+
+In a figure you can specify alternative values for the "key" parameter. "|" is
+used as the separation character. Each time the figure is used, another
+alternative will be randomly chosen from the given ones. This can enrich the
+beat a lot if used sensibly.
+
+Example:
+
+```yaml
+figures:
+    - {name: f3, key: fl|ce|cb, velocity: 80, pattern: x}
+```
 
 ### Genlanes
 
