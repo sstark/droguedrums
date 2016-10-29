@@ -1,5 +1,6 @@
 // +build linux portmidi
 // +build !coremidi
+// +build !jack
 
 package main
 

@@ -1,5 +1,6 @@
 // +build darwin coremidi
 // +build !portmidi
+// +build !jack
 
 package main
 
