@@ -18,19 +18,33 @@ const (
 
 var midiOut *jack.Port
 var jackClient jack.Client
+var jackQ = make(chan midiEvent)
+
+func process(nframes uint32) int {
+	select {
+		case nev := <-jackQ:
+			ev := &jack.MidiData{
+				Time: 1,
+				Buffer: []byte{
+					byte(midiNoteOn|nev.channel),
+					byte(nev.note),
+					byte(nev.velocity),
+				},
+			}
+			buf := midiOut.MidiClearBuffer(nframes)
+			midiOut.MidiEventWrite(ev, buf)
+		}
+	return 0
+}
 
 func sendMidiNote(channel, note, velocity int) {
-	 if note != 0 {
-		ev := &jack.MidiData{
-			Time: 0,
-			Buffer: []byte{
-				byte(midiNoteOn|channel),
-				byte(note),
-				byte(velocity),
-			},
+	if note != 0 {
+		ev := midiEvent{
+			channel: channel,
+			note: note,
+			velocity: velocity,
 		}
-		buf := &[]byte{}
-		midiOut.MidiEventWrite(ev, buf)
+		jackQ <- ev
         }
 }
 
@@ -41,6 +55,7 @@ func initMidi(chosenPort int) error {
 		fmt.Println("Could not connect to jack server")
 		return err
 	}
+	jackClient.SetProcessCallback(process)
 	jackClient.Activate()
 	midiOut = jackClient.PortRegister(jackPortName, jack.DEFAULT_MIDI_TYPE, jack.PortIsOutput, 0)
 	fmt.Println(midiOut)
