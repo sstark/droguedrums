@@ -13,39 +13,50 @@ import (
 
 const (
 	jackClientName = "droguedrums"
-	jackPortName = "output"
+	jackPortName   = "output"
 )
 
 var midiOut *jack.Port
 var jackClient jack.Client
-var jackQ = make(chan midiEvent)
+var jackQ = make(chan midiEvent, 100)
 
 func process(nframes uint32) int {
-	select {
-		case nev := <-jackQ:
-			ev := &jack.MidiData{
-				Time: 1,
-				Buffer: []byte{
-					byte(midiNoteOn|nev.channel),
-					byte(nev.note),
-					byte(nev.velocity),
-				},
+	var i uint32
+	buf := midiOut.MidiClearBuffer(nframes)
+FRAME_LOOP:
+	for i = 0; i < nframes; i++ {
+		n := 0
+		for {
+			select {
+			case nev := <-jackQ:
+				ev := &jack.MidiData{
+					Time: 0,
+					Buffer: []byte{
+						byte(midiNoteOn | nev.channel),
+						byte(nev.note),
+						byte(nev.velocity),
+					},
+				}
+				midiOut.MidiEventWrite(ev, buf)
+				n += 1
+			default:
+				fmt.Println(n)
+				break FRAME_LOOP
 			}
-			buf := midiOut.MidiClearBuffer(nframes)
-			midiOut.MidiEventWrite(ev, buf)
 		}
+	}
 	return 0
 }
 
 func sendMidiNote(channel, note, velocity int) {
 	if note != 0 {
 		ev := midiEvent{
-			channel: channel,
-			note: note,
+			channel:  channel,
+			note:     note,
 			velocity: velocity,
 		}
 		jackQ <- ev
-        }
+	}
 }
 
 func initMidi(chosenPort int) error {
