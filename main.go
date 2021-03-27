@@ -163,7 +163,7 @@ func feeder(drumsfile string, playQ chan part) {
 			debugf("feeder(): got signal %v, re-reading drumsfile", sig)
 			fmt.Println("re-reading input file")
 			parts, seqs = getDrumsfile(drumsfile)
-			debugf("feeder(): done re-reading drumsfile", sig)
+			debugf("feeder(): done re-reading drumsfile")
 		default:
 			fmt.Printf("> ")
 			feedParts(seqNameStart)
