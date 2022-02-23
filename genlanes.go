@@ -165,6 +165,60 @@ func genEquid(gl map[string]string) (out string, err error) {
 	return
 }
 
+func genEuclid(gl map[string]string) (out string, err error) {
+	//{note: hc, length: 15, accents: 4, rotation: 1}
+	var buffer bytes.Buffer
+	inpNote, ok := gl["note"]
+	if !ok {
+		err = errors.New("note value missing")
+		return
+	}
+	inpLength, ok := gl["length"]
+	if !ok {
+		err = errors.New("length value missing")
+		return
+	}
+	inpAccents, ok := gl["accents"]
+	if !ok {
+		err = errors.New("accents value missing")
+		return
+	}
+	inpRotation, ok := gl["rotation"]
+	if !ok {
+		inpRotation = "0"
+	}
+	length, err := strconv.Atoi(inpLength)
+	if err != nil {
+		return
+	}
+	accents, err := strconv.Atoi(inpAccents)
+	if err != nil {
+		return
+	}
+	if accents >= length {
+		err = errors.New("accents mast be smaller than length")
+		return
+	}
+	rotation, err := strconv.Atoi(inpRotation)
+	if err != nil {
+		return
+	}
+
+	var euclid func(int, int) int
+	euclid = func(m, k int) int {
+		if k == 0 {
+			return m
+		} else {
+			return euclid(k, m%k)
+		}
+	}
+	xxx := euclid(length, accents)
+
+	out = strings.TrimSpace(buffer.String())
+	debugf("genEuclid(): %v", out)
+	return
+}
+
 func renderGenlanes(lanes []map[string]map[string]string) (genlanes []string, outerr error) {
 	genFuncs := map[string]func(map[string]string) (string, error){
 		"equid": genEquid,
