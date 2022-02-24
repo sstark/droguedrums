@@ -196,7 +196,7 @@ func genEuclid(gl map[string]string) (out string, err error) {
 		return
 	}
 	if accents >= length {
-		err = errors.New("accents mast be smaller than length")
+		err = errors.New("accents must be smaller than length")
 		return
 	}
 	rotation, err := strconv.Atoi(inpRotation)
