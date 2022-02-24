@@ -240,9 +240,6 @@ func genEuclid(gl map[string]string) (out string, err error) {
 
 	gen(l)
 
-	// i = self.pattern.index(1)
-	// self.pattern = self.pattern[i:] + self.pattern[0:i]
-
 	out = strings.TrimSpace(buffer.String())
 	debugf("genEuclid(): %v", out)
 	return
