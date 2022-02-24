@@ -204,15 +204,44 @@ func genEuclid(gl map[string]string) (out string, err error) {
 		return
 	}
 
-	var euclid func(int, int) int
-	euclid = func(m, k int) int {
-		if k == 0 {
-			return m
-		} else {
-			return euclid(k, m%k)
+	debugf("genEuclid(): len %v, acc %v, rot %v", length, accents, rotation)
+
+	var l int
+	var c, rem []int
+	var divisor = length - accents
+
+	rem = append(rem, accents)
+	for {
+		c = append(c, divisor/rem[l])
+		rem = append(rem, divisor%rem[l])
+		divisor = rem[l]
+		l += 1
+		if rem[l] < 2 {
+			break
 		}
 	}
-	xxx := euclid(length, accents)
+	c = append(c, divisor)
+
+	var gen func(int)
+	gen = func(l int) {
+		if l == -1 {
+			buffer.WriteString("-- ")
+		} else if l == -2 {
+			buffer.WriteString(inpNote + " ")
+		} else {
+			for i := 0; i < c[l]; i++ {
+				gen(l - 1)
+			}
+			if rem[l] != 0 {
+				gen(l - 2)
+			}
+		}
+	}
+
+	gen(l)
+
+	// i = self.pattern.index(1)
+	// self.pattern = self.pattern[i:] + self.pattern[0:i]
 
 	out = strings.TrimSpace(buffer.String())
 	debugf("genEuclid(): %v", out)
@@ -221,9 +250,10 @@ func genEuclid(gl map[string]string) (out string, err error) {
 
 func renderGenlanes(lanes []map[string]map[string]string) (genlanes []string, outerr error) {
 	genFuncs := map[string]func(map[string]string) (string, error){
-		"equid": genEquid,
-		"sinez": genSinez,
-		"place": genPlace,
+		"equid":  genEquid,
+		"sinez":  genSinez,
+		"place":  genPlace,
+		"euclid": genEuclid,
 	}
 	for i, inLane := range lanes {
 		for k, v := range genFuncs {
