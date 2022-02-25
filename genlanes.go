@@ -167,7 +167,6 @@ func genEquid(gl map[string]string) (out string, err error) {
 
 func genEuclid(gl map[string]string) (out string, err error) {
 	//{note: hc, length: 15, accents: 4, rotation: 1}
-	var buffer bytes.Buffer
 	inpNote, ok := gl["note"]
 	if !ok {
 		err = errors.New("note value missing")
@@ -209,6 +208,7 @@ func genEuclid(gl map[string]string) (out string, err error) {
 	var l int
 	var c, rem []int
 	var divisor = length - accents
+	var buffer []string
 
 	rem = append(rem, accents)
 	for {
@@ -225,9 +225,9 @@ func genEuclid(gl map[string]string) (out string, err error) {
 	var gen func(int)
 	gen = func(l int) {
 		if l == -1 {
-			buffer.WriteString("-- ")
+			buffer = append(buffer, "-- ")
 		} else if l == -2 {
-			buffer.WriteString(inpNote + " ")
+			buffer = append(buffer, inpNote+" ")
 		} else {
 			for i := 0; i < c[l]; i++ {
 				gen(l - 1)
@@ -240,7 +240,16 @@ func genEuclid(gl map[string]string) (out string, err error) {
 
 	gen(l)
 
-	out = strings.TrimSpace(buffer.String())
+	// reverse it
+	for i, j := 0, len(buffer)-1; i < j; i, j = i+1, j-1 {
+		buffer[i], buffer[j] = buffer[j], buffer[i]
+	}
+
+	var bbuf bytes.Buffer
+	for _, ss := range buffer {
+		bbuf.WriteString(ss)
+	}
+	out = strings.TrimSpace(bbuf.String())
 	debugf("genEuclid(): %v", out)
 	return
 }
