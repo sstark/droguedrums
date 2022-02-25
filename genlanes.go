@@ -246,8 +246,13 @@ func genEuclid(gl map[string]string) (out string, err error) {
 	}
 
 	var bbuf bytes.Buffer
-	for _, ss := range buffer {
-		bbuf.WriteString(ss)
+	var j int
+	for i, _ := range buffer {
+		j = i - rotation
+		if j < 0 {
+			j += len(buffer)
+		}
+		bbuf.WriteString(buffer[j])
 	}
 	out = strings.TrimSpace(bbuf.String())
 	debugf("genEuclid(): %v", out)
