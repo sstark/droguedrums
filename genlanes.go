@@ -240,19 +240,22 @@ func genEuclid(gl map[string]string) (out string, err error) {
 
 	gen(l)
 
-	// reverse it
-	for i, j := 0, len(buffer)-1; i < j; i, j = i+1, j-1 {
-		buffer[i], buffer[j] = buffer[j], buffer[i]
+	debugf("genEuclid(): %v", buffer)
+	// get index of first accent so we can shift to it
+	var shift int
+	for shift = 0; shift < len(buffer); shift++ {
+		if buffer[shift] == inpNote+" " {
+			break
+		}
 	}
+	debugf("genEuclid(): shift: %v", shift)
+
+	rotation += shift
+	rotBuf := append(buffer[rotation:], buffer[0:rotation]...)
 
 	var bbuf bytes.Buffer
-	var j int
-	for i, _ := range buffer {
-		j = i - rotation
-		if j < 0 {
-			j += len(buffer)
-		}
-		bbuf.WriteString(buffer[j])
+	for _, val := range rotBuf {
+		bbuf.WriteString(val)
 	}
 	out = strings.TrimSpace(bbuf.String())
 	debugf("genEuclid(): %v", out)

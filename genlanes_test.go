@@ -107,3 +107,59 @@ func TestGenPlace(t *testing.T) {
 		}
 	}
 }
+
+type genEuclidTestPair struct {
+	in     map[string]string
+	wanted string
+}
+
+var genEuclidTestPairs = []genEuclidTestPair{
+	{
+		in: map[string]string{
+			"note":     "bd",
+			"length":   "2",
+			"accents":  "1",
+			"rotation": "0",
+		},
+		wanted: "bd --",
+	},
+	{
+		in: map[string]string{
+			"note":     "hc",
+			"length":   "8",
+			"accents":  "3",
+			"rotation": "0",
+		},
+		wanted: "hc -- -- hc -- -- hc --",
+	},
+	{
+		in: map[string]string{
+			"note":     "x",
+			"length":   "12",
+			"accents":  "7",
+			"rotation": "0",
+		},
+		wanted: "x -- x -- x x -- x -- x x --",
+	},
+	{
+		in: map[string]string{
+			"note":     "bd",
+			"length":   "5",
+			"accents":  "2",
+			"rotation": "1",
+		},
+		wanted: "-- bd -- -- bd",
+	},
+}
+
+func TestGenEuclid(t *testing.T) {
+	for _, p := range genEuclidTestPairs {
+		got, err := genEuclid(p.in)
+		if got != p.wanted {
+			t.Errorf("got %#v, wanted %#v", got, p.wanted)
+			if err == nil {
+				t.Errorf("also, error was not detected")
+			}
+		}
+	}
+}
