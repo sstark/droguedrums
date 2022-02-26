@@ -163,3 +163,22 @@ will generate a lane like this:
 ```yaml
 - fl -- -- -- fl -- -- -- -- -- fl
 ```
+
+#### euclid
+
+Usage: `- euclid {note: <key>, length: <numlen>, accents: <numacc>, rotation: <rot>}` 
+
+Uses Björklund's algorithm to generate "euclidean" rhythmical patterns of
+length *<numlen>* with *<numacc>* accents. The whole pattern can be shifted by
+supplying a rotation value *<rot>*.
+
+Example:
+
+```yaml
+- euclid: {note: xy, length: 8, accents: 3}
+```
+
+will generate a lane like this (the Cuban "tresillo"):
+```yaml
+- xy -- -- xy -- -- xy -
+```
