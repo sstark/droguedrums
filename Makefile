@@ -26,13 +26,8 @@ checkfmt:
 install: ${BIN}
 	install ${BIN} ${PREFIX}/bin
 
-www:
-	(cd hugo && hugo)
-
 zip:
-	cd .. && zip -r ${GITDIR}-${VERSION}.zip ${GITDIR} --exclude "${GITDIR}/${BIN}" "${GITDIR}/hugo/*" "*/.*"
+	cd .. && zip -r ${GITDIR}-${VERSION}.zip ${GITDIR} --exclude "${GITDIR}/${BIN}" "*/.*"
 
 binzip: clean ${BIN}
 	cd .. && zip ${GITDIR}-${VERSION}-$(shell uname -s).zip ${GITDIR}/${BIN}
-
-.PHONY: www
