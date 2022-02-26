@@ -166,7 +166,7 @@ will generate a lane like this:
 
 #### euclid
 
-Usage: `- euclid {note: <key>, length: <numlen>, accents: <numacc>, rotation: <rot>}` 
+Usage: `- euclid {note: <key>, length: <numlen>, accents: <numacc>, rotation: <rot>}`
 
 Uses Björklund's algorithm to generate "euclidean" rhythmical patterns of
 length *<numlen>* with *<numacc>* accents. The whole pattern can be shifted by
