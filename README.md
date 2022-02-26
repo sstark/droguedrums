@@ -25,7 +25,7 @@ $ ./droguedrums testfiles/beat1.yml
 
 ## Download
 
-Choose a download from [Releases](releases) and unzip.
+Choose a download from Releases and unzip.
 
 ## Requirements for running
 
