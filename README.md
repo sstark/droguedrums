@@ -1,5 +1,5 @@
 
-![droguetrees](droguetrees.jpg)
+![droguetrees](assets/droguetrees.jpg)
 
 droguedrums is a text file based drum sequencer for the command line.
 
@@ -14,7 +14,7 @@ following workflow in mind:
 There is a single input file containing definitions for drum kits, parts and
 sequences. The file is specified at the command line.
 
-![matter](../b2.jpg)
+![matter](assets/b2.jpg)
 
 For the easiest possible start just download the source and one of the
 precompiled binaries and run one of the contained example files:
@@ -101,7 +101,7 @@ After this little change you can run `go get github.com/rakyll/portmidi` again
 and it will use your changed copy of the source code to compile, now
 sucessfully, the package.
 
-![matter](../b3.jpg)
+![matter](assets/b3.jpg)
 
 Start the program like this:
 
@@ -437,7 +437,7 @@ usually.
 Program change messages are not implemented, so you have to map notes to
 different banks or midi channels.
 
-![houses](../b1.jpg)
+![houses](assets/b1.jpg)
 
 Demo patterns produced with droguedrums. The demo yaml files you can find in the
 testfiles/ directory of the distribution archive.
