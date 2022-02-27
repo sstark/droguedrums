@@ -426,6 +426,8 @@ will generate a lane like this (the Cuban "tresillo"):
 - xy -- -- xy -- -- xy -
 ```
 
+## Devices
+
 droguedrums has been tested with a Vermona DRM1-MKIII drum synthesizer and
 [fluidsynth](http://www.fluidsynth.org). In theory everything that can receive
 MIDI events can be controlled, but the main focus of the program is rhythms.
@@ -436,6 +438,8 @@ usually.
 
 Program change messages are not implemented, so you have to map notes to
 different banks or midi channels.
+
+## Demos
 
 ![houses](assets/b1.jpg)
 
